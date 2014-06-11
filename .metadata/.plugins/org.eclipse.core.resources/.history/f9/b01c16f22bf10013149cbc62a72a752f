@@ -31,7 +31,10 @@
 public class Assignment3d {
 	
 	public static void main (String[] args) {
-		int[] sequence = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+		int[] sequence = {1, 2, 3, 4, 6, 7, 8, 9, 10};
+		for (int e: sequence) {
+			System.out.print(sequence[e] + " ");
+		}
 		System.out.println("Odds: " + odds(sequence));
 		System.out.println("Evens: " + evens(sequence));
 		System.out.println("Product: " + product(sequence));
@@ -64,7 +67,10 @@ public class Assignment3d {
 	
 	public static boolean parity(int[] items) {
 		int counter = 0;
-		boolean ans = false;
+		boolean ans;
+		if (items.length == 0) { // considered even therefore false
+			ans = false;
+		}
 		for (int i = 0; i < items.length; i++) {
 			if (items[i]%2 != 0) {
 				counter++; // number of odd ints in array
@@ -73,6 +79,9 @@ public class Assignment3d {
 		if (counter%2 != 0) { // if there are an odd number of odd ints sum is odd
 			ans = true;
 			}
+		else { // if there an even number of odd ints sum is even
+			ans = false;
+		}
 		return ans;
 	}
 }

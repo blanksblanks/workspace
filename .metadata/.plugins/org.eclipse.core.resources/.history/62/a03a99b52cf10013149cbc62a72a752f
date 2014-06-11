@@ -64,7 +64,10 @@ public class Assignment3d {
 	
 	public static boolean parity(int[] items) {
 		int counter = 0;
-		boolean ans = false;
+		boolean ans;
+		if (items.length == 0) { // considered even therefore false
+			ans = false;
+		}
 		for (int i = 0; i < items.length; i++) {
 			if (items[i]%2 != 0) {
 				counter++; // number of odd ints in array
@@ -73,6 +76,9 @@ public class Assignment3d {
 		if (counter%2 != 0) { // if there are an odd number of odd ints sum is odd
 			ans = true;
 			}
+		else { // if there an even number of odd ints sum is even
+			ans = false;
+		}
 		return ans;
 	}
 }

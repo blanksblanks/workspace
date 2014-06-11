@@ -18,18 +18,17 @@
 public class Assignment3b { 
 	
 	public static void main(String[] args) {
-		increment();
-		increment();
-		System.out.println(getCount());
+		increment(counter);
+		System.out.println(counter);
 	}
 	
 	public static int counter = 0;
 	
-	public static void increment() {
+	public static void increment(int counter) {
 		++counter; 
 	}
 	
-	public static int getCount() {
+	public static int getCount(int counter) {
 		return counter;
 	}
   

@@ -25,33 +25,29 @@
 public class Assignment3c {
 	
 	public static void main (String[] args) {
-		for (int i = 0; i < 3; i++) {
-			increment();
-		}
-		System.out.println(getCount());
-		increment();
-		increment();
-		System.out.println(lastCount());
-		System.out.println(sinceLastCount());
+		increment(counter);
+		System.out.println(getCount(counter));
+		System.out.println(lastCount(counter));
+		System.out.println(sinceLastCount(counter));
 	}
 	
 	public static int counter = 0;
 	public static int lastValue = 0;
 	
-	public static void increment() {
+	public static void increment(int i) {
 		counter += 1;
 	}
 	
-	public static int getCount() {
+	public static int getCount(int i) {
 		lastValue = counter;
 		return counter;
 	}
   
-	public static int lastCount() {
+	public static int lastCount(int i) {
 		return lastValue;
 	}
 	
-	public static int sinceLastCount() {
+	public static int sinceLastCount(int i) {
 		return counter - lastValue;
 	}
 

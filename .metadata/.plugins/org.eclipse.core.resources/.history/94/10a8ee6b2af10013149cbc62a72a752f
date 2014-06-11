@@ -25,14 +25,10 @@
 public class Assignment3c {
 	
 	public static void main (String[] args) {
-		for (int i = 0; i < 3; i++) {
-			increment();
-		}
-		System.out.println(getCount());
-		increment();
-		increment();
-		System.out.println(lastCount());
-		System.out.println(sinceLastCount());
+		increment(counter);
+		System.out.println(getCount(counter));
+		System.out.println(lastCount(counter));
+		System.out.println(sinceLastCount(counter));
 	}
 	
 	public static int counter = 0;
