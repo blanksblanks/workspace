@@ -27,39 +27,68 @@
 public class Assignment3a { 
 
 	public static void main(String[] args) {
-		
+		System.out.println("10, 20\tDivisible? " + divides(10, 20));
+		System.out.println("-20\tAbsolute: " + abs(-20));
+		System.out.println("20, 10\tMax: " + max(20, 10));
+		System.out.println("-20, 10\tMax magnitude: " + maxMagnitude(-20, 10));
+		System.out.println("1\tFactor: " + factor(1));
+		System.out.println("6\tFactor: " + factor(6));
 	}
 	
-	public static void divides() {
-		if 
+	public static Boolean divides(int x, int y) {
+		boolean ans;
+		if (y%x == 0) {
+			ans = true;
+		}
+		else { ans = false; }
+		return ans;
 	}
 	
-	public static void abs(int x) {
+	public static int abs(int x) {
 		 if (x < 0) {
 			x *= -1;
 		 }
-		 System.out.println("The absolute value is " + x);	
+		 return x;	
 	}
 	
-	public static void max(int x, int y) {
+	public static int max(int x, int y) {
+		int ans = 0;
 		if (x == y ) {
 			System.out.println("They are of equal value.");
 		}
 		else if (x > y) {
-			System.out.println("The max is " + x);
+			ans = x;
+		}
+		else { ans = y; }
+		return ans;
+	}
+	
+	public static int maxMagnitude(int x, int y) {
+		int ans = max(abs(x), abs(y));
+		if (ans == abs(x)) {
+			ans = x;
+		}
+		else { ans = y; }
+		return ans;
+	}
+	
+	public static int factor(int x) {
+		int ans = 0;
+		if (x == 1 | x == -1) {
+			ans = 1;
+		}
+		else if (x == 0) {
+			ans = 0;
 		}
 		else {
-			System.out.println("The max is " + y);
+			for (int i = 2; i < x; i++) {
+				if (x%i == 0) {
+					ans = i;
+					break;
+				}
+			}
 		}
-	}
-	
-	public static void maxMagnitude(int x, int y) {
-		abs(x); abs(y);
-		max(x, y);
-	}
-	
-	public static void factor() {
-		
+		return ans;
 	}
 	
   
