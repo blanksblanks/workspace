@@ -1,18 +1,6 @@
 INDEX VERSION 1.126+/Users/blanks/GitHub/workspace/.metadata/.plugins/org.eclipse.jdt.core
-18424299.index
-708080168.index
-1903416676.index
-402788522.index
-4128010630.index
-1751704613.index
-3203863832.index
-2164998416.index
-58049120.index
-3558333339.index
-3292140292.index
-1516144295.index
-4011278535.index
-3007128466.index
-2551214161.index
-62420901.index
 3182287565.index
+1874931206.index
+3558333339.index
+62420901.index
+58049120.index
