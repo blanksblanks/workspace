@@ -1,0 +1,2 @@
+Occurrences: 	141	118	82	79	78	63	59	59	52	51	
+Bigrams: 	Th	he	in	nd	an	ha	re	er	at	ll	

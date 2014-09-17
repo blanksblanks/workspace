@@ -1,0 +1,142 @@
+/**
+ * 
+ * Problem 2
+ * @author nb2406
+ *
+ * Implement a recursive binary search method. Create a class called Problem2 that
+ * tests this method on several inputs of pre-sorted arrays.
+ */
+
+import java.io.*;
+import java.util.Scanner;
+
+//
+//public class Problem2 {
+//	
+//	public static void main(String[] args) {
+//		
+//		if (args.length < 1) {
+//			System.out.println("You need an input file. Try again!");
+//		} else if (args.length > 1) {
+//			System.out.println("You have too many arguments. Try again!");
+//		} else {
+//		    try {
+//		    	int firstArg;
+//		    	firstArg = Integer.parseInt(args[0]);
+//		    } catch (FileNotFoundException e) {
+//		        System.err.println("Argument" + args[0] + " must be a .txt file.");
+//		        System.exit(1);
+//		    }
+//		    
+//		Scanner readin = new Scanner(System.in);
+//
+//		System.out.print("Please enter a number: ");
+//		int first = readin.nextInt(); 
+//
+//	}
+//
+//}
+ 
+public class Problem2 {
+ 
+    public static int recursiveBinarySearch(int[] sortedArray, int start, int end, int key) {
+         
+        if (start < end) {
+            int mid = start + (end - start) / 2;  
+            if (key < sortedArray[mid]) {
+                return recursiveBinarySearch(sortedArray, start, mid, key);
+              
+            } else if (key > sortedArray[mid]) {
+                return recursiveBinarySearch(sortedArray, mid+1, end , key);
+                 
+            } else {
+                return mid;   
+            }
+        }
+        return -(start + 1);  
+    }
+ 
+    public static void main(String[] args) throws FileNotFoundException {
+    	
+		boolean again = true;
+		while (again) {
+			try {
+				if (args.length > 0) {
+				FileReader inFile = new FileReader(args[0]);
+				Scanner input = new Scanner(inFile);
+//				PrintWriter output = new PrintWriter("output.txt");
+				
+				int count = 0;
+				int[] arr;
+				int index = 0;
+//				
+				while (input.hasNextLine()) {
+					input.next();
+//					output.println(line);
+					System.out.println("Length is " + count);
+					count++;
+				}
+//				input.close();
+				input.reset();
+//
+//				if (count > 0) {
+//					File outFile = new File("output.txt");
+//					Scanner outputter = new Scanner(outFile);
+//
+					 arr = new int[count];
+					 System.out.println("Array size is " + arr.length);
+//				}
+////					 while (outputter.hasNextLine()) {
+//					 for (int i = 0; i < count; i++) {
+				while (input.hasNextLine()){
+//							String s = input.nextLine();
+//							int n = Integer.parseInt(s);
+//							arr[index] = n;
+						arr[index] = input.nextInt();
+							System.out.println("Array" + index + " is " + arr[index]);
+							index++;
+						}
+					 input.close();
+				
+					 
+				 System.out.println("Array size is " + arr.length);
+				 for (int j = 0; j < 25; j++) {
+					 System.out.println("Array" + j + " is " + arr[j]);
+				 }
+				again = false;
+				int[] arr1 = {2,3,23,234,567,876,900,976,999};
+		        int i;
+		        i = recursiveBinarySearch(arr,0,arr.length,23);
+		        System.out.println("Found 23 at "+i+" index");
+		        i = recursiveBinarySearch(arr,0,arr.length,2);
+		        System.out.println("Found 2 at "+i+" index");
+		        i = recursiveBinarySearch(arr,0,arr.length,3);
+		        System.out.println("Found 3 at "+i+" index");
+				}
+
+				
+				
+			}// end try
+			catch (IOException e) {
+				System.out
+						.println("Please try again with correct input file name");
+				Scanner scan = new Scanner(System.in);
+				args[0] = scan.next();
+			} catch (ArrayIndexOutOfBoundsException e){
+				System.out.println("Please enter at leat two command line arguments.");
+			} catch (NullPointerException e) {
+					System.out.println("There is nothing in this file.");
+			}
+			
+			
+		}// end while
+
+        
+    	//TODO: Read command args so user can input a text file
+    	//TODO: Add method to read text file to an array, assume sorted and newline for each int
+    	//TODO: Ask if binary search will just be for ints?
+    	//TODO: Add method for asking user input - what number are they looking for?
+    	
+        
+    }
+}

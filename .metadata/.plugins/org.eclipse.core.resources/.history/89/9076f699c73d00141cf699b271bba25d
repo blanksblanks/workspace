@@ -1,0 +1,35 @@
+public class Rectangle{
+
+   // data fields: usually private
+   private int length, width;
+
+   // constructor
+   public Rectangle(){
+      length = 0;
+      width = 0;
+   }
+
+   // constructor
+   public Rectangle(int len, int wid){
+      length = len;
+      width = wid;
+   }
+
+   // accessors
+   public int getLength(){ return length; }
+
+   public int getWidth(){ return width; }
+
+   // other functions, called methods
+   public int getArea(){ return length * width; }
+   
+   public int getPerim(){ return 2*length + 2*width; }
+
+   // special toString function
+   public String toString(){
+      return "Rectangle. width: " +  width +
+             ", length: " + length +
+             ", area: " + getArea() +
+             ", Perim:  " + getPerim();
+   }
+}

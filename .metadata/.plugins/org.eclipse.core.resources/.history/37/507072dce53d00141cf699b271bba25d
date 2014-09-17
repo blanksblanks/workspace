@@ -1,0 +1,6 @@
+
+public class comparePerimeter implements Comparator<Ellipse> {
+			public int compare(Ellipse o1, Ellipse o2) {
+				return o1.getPerimeter().compareTo(o2.getPerimeter());
+			}
+		}

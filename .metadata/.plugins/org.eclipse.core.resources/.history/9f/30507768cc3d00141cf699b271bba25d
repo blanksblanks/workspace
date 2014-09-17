@@ -1,0 +1,64 @@
+	// Generic findMax, with a function object
+	// Precondition: a.size( ) > 0
+
+	public static <AnyType>
+	AnyType findMax( AnyType [] arr, Comparator<? super AnyType> cmp) {
+		int maxIndex = 0;
+		
+		for (int i = 1; i < arr.size(); i++) {
+			if (cmp.compare (arr[i], arr[maxIndex]) > 0) {
+				maxIndex = 1;
+			}
+		}
+		
+		return arr[maxIndex];
+	}
+	
+public class CompareArea implements Comparator<double> {
+	 public int compare(Object firstObject, Object secondObject)
+     {
+        // order based on area, ascending
+        Rectangle r1 = (Rectangle) firstObject;
+        double area1 = r1.getWidth() * r1.getHeight();
+        Rectangle r2 = (Rectangle) secondObject;
+        double area2 = r2.getWidth() * r2.getHeight();
+
+        if (area1 < area2)
+        {
+           return -1;
+        }
+        if (area1 > area2)
+        {
+           return 1;
+        }
+        else  // areas are equal
+        // test for equality must be the same as in overridden 
+        // equals() method - all 4 instance var's are equal
+        {
+           double x1 = r1.getX();
+           double y1 = r1.getY();
+           double x2 = r2.getX();
+           double y2 = r2.getY();
+           if (x1 == x2 && y1 == y2 && r1.getWidth() == r2.getWidth() 
+              && r1.getHeight() == r2.getHeight())
+           {
+              return 0;
+           }
+           else  // equal areas but not X, Y, width, and height
+           // order on distance of upper-left corner from 0,0
+           {
+              if (Math.sqrt(x1 * x1 + y1 * y1) < 
+                 Math.sqrt(x2 * x2 + y2 * y2))
+              {
+                 return -1;
+              }
+              else
+              {
+                 return 1;
+              }
+           }
+        }
+     }
+  }
+
+}

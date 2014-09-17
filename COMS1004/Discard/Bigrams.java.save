@@ -1,0 +1,43 @@
+import java.io.File;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
+
+public class Bigrams {
+
+	public Bigrams(){
+		
+		try{	
+			
+			PrintWriter output = new PrintWriter("output3.txt");	
+			File inFile = new File("output2.txt");
+			Scanner input = new Scanner(inFile);
+		
+			int number = 1; // number of occurrences
+			String one; // line above
+			String two; // line below
+
+			one = input.nextLine(); //counts number of occurrences for each bigram depending on the next line matching the one above
+			while (input.hasNext()){
+				two = input.nextLine();
+				if (two.equalsIgnoreCase(one)) {
+					number++;
+				}
+				if (!two.equalsIgnoreCase(one)){
+					output.println(number + " " + one);
+					number = 1;
+					one = two;
+				}
+			}
+
+			System.out.println("Made output3.txt which has the number of occurrences and the bigrams.");
+			output.close();
+		}
+		
+		catch(Exception e){
+			System.out.println("Messed up.");
+			System.out.println(e);
+			System.exit(0);
+		}
+	}
+}

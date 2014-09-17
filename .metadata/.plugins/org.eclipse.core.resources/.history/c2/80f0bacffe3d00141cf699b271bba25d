@@ -1,0 +1,17 @@
+
+public class MathProgram {
+	
+	public static void main (String[] args) {
+		long answer = euclid(927432, 4);
+	}
+	
+	public static long euclid ( long m, long n ) {
+		while (n != 0) {
+			long rem = m % n;
+			m = n;
+			n = rem;
+			System.out.print(n + " ");
+		}
+		return m;
+	}
+}

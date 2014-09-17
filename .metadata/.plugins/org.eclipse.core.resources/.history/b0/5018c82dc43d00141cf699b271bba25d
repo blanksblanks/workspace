@@ -1,0 +1,119 @@
+
+// TODO: Implement the code in Java, and give the running time for several values of N.
+// TODO: Compare your analysis with the actual running times.
+
+public class Exercise2_7 {
+	
+	public static void main(String[] args) {
+		
+		int[] numbers = {100, 1000, 10000, 100000, 1000000};
+		TimeInterval time = new TimeInterval();
+		
+		for (int i = 0; i < numbers.length; i++) {
+			for (int sumNum = 0; sumNum < 6; sumNum++) {
+				switch (sumNum) {
+				case 0: time.startTiming();
+						int sum1 = sumOne(numbers[i]);
+						time.endTiming();
+						double runtime1 = time.getElapsedTime();
+						System.out.println("The first sum of " + numbers[i] + " is " + sum1 + " and the run time is " + runtime1);
+						break;
+	            case 1: time.startTiming();
+						int sum2 = sumTwo(numbers[i]);
+						time.endTiming();
+						double runtime2 = time.getElapsedTime();
+	            		System.out.println("The second sum of " + numbers[i] + " is " + sum2 + " and the run time is " + runtime2);
+						break;
+	            case 2: time.startTiming();
+						int sum3 = sumThree(numbers[i]);
+						time.endTiming();
+						double runtime3 = time.getElapsedTime();
+						System.out.println("The third sum of " + numbers[i] + " is " + sum3 + " and the run time is " + runtime3);
+						break;
+	            case 3: time.startTiming();
+	            		int sum4 = sumFour(numbers[i]);
+						time.endTiming();
+						double runtime4 = time.getElapsedTime();
+	        			System.out.println("The fourth sum of " + numbers[i] + " is " + sum4 + " and the run time is " + runtime4);
+	            		break;
+	            case 4: time.startTiming();
+	            		int sum5 = sumFive(numbers[i]);
+						time.endTiming();
+						double runtime5 = time.getElapsedTime();
+	        			System.out.println("The fifth sum of " + numbers[i] + " is " + sum5 + " and the run time is " + runtime5);
+	            		break;
+	            case 5: time.startTiming();
+	            		int sum6 = sumSix(numbers[i]);
+						time.endTiming();
+						double runtime6 = time.getElapsedTime();
+	        			System.out.println("The sixth sum of " + numbers[i] + " is " + sum6 + " and the run time is " + runtime6);
+	            		break;
+				}
+			}
+		}
+	}
+	
+	public static int sumOne(int n) {
+		int sum = 0;
+		for ( int i = 0; i < n; i++ ) {
+			sum++;
+		}
+		return sum;
+	}
+	
+	public static int sumTwo(int n) {
+		int sum = 0;
+		for ( int i = 0; i < n; i++ ) {
+			for ( int j = 0; j < n; j++ ) {
+				sum++;
+			}
+		}
+		return sum;
+	}
+	
+	public static int sumThree(int n) {
+		int sum = 0;
+        for ( int i = 0; i < n; i++ ) {
+            for ( int j = 0; j < n * n; j++ ) {
+                sum++;
+            }
+        }
+        return sum;
+	}
+
+	public static int sumFour(int n) {
+		int sum = 0;
+        for ( int i = 0; i < n; i++ ) {
+            for ( int j = 0; j < i; j++ ) {
+                sum++;
+            }
+        }
+        return sum;
+	}
+	
+	public static int sumFive(int n) {
+		int sum = 0;
+		for ( int i = 0; i < n; i++ ) {
+			for ( int j = 0; j < (i * i); j++ ) {
+		    	 for (int k = 0; k < j; k++ ) {
+		                    	   		sum++;
+		    	 }
+			}
+		}
+		return sum;
+	}
+		
+	public static int sumSix(int n) {
+		int sum = 0;
+		for ( int i = 1; i < n; i++ ) {
+			for ( int j = 1; j < i * i; j++ ) {
+				if ( j % i == 0 ) {
+					for ( int k = 0; k < j; k++ ) {
+		                              sum++;
+					}
+				}
+			}
+		}
+		return sum;
+	}
+}

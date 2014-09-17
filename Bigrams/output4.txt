@@ -1,0 +1,2 @@
+Occurrences: 	148	107	100	69	64	58	57	54	51	51	
+Bigrams: 	th	he	IN	te	ra	st	re	ut	or	am	

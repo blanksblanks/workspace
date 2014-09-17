@@ -1,0 +1,8 @@
+public class ComparePerimeter implements Comparator<Rectangle> {
+	
+	public int compare(Rectangle rect1, Rectangle rect2) {
+		return rect1.getPerimeter().compareTo(rect2.getPerimeter());
+	}
+	
+}
+		
