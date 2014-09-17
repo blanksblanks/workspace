@@ -1,0 +1,48 @@
+
+// TODO: Implement the code in Java, and give the running time for several values of N.
+// TODO: Compare your analysis with the actual running times.
+
+public class Exercise2_7 {
+	
+	public static void main(String[] args) {
+		
+		int[] nValues = {1, 500, 1000, 2500, 4000};
+
+		for (int i = 0; i < nValues.length; i++) {
+			runTimeFor(nValues[i])
+		}
+	}
+	
+	public void runTimeFor(int sumNum, int someNum) {
+		Sum test = new Sum();
+		int sum;
+		TimeInterval time = new TimeInterval();
+		time.startTiming();
+		
+		switch (sumNum) {
+			case 1: 
+					sum = test.sumOne(someNum);
+					break;
+            case 2: 
+            		sum = test.sumTwo(someNum);
+					break;
+            case 3: 
+            		sum = test.sumThree(someNum);
+					break;
+            case 4: 
+            		sum = test.sumFour(someNum);
+					break;
+            case 5: 
+            		sum = test.sumFive(someNum);
+					break;
+            case 6: 
+            		sum = test.sumSix(someNum);
+            		break;
+		
+		double runtime = time.getElapsedTime();
+		System.out.println("Loop: " + sumNum + " N: " + someNum +
+		" Sum:" + sum + " Running time: " + runtime + " ms");
+
+	}
+	
+}

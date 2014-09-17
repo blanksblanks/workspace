@@ -1,0 +1,93 @@
+
+public class Sum {
+	
+	public int sumOne(int n) {
+		int sum = 0;
+		for ( int i = 0; i < n; i++ ) {
+			sum++;
+		}
+		return sum;
+	}
+	
+	public int sumTwo(int n) {
+		int sum = 0;
+		for ( int i = 0; i < n; i++ ) {
+			for ( int j = 0; j < n; j++ ) {
+				sum++;
+			}
+		}
+		return sum;
+	}
+	
+	public int sumThree(int n) {
+		int sum = 0;
+        for ( int i = 0; i < n; i++ ) {
+            for ( int j = 0; j < n * n; j++ ) {
+                sum++;
+            }
+        }
+        return sum;
+	}
+
+	public int sumFour(int n) {
+		int sum = 0;
+        for ( int i = 0; i < n; i++ ) {
+            for ( int j = 0; j < i; j++ ) {
+                sum++;
+            }
+        }
+        return sum;
+	}
+	
+	public int sumFive(int n) {
+		int sum = 0;
+		for ( int i = 0; i < n; i++ ) {
+			for ( int j = 0; j < (i * i); j++ ) {
+		    	 for (int k = 0; k < j; k++ ) {
+		                    	   		sum++;
+		    	 }
+			}
+		}
+		return sum;
+	}
+		
+	public int sumSix(int n) {
+		int sum = 0;
+		for ( int i = 1; i < n; i++ ) {
+			for ( int j = 1; j < i * i; j++ ) {
+				if ( j % i == 0 ) {
+					for ( int k = 0; k < j; k++ ) {
+		                              sum++;
+					}
+				}
+			}
+		}
+		return sum;
+	}
+	
+	public double runTimeFor(int sumNum, int someNum) {
+		TimeInterval time = new TimeInterval();
+		time.startTiming();
+	
+		
+		switch (sumNum) {
+			case 1: 
+					sum = sum.sumOne(someNum);
+					break;
+            case 2: sum = sum.sumTwo(someNum);
+					break;
+            case 3: sum = sum.sumThree(someNum);
+					break;
+            case 4: sum = sum.sumFour(someNum);
+					break;
+            case 5: sum = sum.sumFive(someNum);
+					break;
+            case 6: 
+            		sum = sum.sumSix(someNum);
+            		break;
+		
+		double runtime = time.getElapsedTime();
+		return runtime;
+	}
+
+}
