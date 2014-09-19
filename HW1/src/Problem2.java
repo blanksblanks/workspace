@@ -15,9 +15,9 @@ public class Problem2 {
 	
     public static void main(String[] args) throws FileNotFoundException {
     	
-		boolean again = true;
-		while (again) {
-			try {
+//		boolean again = true;
+//		while (again) {
+//			try {
 				if (args.length > 0) {
 				File inFile = new File(args[0]);
 				Scanner input = new Scanner(inFile);
@@ -30,7 +30,7 @@ public class Problem2 {
 				while (input.hasNextLine()) {
 					input.next();
 //					output.println(line);
-					System.out.println("Length is " + count);
+//					System.out.println("Length is " + count);
 					count++;
 				}
 				input.close();
@@ -52,45 +52,50 @@ public class Problem2 {
 							int n = Integer.parseInt(s);
 							arr[index] = n;
 //						arr[index] = input.nextInt();
-							System.out.println("Array" + index + " is " + arr[index]);
+//							System.out.println("Array" + index + " is " + arr[index]);
 							index++;
 						}
 					 input.close();
 			
-				 System.out.println("Array size is " + arr.length);
-				 for (int j = 0; j < 25; j++) {
-					 System.out.println("Array" + j + " is " + arr[j]);
-				 }
-				again = false;
+//				 System.out.println("Array size is " + arr.length);
+//				 for (int j = 0; j < 25; j++) {
+//					 System.out.println("Array" + j + " is " + arr[j]);
+//				 }
+//				again = false;
 //				int[] arr1 = {2,3,23,234,567,876,900,976,999};
 				
 				Scanner readin = new Scanner(System.in);
-				System.out.print("Please enter the number you're searching for: ");
+				System.out.print("Please enter the search key: ");
 				int searchTerm = readin.nextInt(); 
+				System.out.println("You entered " + searchTerm + ".");
 
 		        int i;
 		        i = recursiveBinarySearch(arr,0,arr.length,searchTerm);
-		        System.out.println("Found " + searchTerm + " at index: "+ i);
+		        if (i == -26) {
+		        	System.out.println(searchTerm + " is not found.");
+		        } else {
+		        System.out.println(searchTerm + " is found at index " + i + ".");
+		        }
 //		        i = recursiveBinarySearch(arr,0,arr.length,2);
 //		        System.out.println("Found 2 at "+i+" index");
 //		        i = recursiveBinarySearch(arr,0,arr.length,3);
 //		        System.out.println("Found 3 at "+i+" index");
 				}
-	
-			}// end try
-			catch (IOException e) {
-				System.out
-						.println("Please try again with correct input file name");
-				Scanner scan = new Scanner(System.in);
-				args[0] = scan.next();
-			} catch (ArrayIndexOutOfBoundsException e){
-				System.out.println("Please enter at leat two command line arguments.");
-			} catch (NullPointerException e) {
-					System.out.println("There is nothing in this file.");
-			}
-			
-			
-		}// end while
+//	
+//			}// end try
+//			catch (IOException e) {
+//				System.out
+//						.println("Please try again with correct input file name");
+//				Scanner scan = new Scanner(System.in);
+//				args[0] = scan.next();
+//			} catch (ArrayIndexOutOfBoundsException e){
+//				System.out.println("Please enter at leat two command line arguments.");
+//			} catch (NullPointerException e) {
+//					System.out.println("There is nothing in this file.");
+//			}
+//			
+//			
+//		}// end while
     }
  
     public static int recursiveBinarySearch(int[] sortedArray, int start, int end, int target) {    
