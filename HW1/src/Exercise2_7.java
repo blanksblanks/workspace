@@ -8,28 +8,26 @@ public class Exercise2_7 {
 		
 		System.out.println("Loop\tN\tRuntime (ms)\tSum");
 		
-		int[] millions = {1000000, 2000000, 3000000, 4000000, 5000000, 6000000, 7000000, 8000000, 9000000};
-		int[] hundreds = {100, 200, 300, 400, 500, 600, 700, 800, 900};
+		double[] tens = {10, 20, 30, 40, 50, 60, 70, 80, 90};
+		// Commented out because running times took too long for doubles vs. ints
+		// double[] hundreds = {100, 200, 300, 400, 500, 600, 700, 800, 900};
+		// double[] thousands = {1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000};
+		// double[] millions = {1000000, 2000000, 3000000, 4000000, 5000000, 6000000, 7000000, 8000000, 9000000};
 		
-		for (int loop = 1; loop <= 4; loop++) {
-			for (int i = 0; i < millions.length; i++) {
-				runTimeFor(loop, millions[i]);
-			}
-		}
-			
-		for (int loop = 5; loop <= 6; loop++) {
-			for (int i = 0; i < hundreds.length; i++) {
-				runTimeFor(loop, hundreds[i]);
+		for (int loop = 1; loop <= 6; loop++) {
+			for (int i = 0; i < tens.length; i++) {
+				runTimeFor(loop, tens[i]);
 			}
 		}
 	}
 	
-	public static void runTimeFor(int sumNum, int someNum) {
+	// Gives running times for several values of N based on which sum loop is calculating N
+	public static void runTimeFor(int sumNum, double someNum) {
 
 		TimeInterval time = new TimeInterval();
 		time.startTiming();
 		double runTime;
-		int sum = 0;
+		double sum = 0;
 
 		Sum test = new Sum();
 		
