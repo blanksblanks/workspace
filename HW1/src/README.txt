@@ -12,10 +12,16 @@ HOW TO RUN
   1. Compile the files using the following commands in Terminal
     $ javac Problem1.java
     $ javac Rectangle.java
-    $ javac CompareArea.java
-    $ javac ComparePerimeter.java
+    $ javac Compare.java
   2. Run the file
     $ java Problem1
+    
+ CLASSES
+    Problem1
+    Rectangle
+    Compare
+ METHODS
+ 
 
 ***
 

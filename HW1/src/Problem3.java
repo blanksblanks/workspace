@@ -63,12 +63,12 @@ public class Problem3 {
 				System.out.println("You entered " + searchTerm);
 
 				// Searches for search key in pre-sorted array and returns index
-				int index, invalid;
+				int index;
 				index = recursiveBinarySearch(arr, 0, arr.length, searchTerm);
-				invalid = (arr.length + 1) * -1;
+				Boolean invalid = (index < 0);
 
 				// Prints results out for users
-				if (index == invalid) {
+				if (invalid) {
 					System.out.println(searchTerm + " is not found");
 				} else {
 					System.out.println(searchTerm + " is found at index "

@@ -18,46 +18,30 @@ import java.util.Random;
 public class Problem1 {
 
 	public static void main(String[] args) {
-		
-		// Creates an array of 8 rectangles with random legnths and widths
+
+		// Create an array of 8 rectangles with random dimensions from 1-10
 		Random r = new Random();
 		Rectangle[] list = new Rectangle[8];
 		for (int i = 0; i < list.length; i++) {
 			int l = r.nextInt(9) + 1;
-			int w  = r.nextInt(9) + 1;
+			int w = r.nextInt(9) + 1;
 			list[i] = new Rectangle(l, w);
 		}
-
-		Rectangle greatestArea = findMax(list, new CompareArea().new CompareByArea());
-		int lengthA = greatestArea.getLength();
-		int widthA = greatestArea.getWidth();
+		
+		// Find rectangle(s) with greatest area and perimeter
+		Rectangle greatestArea = findMax(list,
+				new Compare().new CompareByArea());
 		Rectangle greatestPerim = findMax(list,
-				new ComparePerimeter().new CompareByPerimeter());
-		int lengthP = greatestPerim.getLength();
-		int widthP = greatestPerim.getWidth();
-		System.out.println("The largest rectangle by area is "
-				+ greatestArea + " with area " + (lengthA * widthA));
+				new Compare().new CompareByPerimeter());
+		
+		// Print results to console
+		printResults(greatestArea, greatestPerim);
 		System.out
-				.println("The largest rectangle by width is " +
-						greatestPerim + " with perimeter " + (2 * (lengthP + widthP)));
-
-		System.out
-				.println("\n The full list of randomly generated rectangles:\n");
-		print(list);
+				.println("\n Here is the full list of randomly generated rectangles:\n");
+		printList(list);
 
 	}
-
-	// Prints out rectangle dimensions in the array
-	public static void print(Rectangle[] list) {
-		for (int i = 0; i < list.length; i++) {
-			int length = list[i].getLength();
-			int width = list[i].getWidth();
-			System.out.println(list[i] + "[" + i + "] with length " + length
-					+ ", width " + width + ", area " + (length * width)
-					+ " and perimeter " + (2 * (length + width)));
-		}
-	}
-
+	
 	// Generic findMax, with a function object.
 	// Precondition: arr.length > 0.
 	public static <AnyType> AnyType findMax(AnyType[] arr,
@@ -71,5 +55,42 @@ public class Problem1 {
 		}
 		return arr[maxIndex];
 	}
+
+	// Print out the results of greatest area and perimeter in readable format
+	public static void printResults(Rectangle greatestArea, Rectangle greatestPerim) {
+		int lengthA = greatestArea.getLength();
+		int widthA = greatestArea.getWidth();
+		int lengthP = greatestPerim.getLength();
+		int widthP = greatestPerim.getWidth();
+		// Printing Rectangle objects produce random symbols and characters
+		System.out
+				.println("Largest by area is the rectangle with length "
+						+ lengthA
+						+ ", width "
+						+ widthA
+						+ " and area "
+						+ (lengthA * widthA));
+		System.out.print("Largest by perimeter is the ");
+		if (greatestArea.equals(greatestPerim)) {
+			System.out.print("same ");
+		}
+		System.out.println("rectangle with length "
+				+ lengthP
+				+ ", width "
+				+ widthP
+				+ " and perimeter "
+				+ (2 * (lengthP + widthP)));
+	}
 	
+	// Print out list of rectangle dimensions in the array
+	public static void printList(Rectangle[] list) {
+		for (int i = 0; i < list.length; i++) {
+			int length = list[i].getLength();
+			int width = list[i].getWidth();
+			System.out.println("Rectangle" + "[" + i + "] with length "
+					+ length + ", width " + width + ", area "
+					+ (length * width) + " and perimeter "
+					+ (2 * (length + width)));
+		}
+	}
 }
