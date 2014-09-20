@@ -1,6 +1,8 @@
 import java.util.Comparator;
 
 public class CompareArea {
+
+	// Compares rectangles by area and returns largest one
 	class CompareByArea implements Comparator<Rectangle> {
 		public int compare(Rectangle rect1, Rectangle rect2) {
 			int length1 = rect1.getLength();

@@ -1,7 +1,7 @@
 public class Rectangle {
 
    private int length, width;
-//   area, perim;
+   //   area, perim;
 
    // constructor
    public Rectangle() {
@@ -35,9 +35,9 @@ public class Rectangle {
 //   }
 //
 //   public String toString() {
-//      return "Rectangle. width: " +  width +
+//      return "Rectangle with width: " +  width +
 //             ", length: " + length +
 //             ", area: " + getArea() +
-//             ", Perim:  " + getPerim();
+//             ",  and perimeter:  " + getPerim();
 //   }
 }

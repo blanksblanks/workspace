@@ -17,8 +17,6 @@ HOW TO RUN
   2. Run the file
     $ java Problem1
 
-METHODS
-
 ***
 
 EXERCISE 2_7
@@ -34,11 +32,18 @@ HOW TO RUN
 
 ***
 
-PROBLEM 2
+PROBLEM 3
 
 HOW TO RUN
 
   1. Compile the file using the following commands in Terminal
-    $ javac Problem2.java
-  2. Run the file
-    $ java Problem2
+    $ javac Problem3.java
+  2. Run the file with the input file containing a pre-sorted array
+    $ java Problem3 input.txt 
+        
+NOTE
+
+    The file name can be whatever you decide to name it 
+    The file name should be the first and only argument - it needs to follow Problem2 with a space
+    Only handles integer values
+    Make sure your file has no empty spaces (including enter spaces) or letters

@@ -18,38 +18,48 @@ import java.util.Random;
 public class Problem1 {
 
 	public static void main(String[] args) {
+		
+		// Creates an array of 8 rectangles with random legnths and widths
 		Random r = new Random();
-
 		Rectangle[] list = new Rectangle[8];
 		for (int i = 0; i < list.length; i++) {
-			int width = r.nextInt(9) + 1;
-			int height = r.nextInt(9) + 1;
-			list[i] = new Rectangle(width, height);
+			int l = r.nextInt(9) + 1;
+			int w  = r.nextInt(9) + 1;
+			list[i] = new Rectangle(l, w);
 		}
 
+		Rectangle greatestArea = findMax(list, new CompareArea().new CompareByArea());
+		int lengthA = greatestArea.getLength();
+		int widthA = greatestArea.getWidth();
+		Rectangle greatestPerim = findMax(list,
+				new ComparePerimeter().new CompareByPerimeter());
+		int lengthP = greatestPerim.getLength();
+		int widthP = greatestPerim.getWidth();
 		System.out.println("The largest rectangle by area is "
-				+ findMax(list, new CompareArea().new CompareByArea()));
+				+ greatestArea + " with area " + (lengthA * widthA));
 		System.out
-				.println("The largest rectangle by width is "
-						+ findMax(list,
-								new ComparePerimeter().new CompareByPerimeter()));
+				.println("The largest rectangle by width is " +
+						greatestPerim + " with perimeter " + (2 * (lengthP + widthP)));
 
 		System.out
-				.println("\n out of this list of randomly generated rectangles:\n");
+				.println("\n The full list of randomly generated rectangles:\n");
 		print(list);
 
 	}
 
+	// Prints out rectangle dimensions in the array
 	public static void print(Rectangle[] list) {
 		for (int i = 0; i < list.length; i++) {
-			int width = list[i].getWidth();
 			int length = list[i].getLength();
-			System.out.println(list[i] + "[" + i + "] with width " + width
-					+ ", length " + length + ", area " + (width * length)
-					+ " and perimeter " + (2 * (width + length)));
+			int width = list[i].getWidth();
+			System.out.println(list[i] + "[" + i + "] with length " + length
+					+ ", width " + width + ", area " + (length * width)
+					+ " and perimeter " + (2 * (length + width)));
 		}
 	}
 
+	// Generic findMax, with a function object.
+	// Precondition: arr.length > 0.
 	public static <AnyType> AnyType findMax(AnyType[] arr,
 			Comparator<? super AnyType> cmp) {
 		int maxIndex = 0;

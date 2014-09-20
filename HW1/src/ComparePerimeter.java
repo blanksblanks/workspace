@@ -1,7 +1,8 @@
 import java.util.Comparator;
 
 public class ComparePerimeter {
-	
+
+	//Compares rectangles by perimeter and returns largest one
 	class CompareByPerimeter implements Comparator<Rectangle> {
 		public int compare(Rectangle rect1, Rectangle rect2) {
 			int length1 = rect1.getLength();
