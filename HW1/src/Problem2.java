@@ -15,53 +15,55 @@ import java.util.Scanner;
 
 public class Problem2 {
 
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws IOException {
 
 		if (args.length > 0) {
-			File inFile = new File(args[0]);
-			Scanner input = new Scanner(inFile);
+			
+			String fileName = args[0];
+			File inFile = new File(fileName);
+			
+			if (inFile.exists()) {		
+				
+				int count = 0;
+				int index = 0;
+				int[] arr;
 
-			int count = 0;
-			int[] arr;
-			int index = 0;
+				Scanner input = new Scanner(inFile);
+				while (input.hasNextLine()) {
+					input.nextLine();
+					count++;
+				}
+				input.close();
 
-			while (input.hasNextLine()) {
-				input.next();
-				count++;
-			}
+				Scanner input2 = new Scanner(inFile);
+				arr = new int[count];
+				System.out.println("Array size is " + arr.length);
+				while (input2.hasNextLine()) {
+					String s = input2.nextLine();
+					int n = Integer.parseInt(s);
+					arr[index] = n;
+					index++;
+				}
+				input2.close();
 
-			input.close();
+				Scanner readin = new Scanner(System.in);
+				System.out.print("Please enter the search key: ");
+				int searchTerm = readin.nextInt();
+				System.out.println("You entered " + searchTerm);
 
-			Scanner input2 = new Scanner(inFile);
-			arr = new int[count];
-			System.out.println("Array size is " + arr.length);
-
-			while (input2.hasNextLine()) {
-				String s = input2.nextLine();
-				int n = Integer.parseInt(s);
-				arr[index] = n;
-				index++;
-			}
-
-			input.close();
-
-			Scanner readin = new Scanner(System.in);
-			System.out.print("Please enter the search key: ");
-			int searchTerm = readin.nextInt();
-			System.out.println("You entered " + searchTerm + ".");
-
-			int i;
-			i = recursiveBinarySearch(arr, 0, arr.length, searchTerm);
-			if (i == -26) {
-				System.out.println(searchTerm + " is not found.");
-			} else {
-				System.out
-						.println(searchTerm + " is found at index " + i + ".");
+				int i;
+				i = recursiveBinarySearch(arr, 0, arr.length, searchTerm);
+				if (i == -26) {
+					System.out.println(searchTerm + " is not found.");
+				} else {
+					System.out.println(searchTerm + " is found at index " + i+1);
+				}
 			}
 		}
 
 	}
 
+	// 
 	public static int recursiveBinarySearch(int[] sortedArray, int start,
 			int end, int target) {
 		if (start < end) {
@@ -79,17 +81,3 @@ public class Problem2 {
 		return -(start + 1);
 	}
 }
-
-// TODO: Ask if binary search will just be for ints?
-// TODO: Add method for asking user input - what number are they looking for?
-
-// TODO: Ask - why does recursion method cease to work when the array size is
-// bigger than the number of items?
-// TODO: is there a better way than creating a new file? why doens't reset input
-// work? it's O(N) to count for array size and then copy each line to array
-// TODO: note errors for future reference: remember to next line, print values
-// after i=+;
-// TODO: Clean up and comment code and find a version control system for commits
-// TODO: ask how you can check if next user input is int or not
-// TODO: ask if we have to handle errors
-
