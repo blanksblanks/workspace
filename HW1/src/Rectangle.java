@@ -34,10 +34,5 @@ public class Rectangle {
 //	   return perim;
 //   }
 //
-//   public String toString() {
-//      return "Rectangle with width: " +  width +
-//             ", length: " + length +
-//             ", area: " + getArea() +
-//             ",  and perimeter:  " + getPerim();
-//   }
+
 }

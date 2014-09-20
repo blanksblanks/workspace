@@ -9,7 +9,7 @@
  *         
  */
 
-public class Exercise2_7 {
+public class Problem2 {
 
 	public static void main(String[] args) {
 
@@ -26,14 +26,14 @@ public class Exercise2_7 {
 
 		for (int loop = 1; loop <= 6; loop++) {
 			for (int i = 0; i < tens.length; i++) {
-				runTimeFor(loop, tens[i]);
+				runningTimeFor(loop, tens[i]);
 			}
 		}
 	}
 
 	// Gives running times for several values of N based on which loop is
 	// calculating N
-	public static void runTimeFor(int sumNum, double someNum) {
+	public static void runningTimeFor(int sumNum, double someNum) {
 
 		TimeInterval time = new TimeInterval();
 		time.startTiming();
