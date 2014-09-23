@@ -21,12 +21,64 @@ import java.io.*;
 import java.util.Scanner;
 
 public class MatrixMultiplier {
+
+	// General method that multiplies matrices such that D = BC
+	// In this main, both B and C are always square matrix A
+	public static double[][] multiplyMatrices(double[][] B, double[][] C) {
+
+		// Check that columns in B are equal to rows in C
+		// They must be, for multiplication to be valid
+		int Bcols = B[0].length;
+		int Crows = C.length;
+
+		if (Bcols == Crows) {
+			int Drows = B.length; // D will have B rows and C columns
+			int Dcols = C[0].length;
+
+			double[][] D = new double[Drows][Dcols];
+			for (int i = 0; i < Drows; i++) { // 1. go through rows in B
+				for (int j = 0; j < Dcols; j++) { // 2. go through columns in C
+					for (int k = 0; k < Bcols; k++) { // 3. columns in B
+						// Calculate dot product for each element. Definition:
+						// d_ij = n_∑_(k=1) (b_ik c_kj)
+						D[i][j] += B[i][k] * C[k][j];
+					}
+				}
+			}
+			return D;
+		} else {
+			System.out.println("This matrix multiplication is impossible. Good bye.");
+			System.exit(0);
+			return null;
+		}
+	}
+
+	public static String toString(double[][] matrix) {
+		String result = "";
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[i].length; j++) {
+				result += (matrix[i][j] + "\t");// String.format("%.5f",
+												// matrix[i][j]);
+			}
+			result += "\n";
+		}
+		return result;
+	}
+
+	// public static double getNextNum(Scanner input) {
+	// String s = input.next();
+	// double d = Double.parseDouble(s);
+	// return d;
+	// }
+	
+
 	public static void main(String[] args) throws IOException {
 
-		System.out
-				.println("\nThis program calculates A^(2^n), where A is a n x n square matrix\n");
-
-		if (args.length > 0) {
+		if (args.length == 2) {
+			
+			// Introduction
+			System.out
+			.println("\nThis program calculates A^(2^n), where A is a n x n square matrix\n");
 
 			// Assign command-line args to file names
 			String inFileName = args[0];
@@ -43,8 +95,7 @@ public class MatrixMultiplier {
 						+ inFileName + "\"\n");
 
 				// Initializes variables for int n (to determine n x n matrix),
-				// int k
-				// and double 2D array matrix (to solve the equation A^(2^k))
+				// int k and double 2D array matrix (to solve the equation A^(2^k))
 				int n;
 				int k;
 				double[][] A;
@@ -110,57 +161,27 @@ public class MatrixMultiplier {
 			}
 		} else {
 			System.out
-					.println("No input and output files specified, good bye!");
+			.println("\nInput and output files not properly specified. Try again.\n");
+
+			// Runs hard coded matrices to test multiplication method if user doesn't specify input and output files
+			double[][] matrix = new double[][] {
+	                {0, 1, 0, 0},
+	                {0, 0, 1, 0},
+	                {0, 0, 0, 1},
+	                {0, 0, 0, 0}
+	        };
+			double[][] test = new double[][] {
+	                {0, 1, 0, 0, 0},
+	                {0, 0, 1, 0, 0},
+	                {0, 0, 0, 1, 0},
+	                {0, 0, 0, 0, 0}
+	        };
+			System.out.println("4x4 matrix * 4x5 test\n" + toString(multiplyMatrices(matrix, test)));
+			System.out.println("4x5 test * 4x4 matrix:");
+			System.out.println(toString(multiplyMatrices(test, matrix)));
+			// Expected output: multiplication is impossible
 		}
 
 	}
-
-	// General method that multiplies matrices such that D = BC
-	// In this main, both B and C are always square matrix A
-	public static double[][] multiplyMatrices(double[][] B, double[][] C) {
-
-		// Check that columns in B are equal to rows in C
-		// If not, multiplication is not possible
-		int Bcols = B[0].length;
-		int Crows = C.length;
-		if (Bcols == Crows) {
-			return null;
-		} else {
-
-			int Drows = B.length; // D will have B rows and C columns
-			int Dcols = C[0].length;
-
-			double[][] D = new double[Drows][Dcols];
-			for (int i = 0; i < Drows; i++) { // 1. go through rows in B
-				for (int j = 0; j < Dcols; j++) { // 2. go through columns in C
-					for (int k = 0; k < Bcols; k++) { // 3. columns in B
-						// Calculate dot product for each element. Definition:
-						// d_ij = n_∑_(k=1) (b_ik c_kj)
-						D[i][j] += B[i][k] * C[k][j];
-					}
-				}
-			}
-			return D;
-		}
-
-	}
-
-	public static String toString(double[][] matrix) {
-		String result = "";
-		for (int i = 0; i < matrix.length; i++) {
-			for (int j = 0; j < matrix[i].length; j++) {
-				result += (matrix[i][j] + "\t");// String.format("%.5f",
-												// matrix[i][j]);
-			}
-			result += "\n";
-		}
-		return result;
-	}
-
-	// public static double getNextNum(Scanner input) {
-	// String s = input.next();
-	// double d = Double.parseDouble(s);
-	// return d;
-	// }
 
 }
