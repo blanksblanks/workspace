@@ -115,29 +115,34 @@ public class MatrixMultiplier {
 
 	}
 
-//	public static double getNextNum(Scanner input) {
-//		String s = input.next();
-//		double d = Double.parseDouble(s);
-//		return d;
-//	}
-
-	// Matrix D = BC such that d_ij= ∑ b_ik c_kj,_(k=1)^i,j=1,…,n.
+	// General method that multiplies matrices such that D = BC
+	// In this main, both B and C are always square matrix A
 	public static double[][] multiplyMatrices(double[][] B, double[][] C) {
-		int bCols = B[0].length; // B columns length
-		int cRows = C.length; // C rows length
-		if (bCols != cRows)
-			return null; // matrix multiplication is not possible
-		int dRows = B.length; // m result rows length
-		int dCols = C[0].length; // m result columns length
-		double[][] D = new double[dRows][dCols];
-		for (int i = 0; i < dRows; i++) { // rows from m1
-			for (int j = 0; j < dCols; j++) { // columns from c and d
-				for (int k = 0; k < bCols; k++) { // columns from m1
-					D[i][j] += B[i][k] * C[k][j];
+
+		// Check that columns in B are equal to rows in C
+		// If not, multiplication is not possible
+		int Bcols = B[0].length;
+		int Crows = C.length;
+		if (Bcols == Crows) {
+			return null;
+		} else {
+
+			int Drows = B.length; // D will have B rows and C columns
+			int Dcols = C[0].length;
+
+			double[][] D = new double[Drows][Dcols];
+			for (int i = 0; i < Drows; i++) { // 1. go through rows in B
+				for (int j = 0; j < Dcols; j++) { // 2. go through columns in C
+					for (int k = 0; k < Bcols; k++) { // 3. columns in B
+						// Calculate dot product for each element. Definition:
+						// d_ij = n_∑_(k=1) (b_ik c_kj)
+						D[i][j] += B[i][k] * C[k][j];
+					}
 				}
 			}
+			return D;
 		}
-		return D;
+
 	}
 
 	public static String toString(double[][] matrix) {
@@ -152,40 +157,10 @@ public class MatrixMultiplier {
 		return result;
 	}
 
+	// public static double getNextNum(Scanner input) {
+	// String s = input.next();
+	// double d = Double.parseDouble(s);
+	// return d;
+	// }
+
 }
-
-/*
- * // #1 double[][] multiplicand = new double[][] { {0, 1, 0, 0}, {0, 0, 1, 0},
- * {0, 0, 0, 1}, {0, 0, 0, 0} }; double[][] multiplier = new double[][] { {0, 1,
- * 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}, {0, 0, 0, 0} };
- * 
- * System.out.println("#1\n" + toString(multiplyMatrices(multiplicand,
- * multiplier)));
- */
-
-/*
- * //figure out the dimensions of the matrix from LINE 1 (n) n =
- * Integer.parseInt(input.nextLine()); System.out.println("n = " + n);
- * 
- * //figure out the value of k from LINE 2 k =
- * Integer.parseInt(input.nextLine()); System.out.println("k = " + k);
- * 
- * //make the dimensions of the 2D array based on n matrix = new float[n][n];
- * 
- * //rows and columns of the matrix int row = 0; int column = 0;
- * 
- * //read the rest of the input file, placing the contents into the 2D matrix
- * while (reader.hasNextLine()) { float next = reader.nextFloat();
- * matrix[row][column] = next; if (column == (n-1)) { row++; column = 0; } else
- * { column++; } }
- */
-
-// for (int i = 0; i < n; i++) {
-// for (int j = 0; j < n; i++) {
-// arr[i][j] = getNextNum(input);
-// System.out.println("arr" + i + j + " is " + arr[i][j]);
-// }
-// }
-//
-// System.out.println("#2\n" + toString(multiplyMatrices(multiplicand,
-// multiplier)));
