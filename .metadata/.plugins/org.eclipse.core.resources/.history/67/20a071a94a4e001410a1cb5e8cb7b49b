@@ -196,7 +196,7 @@ public class MatrixSolver {
 //				double trunc = Math.round(matrix[i][j]* 100) / 100;
 //				DecimalFormat df = new DecimalFormat("#.##");      
 //				double trunc = Double.valueOf(df.format(matrix[i]));
-				s +=  String.format("%6.2f", matrix[i][j]); //(trunc + "\t");//
+				s +=  String.format("%.5f", matrix[i][j]);
 			}
 			s += "\n";
 		}

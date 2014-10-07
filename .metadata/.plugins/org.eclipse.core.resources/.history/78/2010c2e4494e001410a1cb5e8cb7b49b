@@ -119,7 +119,7 @@ public class MatrixSolver {
 				System.out.println("Augmented matrix:\n" + toString(aug));
 				
 				double[][] elim = new double[n][n];
-				elim = forwardEliminate(aug, m, n);
+				elim = forwardEliminate(A, m, n);
 				System.out.println("Eliminated matrix:\n" + toString(elim));
 				
 
@@ -193,10 +193,8 @@ public class MatrixSolver {
 		String s = "";
 		for (int i = 0; i < matrix.length; i++) {
 			for (int j = 0; j < matrix[i].length; j++) {
-//				double trunc = Math.round(matrix[i][j]* 100) / 100;
-//				DecimalFormat df = new DecimalFormat("#.##");      
-//				double trunc = Double.valueOf(df.format(matrix[i]));
-				s +=  String.format("%6.2f", matrix[i][j]); //(trunc + "\t");//
+				s += (matrix[i][j] + "\t");// String.format("%.5f",
+												// matrix[i][j]);
 			}
 			s += "\n";
 		}
