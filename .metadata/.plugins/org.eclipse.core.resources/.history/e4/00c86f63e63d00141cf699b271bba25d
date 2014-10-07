@@ -1,3 +1,0 @@
-public interface Comparator<AnyType> {
-	int compare(AnyType rect1, AnyType rect2);
-}

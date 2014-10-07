@@ -1,0 +1,50 @@
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.ListIterator;
+
+public class Ex3_1 {
+
+	public static void main(String[] args) {
+
+		ArrayList<String> L = new ArrayList<String>(Arrays.asList("America",
+				"Bolivia", "China", "Denmark", "Egypt", "France", "Germany",
+				"Holland", "Iceland"));
+		ArrayList<Integer> P = new ArrayList<Integer>(Arrays.asList(0, 2, 4, 6,
+				20));
+
+		System.out.println("L: " + L);
+		System.out.println("P: " + P);
+		System.out.println("printLots:");
+		printLots(L, P); // should print A, C, E, G, and nothing from index 20
+
+		System.out.println("");
+		P.remove(new Integer(4));
+		P.remove(new Integer(6));
+		P.remove(new Integer(20));
+		System.out.println("New P: " + P);
+		printLots(L, P);
+	}
+
+	public static <T> void printLots(ArrayList<T> elemList,
+			ArrayList<Integer> posList) {
+
+		ListIterator<T> elements = elemList.listIterator();
+		ListIterator<Integer> positions = posList.listIterator();
+
+		int index = 0;
+		int pos = positions.next();
+
+		while (index <= pos && elements.hasNext()) {
+			T elem = elements.next();
+			if (index == pos) {
+				System.out.println(elem);
+				if (positions.hasNext()) {
+					pos = positions.next();
+				}
+			}
+			index++;
+		}
+
+	}
+
+}

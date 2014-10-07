@@ -1,0 +1,53 @@
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.ListIterator;
+
+public class Ex3_1 {
+
+	public static <T> void printLots(ArrayList<T> elementList,
+			ArrayList<Integer> positionList) {
+
+		ListIterator<T> elements = elementList.listIterator();
+		ListIterator<Integer> positions = positionList.listIterator();
+
+		int index = 0;
+		int position = positions.next();
+//		boolean indexIsValid = (index <= position && index <= positionList.size());
+
+		while (index <= position && elements.hasNext()) {
+//			System.out.println("index: " + index);
+			T element = elements.next();
+			if (index == position) {
+//				System.out.println("matches position: " + position);
+				System.out.println(element);
+				if (positions.hasNext()) {
+					position = positions.next();
+//					System.out.println("new position: " + position);
+				} 
+			}
+			index++;
+		}
+
+	}
+	
+	public static void main(String[] args) {
+
+		ArrayList<String> L = new ArrayList<String>(Arrays.asList("America",
+				"Bolivia", "China", "Denmark", "Egypt", "France", "Germany",
+				"Holland", "Iceland"));
+		ArrayList<Integer> P = new ArrayList<Integer>(Arrays.asList(0, 2, 4, 6,
+				20));
+
+		System.out.println("L: " + L);
+		System.out.println("P: " + P);
+		printLots(L, P); // should print A, C, E, G, and nothing from index 20
+
+		System.out.println("");
+		P.remove(new Integer(4));
+		P.remove(new Integer(6));
+		P.remove(new Integer(20));
+		System.out.println("New P: " + P);
+		printLots(L, P); // should print A, C
+	}
+
+}
