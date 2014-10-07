@@ -119,8 +119,8 @@ public class MatrixSolver {
 				System.out.println("Augmented matrix:\n" + toString(aug));
 				
 				double[][] elim = new double[n][n];
-				elim = forwardEliminate(A, m, n);
-				System.out.println("Eliminated matrix:\n" + toString(elim));
+				elim = forwardEliminate(aug, m, n);
+				System.out.println("Augmented matrix:\n" + toString(elim));
 				
 
 //				A = multiplyMatrices(A, A);
@@ -221,13 +221,14 @@ public class MatrixSolver {
 	}
 	
 	public static double[][] forwardEliminate(double[][] A, int m, int n) {
-		for (int k = 0; k < (n - 1); k++) {
-			for (int i = k + 1; (i <= k + m/2) && (i < n); i++) {
-				double elem = A[i][k]/A[k][k];
-				for (int j = k; (j <= k + m/2) && (j < n); j++) {
-					A[i][j] = A[i][j] - (elem*A[k][j]);
+		int mid = m/2;
+		for (int k = 0; k < (n-1); k++) {
+			for (int i = k + 1; i <= (k + mid) && i < n; i++) {
+				double mat = A[i][k]/A[k][k];
+				for (int j = k; j <= k + mid && j < n; j++) {
+					A[i][j] = A[i][j] - (mat*A[k][j]);
 				}
-				A[i][n] = A[i][n] - elem*(A[k][n]);
+				A[i][n] = A[i][n] - mat*(A[k][n]);
 			}
 		}
 		return A;

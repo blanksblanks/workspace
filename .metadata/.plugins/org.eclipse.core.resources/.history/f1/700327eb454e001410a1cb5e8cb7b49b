@@ -119,7 +119,7 @@ public class MatrixSolver {
 				System.out.println("Augmented matrix:\n" + toString(aug));
 				
 				double[][] elim = new double[n][n];
-				elim = forwardEliminate(A, m, n);
+				elim = forwardEliminate(aug, m, n);
 				System.out.println("Eliminated matrix:\n" + toString(elim));
 				
 
