@@ -123,21 +123,21 @@ public class MatrixSolver {
 				System.out.println("Eliminated matrix:\n" + toString(elim));
 				
 				double[][] x = new double[n][1];
-				x = backSubstitute(elim, n);
+				x = backSubstitute(A, n);
 				System.out.println("x:\n" + toString(x));
 
 
-				output.println(toString(x));
-				System.out.println("Successfully wrote final result to \""
-						+ outFileName + "\"");
-				output.close();
+//				A = multiplyMatrices(A, A);
+//				output.println(toString(A));
+//				System.out.println("Successfully wrote final result to \""
+//						+ outFileName + "\"");
+//				output.close();
 			} else {
 				System.out.println("No such file found, good bye!");
 			}
 		} else {
 			System.out
 			.println("\nInput and output files not properly specified. Try again.\n");
-
 		}
 
 	}
@@ -195,7 +195,7 @@ public class MatrixSolver {
 		double [][] x = new double[n][1];
 		x[n-1][0] = U[n-1][n]/U[n-1][n-1];
 			for (int i = (n-1); i >=0; i--) {
-				for (int j = i+1; j < n; j++) {
+				for (int j = i; j < n; j++) {
 					U[i][n] -= U[i][j] * x[j][0];
 				}
 				x[i][0] = U[i][n]/U[i][i];

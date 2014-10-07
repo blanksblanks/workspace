@@ -122,15 +122,16 @@ public class MatrixSolver {
 				elim = forwardEliminate(aug, m, n);
 				System.out.println("Eliminated matrix:\n" + toString(elim));
 				
-				double[][] x = new double[n][1];
-				x = backSubstitute(elim, n);
+				double[][] x = new double[n][0];
+				x = backSubstitute(A, n);
 				System.out.println("x:\n" + toString(x));
 
 
-				output.println(toString(x));
-				System.out.println("Successfully wrote final result to \""
-						+ outFileName + "\"");
-				output.close();
+//				A = multiplyMatrices(A, A);
+//				output.println(toString(A));
+//				System.out.println("Successfully wrote final result to \""
+//						+ outFileName + "\"");
+//				output.close();
 			} else {
 				System.out.println("No such file found, good bye!");
 			}
@@ -138,11 +139,58 @@ public class MatrixSolver {
 			System.out
 			.println("\nInput and output files not properly specified. Try again.\n");
 
+			// Runs hard coded matrices to test multiplication method if user doesn't specify input and output files
+			double[][] matrix = new double[][] {
+	                {0, 1, 0, 0},
+	                {0, 0, 1, 0},
+	                {0, 0, 0, 1},
+	                {0, 0, 0, 0}
+	        };
+			double[][] test = new double[][] {
+	                {0, 1, 0, 0, 0},
+	                {0, 0, 1, 0, 0},
+	                {0, 0, 0, 1, 0},
+	                {0, 0, 0, 0, 0}
+	        };
+			System.out.println("4x4 matrix ^ 2\n" + toString(multiplyMatrices(matrix, matrix)));
+			System.out.println("4x4 matrix * 4x5 test\n" + toString(multiplyMatrices(matrix, test)));
+			System.out.println("4x5 test * 4x4 matrix:");
+			System.out.println(toString(multiplyMatrices(test, matrix)));
+			// Expected output: multiplication is impossible
 		}
 
 	}
 
+	// General method that multiplies matrices such that D = BC
+	// In this main, both B and C are always square matrix A
+	public static double[][] multiplyMatrices(double[][] B, double[][] C) {
 
+		// Check that columns in B are equal to rows in C
+		// They must be, for multiplication to be valid
+		int Bcols = B[0].length;
+		int Crows = C.length;
+
+		if (Bcols == Crows) {
+			int Drows = B.length; // D will have B rows and C columns
+			int Dcols = C[0].length;
+
+			double[][] D = new double[Drows][Dcols];
+			for (int i = 0; i < Drows; i++) { // 1. go through rows in B
+				for (int j = 0; j < Dcols; j++) { // 2. go through columns in C
+					for (int k = 0; k < Bcols; k++) { // 3. columns in B
+						// Calculate dot product for each element. Definition:
+						// d_ij = n_∑_(k=1) (b_ik c_kj)
+						D[i][j] += B[i][k] * C[k][j];
+					}
+				}
+			}
+			return D;
+		} else {
+			System.out.println("This matrix multiplication is impossible. Good bye.");
+			System.exit(0);
+			return null;
+		}
+	}
 
 	// Prints out the 2D array matrices with blanks between row entries to the console
 	public static String toString(double[][] matrix) {
@@ -204,39 +252,5 @@ public class MatrixSolver {
 	}
 	
 	
-
-	
-//	// General method that multiplies matrices such that D = BC
-//	// In this main, both B and C are always square matrix A
-//	public static double[][] multiplyMatrices(double[][] B, double[][] C) {
-//
-//		// Check that columns in B are equal to rows in C
-//		// They must be, for multiplication to be valid
-//		int Bcols = B[0].length;
-//		int Crows = C.length;
-//
-//		if (Bcols == Crows) {
-//			int Drows = B.length; // D will have B rows and C columns
-//			int Dcols = C[0].length;
-//
-//			double[][] D = new double[Drows][Dcols];
-//			for (int i = 0; i < Drows; i++) { // 1. go through rows in B
-//				for (int j = 0; j < Dcols; j++) { // 2. go through columns in C
-//					for (int k = 0; k < Bcols; k++) { // 3. columns in B
-//						// Calculate dot product for each element. Definition:
-//						// d_ij = n_∑_(k=1) (b_ik c_kj)
-//						D[i][j] += B[i][k] * C[k][j];
-//					}
-//				}
-//			}
-//			return D;
-//		} else {
-//			System.out.println("This matrix multiplication is impossible. Good bye.");
-//			System.exit(0);
-//			return null;
-//		}
-//	}
 	
 }
-
-

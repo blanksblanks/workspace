@@ -127,10 +127,11 @@ public class MatrixSolver {
 				System.out.println("x:\n" + toString(x));
 
 
-				output.println(toString(x));
-				System.out.println("Successfully wrote final result to \""
-						+ outFileName + "\"");
-				output.close();
+//				A = multiplyMatrices(A, A);
+//				output.println(toString(A));
+//				System.out.println("Successfully wrote final result to \""
+//						+ outFileName + "\"");
+//				output.close();
 			} else {
 				System.out.println("No such file found, good bye!");
 			}
