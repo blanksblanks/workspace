@@ -1,0 +1,136 @@
+Name: Nina Baculinao
+Uni: nb2406
+
+CS3151 Homework 2 Readme
+
+***
+
+MATRIX SOLVER
+
+***
+
+HOW TO RUN
+
+  1. Compile the files using the following commands in Terminal
+  
+    $ javac MatrixSolver.java
+    
+  2. Run the file with two command-line args (note: call the .txt files whatever you like)
+  
+    $ java MatrixSolver input.txt output.txt
+    
+***
+
+BRIEF DESCRIPTION
+
+This program solves systems of linear equations Ax = b by using Gaussian elimination
+and back substitution, where the coefficient matrix is m-diagonal and m is odd. 
+
+***
+
+CLASSES & METHODS
+ 
+    MatrixSolver
+    
+        augment: takes matrix A and vector b and returns an augmented matrix
+        
+        forwardEliminate: reduces the system to upper-triangular form.
+        - Takes advantage of the m-diagonal form by eliminating only the
+        nonzero elements in the matrix (that is, the ones (m-1)/2 rows below
+        and columns to the right of the diagonal)
+        
+        backwardSubstitute: solves the simplified system of equations, in upper
+        triangular form, to find the values of x[i] by moving from top to bottom
+        
+        toString: prints out the 2D array matrices in a readable format to the console,
+        with rows separated by new lines and row entries separated by blank tabs
+    
+        main: reads in user-specified input and writes out output file
+        a) scans first two lines of input file in order to assign n and m int values
+        b) creates double[n][n] 2D arrays to represent n x n matrix A and n x 1 vector b
+        c) scans next n lines for double values and adds each to correct indices for A and b
+        d) sets up an augmented matrix with A and b
+        e) uses forward elimination to reduce matrix A to upper triangular form
+        f) uses back substitution to produce solution set in vector x
+        g) writes final solutions of x to output file
+        * Note: if you do provide command-line arguments, but the files don't exist, the
+          program will self-exit
+
+                 
+        
+***
+
+TEST CASES
+
+    <<<Test Case 1>>>
+    
+This program solves systems of linear equations (A x = b) using elimination and back substitution, where the coefficient matrix is m-diagonal and m is odd.
+
+Reading in input values from "input.txt"...
+
+n: 10
+m: 3
+
+Matrix A:
+    2.00    4.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+    8.00    2.00    4.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+    0.00   16.00    8.00    5.00    0.00    0.00    0.00    0.00    0.00    0.00
+    0.00    0.00    4.00    2.00    1.00    0.00    0.00    0.00    0.00    0.00
+    0.00    0.00    0.00    2.00    8.00    2.00    0.00    0.00    0.00    0.00
+    0.00    0.00    0.00    0.00   16.00    8.00    2.00    0.00    0.00    0.00
+    0.00    0.00    0.00    0.00    0.00    4.00    2.00   16.00    0.00    0.00
+    0.00    0.00    0.00    0.00    0.00    0.00    8.00    4.00    2.00    0.00
+    0.00    0.00    0.00    0.00    0.00    0.00    0.00    2.00    4.00    4.00
+    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    8.00    2.00
+
+Vector b:
+    2.00
+    4.00
+   16.00
+    8.00
+    4.00
+    2.00
+    2.00
+   16.00
+    2.00
+    4.00
+
+Augmented matrix form in which first 10 columns are A, last column is b:
+    2.00    4.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    2.00
+    8.00    2.00    4.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    4.00
+    0.00   16.00    8.00    5.00    0.00    0.00    0.00    0.00    0.00    0.00   16.00
+    0.00    0.00    4.00    2.00    1.00    0.00    0.00    0.00    0.00    0.00    8.00
+    0.00    0.00    0.00    2.00    8.00    2.00    0.00    0.00    0.00    0.00    4.00
+    0.00    0.00    0.00    0.00   16.00    8.00    2.00    0.00    0.00    0.00    2.00
+    0.00    0.00    0.00    0.00    0.00    4.00    2.00   16.00    0.00    0.00    2.00
+    0.00    0.00    0.00    0.00    0.00    0.00    8.00    4.00    2.00    0.00   16.00
+    0.00    0.00    0.00    0.00    0.00    0.00    0.00    2.00    4.00    4.00    2.00
+    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    8.00    2.00    4.00
+
+Matrix A after elimination and ready for back substitution:
+    2.00    4.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    2.00
+    0.00  -14.00    4.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00   -4.00
+    0.00    0.00   12.57    5.00    0.00    0.00    0.00    0.00    0.00    0.00   11.43
+    0.00    0.00    0.00    0.41    1.00    0.00    0.00    0.00    0.00    0.00    4.36
+    0.00    0.00    0.00    0.00    3.11    2.00    0.00    0.00    0.00    0.00  -17.33
+    0.00    0.00    0.00    0.00    0.00   -2.29    2.00    0.00    0.00    0.00   91.14
+    0.00    0.00    0.00    0.00    0.00    0.00    5.50   16.00    0.00    0.00  161.50
+    0.00    0.00    0.00    0.00    0.00    0.00    0.00  -19.27    2.00    0.00 -218.91
+    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    4.21    4.00  -20.72
+    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00   -5.61   43.39
+
+Vector x:
+  -10.19
+    5.60
+   18.59
+  -44.44
+   22.55
+  -43.74
+   -4.41
+   11.61
+    2.44
+   -7.74
+
+Successfully wrote solution x to "output.txt" (*Note values in the output file are not truncated)
+
+    <<<Test Case 2>>>

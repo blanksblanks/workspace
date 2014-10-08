@@ -5,11 +5,9 @@ CS3151 Homework 1 Readme
 
 ***
 
-BRIEF DESCRIPTION
-
-This program calculates A^(2^n), where A is a n x n square matrix.
-
 MATRIX MULTIPLIER
+
+***
 
 HOW TO RUN
 
@@ -20,6 +18,14 @@ HOW TO RUN
   2. Run the file with two command-line args (note: call the .txt files whatever you like)
   
     $ java MatrixMultiplier input.txt output.txt
+    
+***
+
+BRIEF DESCRIPTION
+
+This program calculates A^(2^n), where A is a n x n square matrix.
+
+***
     
  CLASSES & METHODS
  
@@ -57,6 +63,8 @@ HOW TO RUN
                  
         toString: prints out the 2D array matrices in a readable format to the console,
         with rows separated by new lines and row entries separated by blank tabs
+        
+***
         
 CONCERNS
 

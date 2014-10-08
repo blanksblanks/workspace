@@ -64,8 +64,8 @@ public class MatrixMultiplier {
 				// Adds each double value to the correct A[row][column]
 				// Column increases up to n - 2
 				// If column equals n - 1, the row increases and column resets
-				// Must add condition for row < n otherwise program fails for
-				// input files with extra enter spaces at the end of the file
+				// ADDED: condition for row < n (prior to this program failed for
+				// input files with extra enter spaces at the end of the file)
 				while (input.hasNextLine() && row < n) {
 					double entry = input.nextDouble();
 					A[row][column] = entry;

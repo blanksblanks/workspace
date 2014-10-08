@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="" key="selection"/>
+		<item value="while" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="while"/>
+			<item value="format"/>
 			<item value=""/>
 			<item value="element"/>
 			<item value="&#x0A;&#x09;// In this main, B and C are always A but this method multiplies"/>
 			<item value="k is"/>
 			<item value="output"/>
 			<item value="index"/>
-			<item value="input.txt"/>
-			<item value="findmax"/>
 		</list>
 		<list key="replacehistory">
 		</list>
