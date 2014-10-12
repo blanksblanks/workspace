@@ -1,0 +1,37 @@
+import java.util.Arrays;
+
+public class TreeMaker {
+
+	public TreeMaker() {
+	}
+
+	public ExpressionTree makeTree(String[] s) {
+		
+		Object nextElement;
+		ExpressionTree operand;
+		ExpressionTree nextOperand;
+		
+		for (int i = 0; i < s.length; i++) {
+			nextElement = s[i];
+			// if the element is in the operations list, pop two trees and make
+			// a new tree
+			// with the previous two as left and right references
+			if (Arrays.contains(operations, nextElement)) {//Arrays.asList(operations).contains(nextElement)) {
+				operand = treeStack.peekAndPop();
+				nextOperand = treeStack.peekAndPop();
+				treeStack.push(new ExpressionTree(nextElement, operand0,
+						operand1));
+			}
+			// else, must be either a variable or a number, so put element in an
+			// expression tree
+			// and push onto stack
+			else
+				treeStack.push(new ExpressionTree(nextElement, null, null));
+		}
+		return treeStack.peekAndPop();
+	}
+	
+	MyStack<ExpressionTree> treeStack = new MyStack<ExpressionTree>();
+	String[] operations = { "+", "-", "*", "/" };
+
+}

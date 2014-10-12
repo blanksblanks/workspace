@@ -1,0 +1,143 @@
+/**
+ * 
+ * Expression Tree
+ * 
+ * @author nb2406
+ * 
+ *         Implementing and displaying expression trees: Your program will be a
+ *         text-based Java application. Prompt the user to enter a postfix
+ *         expression (made up of single digit numbers and the +, -, *, and /
+ *         operators). When the user presses enter, the stack based method for
+ *         constructing expression trees will be executed. Use your stack from
+ *         the previous question. You should implement your own ExpressionTree
+ *         class to store the expression. Once the tree has been built, have
+ *         your program use the tree to output the equivalent prefix expression
+ *         and infix expression (don't forget parenthesis for this one). Finally
+ *         the program should evaluate the expression tree and print the result.
+ * 
+ *         Clarifications: There are two kinds of bad situations you need to
+ *         account for. The first is if you pop from the stack and the stack
+ *         happens to be empty. When this happens, your program should die
+ *         gracefully and tell the user what went wrong. The second case is at
+ *         the end of the algorithm when you pop from the stack one last time.
+ *         If the stack still has elements on it, then you will also need to die
+ *         gracefully and tell the user what went wrong.
+ * 
+ */
+
+import java.util.LinkedList;
+
+public class ExpressionTree {
+
+	public boolean operator;
+	public Object element;
+	public ExpressionTree left;
+	public ExpressionTree right;
+
+	// Constructor	
+	public ExpressionTree(Object e, ExpressionTree leftTree,
+			ExpressionTree rightTree) {
+		element = e;
+		left = leftTree;
+		right = rightTree;
+	}
+
+	public Object getElement() {
+		return element;
+	}
+
+	public ExpressionTree getLeft() {
+		return left;
+	}
+
+	public ExpressionTree getRight() {
+		return right;
+	}
+
+	// Convert post-fix from expression tree to prefix expression
+	public String printPrefix() {
+		LinkedList<Object> prefix = new LinkedList<Object>();
+		prePrintRecurse(prefix);
+		StringBuilder prefixOut = new StringBuilder(prefix.size());
+
+		for (int i = 0; i < prefix.size(); i++)
+			prefixOut.append(prefix.get(i));
+
+		return prefixOut.toString();
+	}
+
+	// Recursively get elements in correct order for prefix LinkedList
+	private LinkedList<Object> prePrintRecurse(LinkedList<Object> elements) {
+		elements.add(element);
+		if (left != null)
+			left.prePrintRecurse(elements);
+		if (right != null)
+			right.prePrintRecurse(elements);
+		return elements;
+	}
+
+	// Convert post-fix from expression tree to infix expression that we're all familiar with
+	public String infixPrint() {
+		LinkedList<Object> infix = new LinkedList<Object>();
+		inPrintRecurse(infix);
+		StringBuilder infixOut = new StringBuilder(infix.size());
+
+		for (int i = 0; i < infix.size(); i++)
+			infixOut.append(infix.get(i));
+
+		return infixOut.toString();
+	}
+
+	// Recursively return elements in correct order for infix LinkedList
+	private LinkedList<Object> inPrintRecurse(LinkedList<Object> elements) {
+		if (element != null) {
+			if (left == null || right == null)
+				elements.add(element);
+			else if (element.equals("+") || element.equals("-")) {
+				elements.add("(");
+				left.inPrintRecurse(elements);
+				elements.add(element);
+				right.inPrintRecurse(elements);
+				elements.add(")");
+			} else if (left != null && right != null) {
+				left.inPrintRecurse(elements);
+				elements.add(element);
+				right.inPrintRecurse(elements);
+			}
+		}
+		return elements;
+	}
+
+
+	// Solve post-fix expression
+	public Double evaluate() {
+		Double left_val;
+		Double right_val;
+		Double nValue;
+
+		if (left != null && right != null) {
+			left_val = left.evaluate();
+			right_val = right.evaluate();
+
+			if (element.equals("+")) {
+
+				nValue = Double.valueOf(left_val.doubleValue()
+						+ right_val.doubleValue());
+			} else if (element.equals("-")) {
+				nValue = Double.valueOf(left_val.doubleValue()
+						- right_val.doubleValue());
+			} else if (element.equals("*")) {
+				nValue = Double.valueOf(left_val.doubleValue()
+						* right_val.doubleValue());
+			} else {
+				nValue = Double.valueOf(left_val.doubleValue()
+						/ right_val.doubleValue());
+			}
+			return nValue;
+		} else {
+			Double nodeValue = Double.parseDouble(element.toString());
+			return nodeValue;
+		}
+	}
+
+}

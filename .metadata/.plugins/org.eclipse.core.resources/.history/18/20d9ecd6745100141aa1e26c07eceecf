@@ -1,0 +1,93 @@
+import java.io.File;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+/**
+ * 
+ * Palindrome Detector
+ * 
+ * @author nb2406
+ * 
+ *         Palindrome Detector: A palindrome is a phrase that reads the same
+ *         forwards as it does backwards. For example,
+ *         "a man, a plan, a canal, Panama." is a palindrome. Ignore white space
+ *         and punctuation. Write a program that uses a stack to check for
+ *         palindromes in each line of a text file. Try your program on the
+ *         example text file palindromes.txt. Your program should output the
+ *         palindromes that it finds in the document. For example: java
+ *         FindPalindromes palindromes.txt "a man, a plan, a canal, Panama" is a
+ *         palindrome. "Don't nod" is a palindrome. "Taco Cat!" is a palindrome.
+ *         You must write your own MyStack class for this problem. Don.t use the
+ *         built in Stack. Feel free to use either a LinkedList, ArrayList or an
+ *         array to implement the Stack.
+ * 
+ *         Clarification: You must be able to account for at least the
+ *         punctuation contained in the palindromes.txt file provided by
+ *         Professor Blaer.
+ * 
+ */
+
+public class PalindromeDetector {
+
+	public boolean isPalindrome(String s) {
+		// Regex removes all non-words from text before evaluating its 
+		String pureWords = s.replaceAll("\\W", "").toLowerCase();
+	    MyStack<String> palindromeStack = new MyStack<String>();
+	    int stackDepth = 0;
+	    
+	    for (int i = 0; i < pureWords.length()/2; i++) {
+	    	String letter = String.valueOf(pureWords.charAt(i));
+	    	palindromeStack.push(letter);
+	    	stackDepth++;
+	    }
+	    		    	    	    
+	    int startIndex = stackDepth;
+	    if (pureWords.length() %2 != 0) {
+	    	startIndex++;
+	    }
+	    
+	    for (int i = startIndex; i < pureWords.length(); i++) {
+        	String rightItem = String.valueOf(pureWords.charAt(i));
+        	String leftItem = palindromeStack.peekAndPop();
+        	if (leftItem.compareTo(rightItem) != 0) {
+        		return false;
+        	}
+        }
+		return true;
+	}
+	
+	// File reader using Scanner that parses each line and adds it as next
+	// element in a Linked List
+	public static LinkedList<String> lineParser(String inputFile) {
+		LinkedList<String> linesInFile = new LinkedList<String>();
+		try {
+			Scanner input = new Scanner(new File(inputFile));
+			while (input.hasNextLine()) {
+				String newLine = input.nextLine();
+				linesInFile.add(newLine);
+			}
+			input.close();
+		} catch (IOException e) {
+			System.out.println("File was not found!");
+		}
+		return linesInFile;
+	}
+	
+	public static void main(String[] args) {
+		
+		LinkedList<String> text = lineParser("palindromes.txt");
+		PalindromeDetector detectPal = new PalindromeDetector();
+
+		// Checks each line to see if any are palindromes
+		for (int i = 0; i < text.size(); i++) {
+			String line = text.get(i);
+			if (detectPal.isPalindrome(line)) {
+				System.out.println("Found a palindrome! \t\"" + line + "\"");
+			} else {
+				System.out.println("NOT a palindrome... \t\"" + line + "\"");
+			}
+		}
+	}
+
+}

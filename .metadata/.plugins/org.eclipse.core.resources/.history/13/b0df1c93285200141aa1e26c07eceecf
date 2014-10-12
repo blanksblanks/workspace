@@ -1,0 +1,55 @@
+/**
+ * 
+ * Expression Tree
+ * 
+ * @author nb2406
+ * 
+ *         Implementing and displaying expression trees: Your program will be a
+ *         text-based Java application. Prompt the user to enter a postfix
+ *         expression (made up of single digit numbers and the +, -, *, and /
+ *         operators). When the user presses enter, the stack based method for
+ *         constructing expression trees will be executed. Use your stack from
+ *         the previous question. You should implement your own ExpressionTree
+ *         class to store the expression. Once the tree has been built, have
+ *         your program use the tree to output the equivalent prefix expression
+ *         and infix expression (don't forget parenthesis for this one). Finally
+ *         the program should evaluate the expression tree and print the result.
+ * 
+ *         Clarifications: There are two kinds of bad situations you need to
+ *         account for. The first is if you pop from the stack and the stack
+ *         happens to be empty. When this happens, your program should die
+ *         gracefully and tell the user what went wrong. The second case is at
+ *         the end of the algorithm when you pop from the stack one last time.
+ *         If the stack still has elements on it, then you will also need to die
+ *         gracefully and tell the user what went wrong.
+ * 
+ */
+
+import java.util.Scanner;
+
+// Test class that takes postfix expression from user input and transforms it to a tree
+public class TreeTest {
+	
+public static void main (String[] args){   
+    System.out.println("Enter postfix expression (e.g. 12+3*6+23+/):");
+	    Scanner readin = new Scanner(System.in);
+	    String rawPostfixIn = readin.nextLine();
+	    readin.close();
+	    
+	    String s = rawPostfixIn.replaceAll("\\s", "");
+	    s = s.replaceAll("[^\\d/*+-]", "");
+
+	    System.out.println(rawPostfixIn);
+	    System.out.println(s);
+	    String[] arrayPostfixIn = rawPostfixIn.split("(?!^)");
+	    
+	    TreeBuilder builderNew = new TreeBuilder();
+	    ExpressionTree userTree = builderNew.build(arrayPostfixIn);
+	    System.out.println("Prefix expression:"+userTree.printPrefix());
+	    System.out.println("Infix expression:"+userTree.infixPrint());
+	    
+	    System.out.println("Expression evaluates to: "+userTree.evaluate());
+	        
+	}
+
+}

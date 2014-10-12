@@ -1,0 +1,40 @@
+import java.io.File;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class PalindromeTest {
+
+	public static void main(String[] args) {
+		
+		LinkedList<String> LLofLines = lineParserForLL("palindromes.txt");
+
+		// Checks each line to see if any are palindromes
+		for (int i = 0; i < LLofLines.size(); i++) {
+			String line = LLofLines.get(i);
+			if (PalindromeDetector.isPalindrome(line)) {
+				System.out.println("Found a palindrome! \t\"" + line + "\"");
+			} else {
+				System.out.println("NOT a palindrome... \t\"" + line + "\"");
+			}
+		}
+	}
+
+	// File reader using Scanner that parses each line and adds it as next
+	// element in a Linked List
+	public static LinkedList<String> lineParserForLL(String inFile) {
+		LinkedList<String> linesInFile = new LinkedList<String>();
+		try {
+			Scanner input = new Scanner(new File(inFile));
+			while (input.hasNextLine()) {
+				String newLine = input.nextLine();
+				linesInFile.add(newLine);
+			}
+			input.close();
+		} catch (IOException e) {
+			System.out.println("File was not found");
+		}
+		return linesInFile;
+	}
+
+}

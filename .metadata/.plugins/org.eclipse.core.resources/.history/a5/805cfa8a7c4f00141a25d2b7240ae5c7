@@ -1,0 +1,17 @@
+import java.util.LinkedList;
+
+public class MyStack<T> {
+	
+	private LinkedList<T> myList = new LinkedList<T>();
+	// Note: must add parameter 'T' to 'MyStack' or get error
+	
+	public MyStack(){
+		
+	}
+	
+	public void push(Object x){
+	}
+	
+	public void pop(Object x
+
+}

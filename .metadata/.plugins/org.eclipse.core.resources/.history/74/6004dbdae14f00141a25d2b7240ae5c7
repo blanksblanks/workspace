@@ -1,0 +1,68 @@
+/**
+ * 
+ * Palindrome Detector
+ * 
+ * @author nb2406
+ * 
+ *         Palindrome Detector: A palindrome is a phrase that reads the same
+ *         forwards as it does backwards. For example,
+ *         "a man, a plan, a canal, Panama." is a palindrome. Ignore white space
+ *         and punctuation. Write a program that uses a stack to check for
+ *         palindromes in each line of a text file. Try your program on the
+ *         example text file palindromes.txt. Your program should output the
+ *         palindromes that it finds in the document. For example: java
+ *         FindPalindromes palindromes.txt "a man, a plan, a canal, Panama" is a
+ *         palindrome. "Don't nod" is a palindrome. "Taco Cat!" is a palindrome.
+ *         You must write your own MyStack class for this problem. Don.t use the
+ *         built in Stack. Feel free to use either a LinkedList, ArrayList or an
+ *         array to implement the Stack.
+ * 
+ *         Clarification: You must be able to account for at least the
+ *         punctuation contained in the palindromes.txt file provided by
+ *         Professor Blaer.
+ * 
+ */
+
+import java.util.LinkedList;
+
+public class PalindromeDetector {
+
+	public static void main(String[] args) {
+		String a = "Taco Cat!!!";
+
+		if (isPalindrome(a)) {
+			System.out.println("Found a palindrome: \t\"" + a + "\"");
+		} else {
+			System.out.println("NOT a palindrome: \t\"" + a + "\"");
+		}
+
+	}
+
+	public static boolean isPalindrome(String text) {
+		// Regex removes all non-word characters from text before evaluating it
+		String unformatted = text.replaceAll("\\W", "").toLowerCase();
+	    MyStack<String> palindromeStack = new MyStack<String>();
+	    int stackDepth = 0;
+	    
+	    for (int i = 0; i< unformatted.length()/2; i++)
+	    {
+	    	String newItem = String.valueOf(unformatted.charAt(i));
+	    	palindromeStack.push(newItem);
+	    	stackDepth++;
+	    }
+	    		    	    	    
+	    int startIndex = stackDepth;
+	    if (unformatted.length() %2 != 0)
+	    	startIndex++;
+	    
+	    for (int i = startIndex; i < unformatted.length(); i++)
+        {
+        	String rightItem = String.valueOf(unformatted.charAt(i));
+        	String leftItem = palindromeStack.pop();
+        	if (leftItem.compareTo(rightItem) != 0) {
+        		return false;
+        	}
+        }
+		return true;
+	}
+}

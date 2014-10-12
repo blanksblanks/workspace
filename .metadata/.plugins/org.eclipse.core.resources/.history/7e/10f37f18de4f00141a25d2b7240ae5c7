@@ -1,0 +1,50 @@
+import java.util.LinkedList;
+
+public class MyStack<T> {
+	
+	private LinkedList<T> myList = new LinkedList<T>();
+
+	// Note: must add parameter 'T' to 'MyStack' or get error
+	// Used generic T type instead of Object to avoid casting
+	
+	public MyStack(){
+
+	}
+	
+	// Inserts new item into the top of the stack
+	public void push(T x){
+		myList.add(0, x);
+	}
+	
+	// Removes most recently inserted item from the stack
+	// Underflow exception if stack is empty
+	public T pop() throws UnderflowException{
+		if (isEmpty()) {
+            throw new UnderflowException( );
+		} else {
+			T popped = myList.get(0);
+			myList.remove(0);
+			return popped;
+		}
+	}
+	
+	// Tests is stack is logically empty, returns true if so
+	public boolean isEmpty(){
+		return myList == null;
+	}
+	
+	public String toString()
+	{
+		return myList.toString();
+	}
+	
+    public static void main( String [ ] args )
+    {
+        for( int i = 0; i < 10; i++ )
+            myList.push(i);
+
+        while( myList.isEmpty( ) )
+            System.out.println( pop( ) );
+    }      
+
+}

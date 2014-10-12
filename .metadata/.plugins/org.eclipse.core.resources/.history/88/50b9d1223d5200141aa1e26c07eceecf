@@ -1,0 +1,115 @@
+import java.util.LinkedList;
+
+public class ExpressionTree {
+
+	// Constructor	
+	public ExpressionTree(Object e, ExpressionTree leftTree,
+			ExpressionTree rightTree) {
+		element = e;
+		left = leftTree;
+		right = rightTree;
+	}
+
+	public Object getElement() {
+		return element;
+	}
+
+	public ExpressionTree getLeft() {
+		return left;
+	}
+
+	public ExpressionTree getRight() {
+		return right;
+	}
+
+	// Convert post-fix from expression tree to prefix expression
+	public String printPrefix() {
+		LinkedList<Object> prefix = new LinkedList<Object>();
+		recursivePrefixOrder(prefix);
+		StringBuilder prefixOut = new StringBuilder(prefix.size());
+
+		for (int i = 0; i < prefix.size(); i++)
+			prefixOut.append(prefix.get(i));
+
+		return prefixOut.toString();
+	}
+
+	// Recursively get elements in correct order for prefix LinkedList
+	private LinkedList<Object> recursivePrefixOrder(LinkedList<Object> elements) {
+		elements.add(element);
+		if (left != null)
+			left.recursivePrefixOrder(elements);
+		if (right != null)
+			right.recursivePrefixOrder(elements);
+		return elements;
+	}
+
+	// Convert post-fix from expression tree to infix expression that we're all familiar with
+	public String infixPrint() {
+		LinkedList<Object> infix = new LinkedList<Object>();
+		recursiveInfixOrder(infix);
+		StringBuilder infixOut = new StringBuilder(infix.size());
+
+		for (int i = 0; i < infix.size(); i++)
+			infixOut.append(infix.get(i));
+
+		return infixOut.toString();
+	}
+
+	// Recursively return elements in correct order for infix LinkedList
+	private LinkedList<Object> recursiveInfixOrder(LinkedList<Object> elements) {
+		if (element != null) {
+			if (left == null || right == null)
+				elements.add(element);
+			else if (element.equals("+") || element.equals("-")) {
+				elements.add("(");
+				left.recursiveInfixOrder(elements);
+				elements.add(element);
+				right.recursiveInfixOrder(elements);
+				elements.add(")");
+			} else if (left != null && right != null) {
+				left.recursiveInfixOrder(elements);
+				elements.add(element);
+				right.recursiveInfixOrder(elements);
+			}
+		}
+		return elements;
+	}
+
+	// Solve post-fix expression
+	public Double solve() {
+		Double left_val;
+		Double right_val;
+		Double nValue;
+
+		if (left != null && right != null) {
+			left_val = left.solve();
+			right_val = right.solve();
+
+			if (element.equals("+")) {
+
+				nValue = Double.valueOf(left_val.doubleValue()
+						+ right_val.doubleValue());
+			} else if (element.equals("-")) {
+				nValue = Double.valueOf(left_val.doubleValue()
+						- right_val.doubleValue());
+			} else if (element.equals("*")) {
+				nValue = Double.valueOf(left_val.doubleValue()
+						* right_val.doubleValue());
+			} else {
+				nValue = Double.valueOf(left_val.doubleValue()
+						/ right_val.doubleValue());
+			}
+			return nValue;
+		} else {
+			Double nodeValue = Double.parseDouble(element.toString());
+			return nodeValue;
+		}
+	}
+	
+	public boolean operator;
+	public Object element;
+	public ExpressionTree left;
+	public ExpressionTree right;
+
+}

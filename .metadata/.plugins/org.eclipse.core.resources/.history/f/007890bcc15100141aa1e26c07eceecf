@@ -1,0 +1,392 @@
+/**
+ * 
+ * Exercise 4_16
+ * 
+ * @author nb2406
+ * 
+ *         Redo the binary search tree class to implement lazy deletion. Note
+ *         carefully that this affects all of the routines. Especially
+ *         challenging are findMin and findMax, which must now be done
+ *         recursively.
+ * 
+ *         Clarifications: Section 4.3 in the book has the BinarySearchTree
+ *         code. Use this as skeleton code from which to implement lazy
+ *         deletion.
+ * 
+ *         Feel free to use Weiss's code for programming 3 (Lazy Deletion). If
+ *         you want to re-write it yourself, you can do that too but it needs to
+ *         have the same methods.
+ * 
+ *         For programming 3, please have your isEmpty() method have constant
+ *         O(1) running time.
+ * 
+ *         Lastly, for programming 3, please also submit a Tester class that
+ *         builds a tree and then shows each of the methods working after an
+ *         item is lazily deleted.
+ * 
+ */
+
+// BinarySearchTree class
+//
+// CONSTRUCTION: with no initializer
+//
+// ******************PUBLIC OPERATIONS*********************
+// void insert( x )       --> Insert x
+// void remove( x )       --> Remove x
+// boolean contains( x )  --> Return true if x is present
+// Comparable findMin( )  --> Return smallest item
+// Comparable findMax( )  --> Return largest item
+// boolean isEmpty( )     --> Return true if empty; else false
+// void makeEmpty( )      --> Remove all items
+// void printTree( )      --> Print tree in sorted order
+// ******************ERRORS********************************
+// Throws UnderflowException as appropriate
+// Uses lazy deletion for remove method
+
+/**
+ * Implements an unbalanced binary search tree.
+ * Note that all "matching" is based on the compareTo method.
+ * @author Mark Allen Weiss
+ */
+
+public class LazyDeletion<AnyType extends Comparable<? super AnyType>>
+{
+    /**
+     * Construct the tree.
+     */
+    public LazyDeletion( )
+    {
+        root = null;
+    }
+
+    /**
+     * Insert into the tree; duplicates are ignored.
+     * @param x the item to insert.
+     */
+    public void insert( AnyType x )
+    {
+        root = insert( x, root );
+    }
+
+    /**
+     * Remove from the tree. Nothing is done if x is not found.
+     * @param x the item to remove.
+     */
+    public void remove( AnyType x )
+    {
+        root = remove( x, root );
+    }
+
+    /**
+     * Find the smallest item in the tree.
+     * @return smallest item or null if empty.
+     * @throws UnderflowException 
+     */
+    public AnyType findMin( ) throws UnderflowException
+    {
+        if( isEmpty( ) )
+            throw new UnderflowException( );
+        return findMin( root ).element;
+    }
+
+    /**
+     * Find the largest item in the tree.
+     * @return the largest item of null if empty.
+     * @throws UnderflowException 
+     */
+    public AnyType findMax( ) throws UnderflowException
+    {
+        if( isEmpty( ) )
+            throw new UnderflowException( );
+        return findMax( root ).element;
+    }
+
+    /**
+     * Find an item in the tree.
+     * @param x the item to search for.
+     * @return true if not found.
+     */
+    public boolean contains( AnyType x )
+    {
+        return contains( x, root );
+    }
+
+    /**
+     * Make the tree logically empty.
+     * Changed for lazy deletion
+     */
+    public void makeEmpty( )
+    {
+        root.deleted = true;
+    }
+
+    /**
+     * Test if the tree is logically empty.
+     * @return true if empty, false otherwise.
+     * Changed for lazy deletion
+     */
+    public boolean isEmpty( )
+    {
+    	boolean empty = (root.deleted == true);
+        return empty;
+    }
+
+    /**
+     * Print the tree contents in sorted order.
+     */
+    public void printTree( )
+    {
+        if( isEmpty( ) )
+            System.out.println( "Empty tree" );
+        else
+            printTree( root );
+    }
+
+    /**
+     * Internal method to insert into a subtree.
+     * @param x the item to insert.
+     * @param t the node that roots the subtree.
+     * @return the new root of the subtree.
+     * Checks to see if node exists and is deleted and resets flag 
+     * rather than run insert
+     */
+    private BinaryNode<AnyType> insert( AnyType x, BinaryNode<AnyType> t )
+    {
+        if( t == null )
+            return new BinaryNode<>( x, null, null );
+        
+        int compareResult = x.compareTo( t.element );
+            
+        if( compareResult < 0 )
+            t.left = insert( x, t.left );
+        else if( compareResult > 0 )
+            t.right = insert( x, t.right );
+        else if ( compareResult == 0 && t.deleted) //
+        	t.deleted = true; //
+        return t;
+    }
+
+    /**
+     * Internal method to remove from a subtree.
+     * @param x the item to remove.
+     * @param t the node that roots the subtree.
+     * @return the new root of the subtree.
+     * Flags boolean "deleted" rather than full delete
+     */
+    private BinaryNode<AnyType> remove( AnyType x, BinaryNode<AnyType> t )
+    {
+        if( t == null)
+            return t;   // Item not found; do nothing
+            
+        int compareResult = x.compareTo( t.element );
+            
+        if( compareResult < 0 )
+            t.left = remove( x, t.left );
+        else if( compareResult > 0 ) 
+            t.right = remove( x, t.right );
+//        else if( !((t.left).deleted) && !((t.right).deleted) ) 
+        else if( t.left != null && t.right != null )	// Two children
+        {
+            t.element = findMin( t.right ).element;
+            t.right = remove( t.element, t.right );
+        }
+//        else if( compareResult == 0 && t.deleted) {
+//        	return t;
+//        }
+        else 
+//        	t = ( t.left != null ) ? t.left : t.right;
+//        	t = ( !t.left.deleted ) ? t.left : t.right;
+        	t.deleted = true;
+        return t;
+    }
+
+    /**
+     * Internal method to find the smallest item in a subtree.
+     * @param t the node that roots the subtree.
+     * @return node containing the smallest item.
+     * Handles lazy deleted nodes
+     */
+    
+ /* Original: 
+  *         if( t == null )
+            return null;
+        else if( t.left == null )
+            return t;
+        return findMin( t.left );
+  * 
+  */
+    
+    private BinaryNode<AnyType> findMin( BinaryNode<AnyType> t)
+    {
+        if( t == null )
+            return null;
+        
+        if (t.left != null) { //d
+            BinaryNode<AnyType> j = findMin( t.left ); //d
+            if (j != null) //d
+        	    return j; //d
+        }
+         
+        if (t.deleted == false) // or t.left == null
+        	return t;
+        
+        return findMin( t.right ); // why instead of t.left?
+
+    }
+
+    /**
+     * Internal method to find the largest item in a subtree.
+     * @param t the node that roots the subtree.
+     * @return node containing the largest item.
+     * Handles lazy deleted nodes.
+     */
+    
+/*
+ *         if( t != null )
+            while( t.right != null )
+                t = t.right;
+
+        return t;
+ */
+    
+    private BinaryNode<AnyType> findMax( BinaryNode<AnyType> t )
+    {
+        if( t == null )
+            return null;
+        
+        if (t.right != null) { //
+            BinaryNode<AnyType> j = findMax( t.right ); //
+            if (j != null) //
+        	    return j; //
+        }
+        
+        if (t.deleted == false) //
+        	return t; //
+        
+        return findMax( t.left ); //
+    }
+
+    /**
+     * Internal method to find an item in a subtree.
+     * @param x is item to search for.
+     * @param t the node that roots the subtree.
+     * @return node containing the matched item.
+     * Checks to see if node is deleted before returning.
+     */
+    private boolean contains( AnyType x, BinaryNode<AnyType> t )
+    {
+        if( t == null )
+            return false;
+            
+        int compareResult = x.compareTo( t.element );
+            
+        if( compareResult < 0 )
+            return contains( x, t.left );
+        else if( compareResult > 0 )
+            return contains( x, t.right );
+        else if( t.deleted == true) ///d
+        	return false; //d
+        else
+            return true;    // Match
+    }
+
+    /**
+     * Internal method to print a subtree in sorted order.
+     * @param t the node that roots the subtree.
+     * Checks to see if node is deleted before printing
+     */
+    private void printTree( BinaryNode<AnyType> t )
+    {
+        if( t != null)
+        {
+            printTree( t.left );
+            if( t.deleted == false) //d
+                System.out.println( t.element );
+            else // do nothing
+                ;
+            printTree( t.right );
+        }
+    }
+
+    /**
+     * Internal method to compute height of a subtree.
+     * @param t the node that roots the subtree.
+     */
+    @SuppressWarnings("unused")
+	private int height( BinaryNode<AnyType> t )
+    {
+        if( t == null )
+            return -1;
+        else
+            return 1 + Math.max( height( t.left ), height( t.right ) );    
+    }
+    
+    // Basic node stored in unbalanced binary search trees
+    private static class BinaryNode<AnyType>
+    {
+            // Constructors
+        @SuppressWarnings("unused")
+		BinaryNode( AnyType theElement )
+        {
+            this( theElement, null, null );
+        }
+
+        BinaryNode( AnyType theElement, BinaryNode<AnyType> lt, BinaryNode<AnyType> rt )
+        {
+            element  = theElement;
+            left     = lt;
+            right    = rt;
+            deleted = false; //d
+        }
+
+        AnyType element;            // The data in the node
+        BinaryNode<AnyType> left;   // Left child
+        BinaryNode<AnyType> right;  // Right child
+        boolean deleted;          // Added a deleted property for Lazy Deletion
+    }
+
+
+      /** The tree root. */
+    private BinaryNode<AnyType> root;
+
+
+    /* Test program
+     * throws UnderflowException
+     */
+    
+//    @SuppressWarnings("unused")
+//	public static void main( String [ ] args ) throws UnderflowException 
+//    {
+//        LazyDeletion<Integer> t = new LazyDeletion<Integer>( );
+//
+//         final int NUMS = 4000;
+//        final int GAP  =   37;
+//
+//        System.out.println( "Checking... (no more output means success)" );
+//
+//        for( int i = GAP; i != 0; i = ( i + GAP ) % NUMS )
+//            t.insert( i );
+//
+//        for( int i = 1; i < NUMS; i+= 2 )
+//            t.remove( i );
+//
+//        if( NUMS < 40 )
+//            t.printTree( );
+//        
+//        if( t.findMin( ) != 2 || t.findMax( ) != NUMS - 2 )
+//            System.out.println( "FindMin or FindMax error!" );
+//
+//        for( int i = 2; i < NUMS; i+=2 )
+//             if( !t.contains( i ) )
+//                 System.out.println( "Find error1!" );
+//
+//        for( int i = 1; i < NUMS; i+=2 )
+//        {
+//            if( t.contains( i ) )
+//                System.out.println( "Find error2!" );
+//        }
+//    }
+//    
+    
+
+}
