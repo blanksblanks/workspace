@@ -55,8 +55,4 @@ public class MyStack<T> {
 			return element;
 		}
 	}
-	
-	public int size() {
-		return size;
-	}
 }

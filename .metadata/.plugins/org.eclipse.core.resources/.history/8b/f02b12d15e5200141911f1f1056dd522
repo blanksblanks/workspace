@@ -6,7 +6,6 @@ public class MyStack<T> {
 	// Used generic T type instead of Object to avoid casting
 	// Note: Without <T> to 'MyStack' class heading returns error
 	LinkedList<T> myList = new LinkedList<T>();
-	int size = 0;
 
 	public MyStack() {
 	}
@@ -20,7 +19,6 @@ public class MyStack<T> {
 	// isFull method is not necessary for Linked Lists
 	public void push(T x) {
 		myList.add(0, x);
-		size++;
 	}
 	
 	// Returns most recently inserted item from the stack
@@ -39,24 +37,26 @@ public class MyStack<T> {
 			throw new UnderflowException();
 		} else {
 			myList.remove(0);
-			size--;
 		}		
 	}
 
 	// Removes and returns most recently inserted item from the stack
 	// Returns underflow exception if stack is empty
 	public T peekAndPop() throws UnderflowException {
-		if (isEmpty()) {
-			throw new UnderflowException();
-		} else {
-			T element = myList.get(0);
-			myList.remove(0);
-			size--;
-			return element;
+		try {
+			if (isEmpty()) {
+				throw new UnderflowException();
+			} else {
+				T element = myList.get(0);
+				myList.remove(0);
+				return element;
+			}
+		} catch (IndexOutOfBoundsException err) {
+			System.out
+					.println("Tried to pop from stack but stack is empty. This probably means you have too many operators. System will now exit.");
+			System.exit(0);
+			T error = myList.get(0);
+			return error;
 		}
-	}
-	
-	public int size() {
-		return size;
 	}
 }

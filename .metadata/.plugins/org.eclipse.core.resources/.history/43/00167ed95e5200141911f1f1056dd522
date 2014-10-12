@@ -20,7 +20,6 @@ public class MyStack<T> {
 	// isFull method is not necessary for Linked Lists
 	public void push(T x) {
 		myList.add(0, x);
-		size++;
 	}
 	
 	// Returns most recently inserted item from the stack
@@ -39,7 +38,6 @@ public class MyStack<T> {
 			throw new UnderflowException();
 		} else {
 			myList.remove(0);
-			size--;
 		}		
 	}
 
@@ -51,12 +49,7 @@ public class MyStack<T> {
 		} else {
 			T element = myList.get(0);
 			myList.remove(0);
-			size--;
 			return element;
 		}
-	}
-	
-	public int size() {
-		return size;
 	}
 }

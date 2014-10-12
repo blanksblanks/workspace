@@ -1,0 +1,157 @@
+import java.util.Scanner;
+import java.util.NoSuchElementException;
+
+public class ExpressionTrees {
+	
+	private MyStack<TreeNode> tree;
+	private TreeNode root;
+	
+	private static class TreeNode {
+		private Object element;
+		private TreeNode left;
+		private TreeNode right;
+		
+		private TreeNode(String in) {
+			element = in;
+		}
+		
+		private TreeNode(String in, TreeNode left, TreeNode right) {
+			element = in;
+			this.left = left;
+			this.right = right;
+		}		
+	}
+	
+	// public constructor calls private constructor method
+	public ExpressionTrees(String[] s) {
+		tree = buildTree(s);
+		root = tree.peek();
+	}
+		
+	private static MyStack<TreeNode> buildTree(String[] s) {
+		MyStack<TreeNode> treeStack = new MyStack<>();
+		try {
+			for (int i = 0; i < s.length; i++) {
+				String element = s[i];
+				if (isOperator(element)) {
+					TreeNode right = treeStack.peekAndPop();
+					TreeNode left = treeStack.peekAndPop();
+					// push operator onto stack with links to previous 2 nodes
+					TreeNode newRoot = new TreeNode(element, left, right);
+					treeStack.push(newRoot);
+				} else {
+					treeStack.push(new TreeNode(element));					
+				}
+			}
+			if (treeStack.size() > 1) {
+				System.err.println("Too many operands. Please try again.");
+				System.exit(1);
+			}
+		} catch (NoSuchElementException e) {
+			System.err.println("Too few operands. Please try again.");
+			System.exit(1);
+		}
+		return treeStack;
+	}
+	
+	public static boolean isOperator(String s) {
+		return (s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/"));
+	}
+	
+	// public method to convert expression tree to prefix expression
+	public static void printPrefix(ExpressionTrees tree) {
+		System.out.print("Prefix expression: ");
+		printPrefix(tree.root);
+		System.out.println();
+	}
+	
+	// public method to convert expression tree to infix expression
+	public static void printInfix(ExpressionTrees tree) {
+		System.out.print("Infix expression: " );
+		printInfix(tree.root);
+		System.out.println();
+	}
+	
+	// private recursive method to convert expression tree to prefix expression
+	private static void printPrefix(TreeNode node) {
+		while (node != null) {
+			System.out.print(node.element);
+			printPrefix(node.left);
+			node = node.right;
+		}
+	}
+	
+	// private recursive method to convert expression tree to infix expression
+	private static void printInfix(TreeNode node) {
+		if (node.left != null) {
+			System.out.print("(");
+			printInfix(node.left);
+		}
+		System.out.print(node.element);
+		if (node.right != null) {
+			printInfix(node.right);
+			System.out.print(")");
+		}
+	}
+	
+	public static void solve(String[] s) {
+		
+		MyStack<Double> solStack = new MyStack<>();
+		
+		for (int i = 0; i < s.length; i++) {
+		
+			String element = s[i];
+			
+			if (isOperator(element)) {
+			
+				double right = solStack.peekAndPop();
+				double left = solStack.peekAndPop();
+				double result = 0;
+				
+				switch (element) {
+					case "+": {
+						result = left + right;
+						solStack.push(result);
+						break;
+					} case "-": {
+						result = left - right;
+						solStack.push(result);
+						break;
+					} case "*": {
+						result = left * right;
+						solStack.push(result);
+						break;
+					} case "/": {
+						result = left / right;
+						solStack.push(result);
+						break;
+					} default: {
+						System.err.println("Invalid expression. Please try again.");
+						System.exit(1);
+					}	
+				} 
+			} else {
+				solStack.push(Double.parseDouble(element.toString()));
+			}
+		}
+		System.out.println("The expression evaluates to " + solStack.peekAndPop() +".");
+	}
+
+	
+	public static void main(String[] args) {
+		System.out.println("Please enter a postfix expression with no spaces.");
+		Scanner readin = new Scanner(System.in);
+		String postfix = readin.nextLine();
+		readin.close();
+		
+		postfix = postfix.replaceAll("\\s", ""); // remove spaces
+		postfix = postfix.replaceAll("[^\\d/*+-]", ""); // remove any illegal characters
+		String[] postfixArray = postfix.split("(?!^)"); // converts string into array
+		
+		ExpressionTrees tree = new ExpressionTrees(postfixArray);
+		printPrefix(tree);
+		printInfix(tree);
+		solve(postfixArray);
+	}
+}
+
