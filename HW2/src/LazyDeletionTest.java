@@ -17,6 +17,8 @@ public class LazyDeletionTest {
 
 		System.out.println("\nPrinting tree...");
 		t.printTree();
+		System.out.println("Checking size: tree has " + t.size() + " elements");
+
 		
 		System.out.print("Removed ");
 		for (int i = 1; i < NUMS; i += 2) {
@@ -26,6 +28,7 @@ public class LazyDeletionTest {
 
 		System.out.println("\nPrinting tree...");
 		t.printTree();
+		System.out.println("Checking size: tree has " + t.size() + " elements");
 			
 		System.out.println("Find min: " + t.findMin());
 		System.out.println("Find max: " + t.findMax());
@@ -33,18 +36,18 @@ public class LazyDeletionTest {
 		if (t.findMin() != 2 || t.findMax() != NUMS - 2)
 			System.out.println("FindMin or FindMax error!");
 
-		System.out.print("NO error: found ");
+		System.out.print("NO error: does contain ");
 		for (int i = 2; i < NUMS; i += 2) {
 			if (!t.contains(i))
-				System.out.println("Find error1! Missing " + i);
+				System.out.println("Find error1! Should contain but does not contain " + i);
 			else
 				System.out.print(i + "  ");
 		}
 		
-		System.out.print("\nNO error: didn't find ");
+		System.out.print("\nNO error: doesn't contain ");
 		for (int i = 1; i < NUMS; i += 2) {
 			if (t.contains(i))
-				System.out.println("Find error2! Found " + i);
+				System.out.println("Find error2! Should not but does contain " + i);
 			else
 				System.out.print(i + "  ");
 		}
@@ -57,6 +60,8 @@ public class LazyDeletionTest {
 		t.remove(6);
 		System.out.println("Printing tree... ");
 		t.printTree();
+		System.out.println("Checking size: tree has " + t.size() + " elements");
+
 		System.out.println("Does this contain 1? " + t.contains(1));
 		System.out.println("Does this contain 2? " + t.contains(2));
 		System.out.println("Find min: " + t.findMin());
@@ -73,6 +78,8 @@ public class LazyDeletionTest {
 		
 		System.out.println("Let's try to print tree...");
 		t.printTree();
+		System.out.println("Checking size: tree has " + t.size() + " elements");
+
 		System.out.println("Is tree empty? " + t.isEmpty());
 		
 		System.out.println("That's it, folks. All systems appear to be up and running.");
