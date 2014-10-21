@@ -146,48 +146,53 @@ public class CompleteMatrixSolver {
 		return s;
 	}
 
-	public static void findNumberOfSols(double[][] inputMatrix, int m, int n) {
+	public static void findNumberOfSols(double[][] matrix, int m, int n) {
 		boolean noSol = false;
 		double[] b = new double[m];
-		int numOfPivots = 0;
+		int pivots = 0;
 
+		// create new vector b
 		for (int i = 0; i < m; i++) {
-			b[i] = inputMatrix[i][n];
+			b[i] = matrix[i][n];
 		}
 
+		// traverse down the diagonal, skipping columns if necessary
+		// to count the number of pivot columns
 		for (int i = 0; i < m; i++) {
 			for (int j = i; j < n; j++) {
-				if (inputMatrix[i][j] != 0) {
-					numOfPivots++;
-					break;
+				if (matrix[i][j] != 0) {
+					pivots++;
+					break; // go to the next row if pivot is found
 				} else {
-					while (inputMatrix[i][j] == 0 && j < (n - 1)) {
-						j++;
+					while (matrix[i][j] == 0 && j < (n - 1)) {
+						j++; // skip to next column if finding 0's in the row
 					}
-					if (inputMatrix[i][j] != 0) {
-						numOfPivots++;
+					if (matrix[i][j] != 0) {
+						pivots++;
 						break;
 					}
 				}
 			}
 		}
+		
+		System.out.println("Number of pivot columns, or the rank: " + pivots);
 
-		if (inputMatrix.length == inputMatrix[0].length - 1 && numOfPivots == n) { //
+		if (matrix.length == matrix[0].length - 1 && pivots == n) { //
 			System.out.println("There is one solution:\n");
 			double[] solVector = new double[m];
 			for (int i = (m - 1); i >= 0; i--) {
 				double sum = 0;
 				for (int j = i + 1; j < m; j++) {
-					sum += inputMatrix[i][j] * solVector[j];
+					sum += matrix[i][j] * solVector[j];
 				}
-				solVector[i] = (b[i] - sum) / inputMatrix[i][i];
+				solVector[i] = (b[i] - sum) / matrix[i][i];
 			}
 
 			for (int i = 0; i < solVector.length; i++) {
 				System.out.println(solVector[i]);
 			}
-		} else if (numOfPivots == n && numOfPivots < m) {
-			int potentialZeroRows = m - numOfPivots;
+		} else if (pivots == n && pivots < m) {
+			int potentialZeroRows = m - pivots;
 			for (int i = b.length - 1; i > ((b.length - 1) - potentialZeroRows); i--) {
 				if (b[i] != 0) {
 					System.out.println("There is no solution\n");
@@ -201,9 +206,9 @@ public class CompleteMatrixSolver {
 				for (int i = (m - 1 - potentialZeroRows); i >= 0; i--) {
 					double sum = 0;
 					for (int j = i + 1; j < m - potentialZeroRows; j++) {
-						sum += inputMatrix[i][j] * solVector[j];
+						sum += matrix[i][j] * solVector[j];
 					}
-					solVector[i] = (b[i] - sum) / inputMatrix[i][i];
+					solVector[i] = (b[i] - sum) / matrix[i][i];
 				}
 
 				for (int i = 0; i < solVector.length; i++) {
@@ -212,7 +217,7 @@ public class CompleteMatrixSolver {
 			}
 		}
 
-		else if (numOfPivots == m && numOfPivots < n) {
+		else if (pivots == m && pivots < n) {
 			double divideBy = 0;
 			System.out.println("There are infinite solutions.\n");
 			System.out.println("The RREF is: \n");
@@ -220,14 +225,14 @@ public class CompleteMatrixSolver {
 			for (int i = 0; i < m; i++) {
 				contFlag = false;
 				for (int j = i; j < n; j++) {
-					if (inputMatrix[i][j] != 0) {
-						divideBy = inputMatrix[i][j];
+					if (matrix[i][j] != 0) {
+						divideBy = matrix[i][j];
 						contFlag = true;
 					}
 					if (contFlag) {
 						for (int k = i; k < (n + 1); k++) {
 							if (divideBy != 0) {
-								inputMatrix[i][k] = (inputMatrix[i][k] / divideBy);
+								matrix[i][k] = (matrix[i][k] / divideBy);
 							}
 						}
 						break;
@@ -239,14 +244,14 @@ public class CompleteMatrixSolver {
 			for (int i = m - 1; i >= 0; i--) {
 				firstTime = true;
 				for (int j = 0; j < n; j++) {
-					if (inputMatrix[i][j] != 0 && firstTime) {
+					if (matrix[i][j] != 0 && firstTime) {
 						for (int k = (i - 1); k >= 0; k--) {
-							double pivot = -inputMatrix[k][j];
+							double pivot = -matrix[k][j];
 							firstTime = false;
 							for (int l = j; l < (n + 1); l++) {
 								if (pivot != 0) {
-									inputMatrix[k][l] += pivot
-											* inputMatrix[i][l];
+									matrix[k][l] += pivot
+											* matrix[i][l];
 								}
 							}
 						}
@@ -254,19 +259,19 @@ public class CompleteMatrixSolver {
 				}
 			}
 
-			System.out.println(toString(inputMatrix, 1));
+			System.out.println(toString(matrix, 1));
 
 			System.out.println("\nA particular solution is: \n");
 			int i = 0;
 			int j = 0;
 			boolean[] fpArray = new boolean[n];
 			while (j < n && i < m) {
-				if (inputMatrix[i][j] != 0) {
+				if (matrix[i][j] != 0) {
 					fpArray[j] = true; // true means pivot
 					i++;
 					j++;
 				} else {
-					while (inputMatrix[i][j] == 0 && j < n) {
+					while (matrix[i][j] == 0 && j < n) {
 						fpArray[j] = false; // false means free
 						j++;
 					}
@@ -276,7 +281,7 @@ public class CompleteMatrixSolver {
 
 			for (int r = 0; r < fpArray.length; r++) {
 				if (fpArray[r]) {
-					System.out.printf("%.2f\n", inputMatrix[counter][n]);
+					System.out.printf("%.2f\n", matrix[counter][n]);
 					counter++;
 				} else {
 					System.out.println("0.00");
@@ -292,7 +297,7 @@ public class CompleteMatrixSolver {
 							System.out.println(1);
 						} else if (fpArray[y] == true) {
 							System.out.printf("%.2f\n",
-									(-1 * inputMatrix[counterNullspace][t]));
+									(-1 * matrix[counterNullspace][t]));
 							counterNullspace++;
 						} else {
 							System.out.println(0);
@@ -302,7 +307,7 @@ public class CompleteMatrixSolver {
 			}
 
 		} else {
-			int potentialZeroRows = m - numOfPivots;
+			int potentialZeroRows = m - pivots;
 			for (int i = b.length - 1; i > ((b.length - 1) - potentialZeroRows); i--) {
 				if (b[i] != 0) {
 					System.out.println("There is no solution\n");
@@ -318,14 +323,14 @@ public class CompleteMatrixSolver {
 				for (int i = 0; i < m; i++) {
 					contFlag = false;
 					for (int j = i; j < n; j++) {
-						if (inputMatrix[i][j] != 0) {
-							divideBy = inputMatrix[i][j];
+						if (matrix[i][j] != 0) {
+							divideBy = matrix[i][j];
 							contFlag = true;
 						}
 						if (contFlag) {
 							for (int k = i; k < (n + 1); k++) {
 								if (divideBy != 0) {
-									inputMatrix[i][k] = (inputMatrix[i][k] / divideBy);
+									matrix[i][k] = (matrix[i][k] / divideBy);
 								}
 							}
 							break;
@@ -336,14 +341,14 @@ public class CompleteMatrixSolver {
 				for (int i = m - 1; i >= 0; i--) {
 					firstTime = true;
 					for (int j = 0; j < n; j++) {
-						if (inputMatrix[i][j] != 0 && firstTime) {
+						if (matrix[i][j] != 0 && firstTime) {
 							for (int k = (i - 1); k >= 0; k--) {
-								double pivot = -inputMatrix[k][j];
+								double pivot = -matrix[k][j];
 								firstTime = false;
 								for (int l = j; l < (n + 1); l++) {
 									if (pivot != 0) {
-										inputMatrix[k][l] += pivot
-												* inputMatrix[i][l];
+										matrix[k][l] += pivot
+												* matrix[i][l];
 									}
 								}
 							}
@@ -351,19 +356,19 @@ public class CompleteMatrixSolver {
 					}
 				}
 
-				System.out.println(toString(inputMatrix, 1));
+				System.out.println(toString(matrix, 1));
 
 				System.out.println("A particular solution is:\n");
 				int i = 0;
 				int j = 0;
 				boolean[] fpArray = new boolean[n];
 				while (j < n && i < m) {
-					if (inputMatrix[i][j] != 0) {
+					if (matrix[i][j] != 0) {
 						fpArray[j] = true; // true means pivot
 						i++;
 						j++;
 					} else {
-						while (inputMatrix[i][j] == 0 && j < n) {
+						while (matrix[i][j] == 0 && j < n) {
 							fpArray[j] = false; // false means free
 							j++;
 						}
@@ -373,7 +378,7 @@ public class CompleteMatrixSolver {
 
 				for (int r = 0; r < fpArray.length; r++) {
 					if (fpArray[r]) {
-						System.out.printf("%.2f\n", inputMatrix[counter][n]);
+						System.out.printf("%.2f\n", matrix[counter][n]);
 						counter++;
 					} else {
 						System.out.println("0.00");
@@ -390,7 +395,7 @@ public class CompleteMatrixSolver {
 								System.out.println("1.00");
 							} else if (fpArray[y] == true) {
 								System.out.printf("%.2f\n", -1
-										* inputMatrix[counterNullspace][t]);
+										* matrix[counterNullspace][t]);
 								counterNullspace++;
 							} else {
 								System.out.println("0.00");
