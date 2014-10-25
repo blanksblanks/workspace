@@ -214,7 +214,8 @@ public class QuadraticProbingHashTable<AnyType>
      * Internal method to allocate array.
      * @param arraySize the size of the array.
      */
-    private void allocateArray( int arraySize )
+    @SuppressWarnings("unchecked")
+	private void allocateArray( int arraySize )
     {
         array = new HashEntry[ nextPrime( arraySize ) ];
     }
@@ -259,20 +260,16 @@ public class QuadraticProbingHashTable<AnyType>
 	public static void main(String[] args) throws FileNotFoundException {
 		if (args.length == 3) {
 			QuadraticProbingHashTable<String> bigDict = DictionaryHasher(args[0]);
-			QuadraticProbingHashTable<String> personalDict = DictionaryHasher(args[0]);
-			
+			QuadraticProbingHashTable<String> personalDict = DictionaryHasher(args[1]);
 			LinkedList<String> inputFile = FileLineParser(args[2]);
-			File inFile = new File(args[0]);
-			
 			spellChecker(inputFile, bigDict, personalDict);
-
 		} else {
 				System.out.println("Two dictionaries and input files not properly specified. Please try again!");
 				System.exit(1);
 			}
 	}
 	
-	public static QuadraticProbingHashTable<String> DictionaryHasher(String fileName){
+	public static QuadraticProbingHashTable<String> DictionaryHasher(String fileName) throws FileNotFoundException{
 		QuadraticProbingHashTable<String> dictionary = new QuadraticProbingHashTable<>( );
 		File inFile = new File(fileName);
 		if (inFile.exists()) {
@@ -286,12 +283,12 @@ public class QuadraticProbingHashTable<AnyType>
 		} else {
 				System.out
 						.print("That file does not appear to exist. Please try again!");
-				return null;
 				System.exit(1);
+				return null;
 			}
 	}
 	
-	public static LinkedList<String> FileLineParser(String fileName) {
+	public static LinkedList<String> FileLineParser(String fileName) throws FileNotFoundException {
 		File inFile = new File(fileName);
 		if (inFile.exists()) {
 			LinkedList<String> linesList = new LinkedList<>();
@@ -305,8 +302,8 @@ public class QuadraticProbingHashTable<AnyType>
 		} else {
 				System.out
 						.print("That file does not appear to exist. Please try again!");
-				return null;
 				System.exit(1);
+				return null;
 			}
 	}
 	
@@ -325,8 +322,8 @@ public class QuadraticProbingHashTable<AnyType>
 					// inside, or single quotes)
 					word = word.replaceFirst("^[^a-zA-Z']+", "")
 							.replaceAll("[^a-zA-Z']+$", "").toLowerCase();
-					if (!dict1.contains(word) && !dict2.contains(word));
-					System.out.println(word + ", line " + lineNumber);
+					if (!dict1.contains(word) && !dict2.contains(word))
+						System.out.println(word + ", line " + lineNumber);
 				}
 			}
 			lineNumber++;
@@ -363,12 +360,12 @@ public class QuadraticProbingHashTable<AnyType>
 //            if( H.contains( ""+i ) )
 //                System.out.println( "OOPS!!! " +  i  );
 //        }
-//        
-//        long endTime = System.currentTimeMillis( );
-//        
-//        System.out.println( "Elapsed time: " + (endTime - startTime) );
-//        System.out.println( "H size is: " + H.size( ) );
-//        System.out.println( "Array size is: " + H.capacity( ) );
-    }
+////        
+////        long endTime = System.currentTimeMillis( );
+////        
+////        System.out.println( "Elapsed time: " + (endTime - startTime) );
+////        System.out.println( "H size is: " + H.size( ) );
+////        System.out.println( "Array size is: " + H.capacity( ) );
+//    }
 
 }
