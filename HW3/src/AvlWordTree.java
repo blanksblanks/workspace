@@ -402,33 +402,6 @@ public class AvlWordTree<AnyType extends Comparable<? super AnyType>> {
 	/** The tree root. */
 	private AvlWordNode<AnyType> root;
 
-	// Test program
-
-	public static void main(String[] args) throws FileNotFoundException {
-		if (args.length < 1 || args.length > 1) {
-			System.out
-					.println("Input file not properly specified. Please try again!");
-			System.exit(1);
-		} else {
-			File inFile = new File(args[0]);
-			if (inFile.exists()) {
-				LinkedList<String> linesList = new LinkedList<>();
-				Scanner input = new Scanner(inFile);
-				while (input.hasNextLine()) {
-					String line = input.nextLine();
-					linesList.add(line);
-				}
-				input.close();
-				AvlWordTree<String> wordTree = buildTree(linesList);
-				wordTree.printTree();
-			} else {
-				System.out
-						.print("That file does not appear to exist. Please try again!");
-				System.exit(1);
-			}
-		}
-	}
-
 	// TODO: Should this method be private and initialized in the wordTree
 	// constructor?
 	public static AvlWordTree<String> buildTree(LinkedList<String> LoL) {
@@ -455,5 +428,31 @@ public class AvlWordTree<AnyType extends Comparable<? super AnyType>> {
 		}
 		return wordTree;
 	}
+	
+	// Test program
 
+	public static void main(String[] args) throws FileNotFoundException {
+		if (args.length < 1 || args.length > 1) {
+			System.out
+					.println("Input file not properly specified. Please try again!");
+			System.exit(1);
+		} else {
+			File inFile = new File(args[0]);
+			if (inFile.exists()) {
+				LinkedList<String> linesList = new LinkedList<>();
+				Scanner input = new Scanner(inFile);
+				while (input.hasNextLine()) {
+					String line = input.nextLine();
+					linesList.add(line);
+				}
+				input.close();
+				AvlWordTree<String> wordTree = buildTree(linesList);
+				wordTree.printTree();
+			} else {
+				System.out
+						.print("That file does not appear to exist. Please try again!");
+				System.exit(1);
+			}
+		}
+	}
 }

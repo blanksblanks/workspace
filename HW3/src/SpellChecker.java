@@ -19,17 +19,17 @@
  *         dictionary file. Write your own hash function. In addition, the file
  *         being spellchecked should be provided as a command line argument.
  * 
- *         Pseudo code: hash "apple" and point to tree of possible misspellings
+ *         Pseudo code: hash "apple" key and point to []/LL/tree of possible misspellings
  *         add one char:
  *         string s = apple;
- *         while (apple has next){
+ *         while (apple has next)/for char in s{
  *         string t = s(remove i)
  *         if (s = hash)
  *          	insert t;
  *         i++;
  *         }
  *         
- *         exchange chars:
+ *         exchange chars: (temp = next; next = current next; previous = current; current = temp)
  *         temp = i;
  *         i = i.next;
  *         i.next = temp;
@@ -37,5 +37,7 @@
  */
 
 public class SpellChecker {
+	
+	
 
 }
