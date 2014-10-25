@@ -1,3 +1,10 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.StringTokenizer;
+
 
 // QuadraticProbing Hash table class
 //
@@ -249,44 +256,119 @@ public class QuadraticProbingHashTable<AnyType>
         return true;
     }
 
-    public static void main( String [ ] args )
-    {
-    	
-    	
-        QuadraticProbingHashTable<String> H = new QuadraticProbingHashTable<>( );
+	public static void main(String[] args) throws FileNotFoundException {
+		if (args.length == 3) {
+			QuadraticProbingHashTable<String> bigDict = DictionaryHasher(args[0]);
+			QuadraticProbingHashTable<String> personalDict = DictionaryHasher(args[0]);
+			
+			LinkedList<String> inputFile = FileLineParser(args[2]);
+			File inFile = new File(args[0]);
+			
+			spellChecker(inputFile, bigDict, personalDict);
 
-        
-        long startTime = System.currentTimeMillis( );
-        
-        final int NUMS = 2000000;
-        final int GAP  =   37;
-
-        System.out.println( "Checking... (no more output means success)" );
-
-
-        for( int i = GAP; i != 0; i = ( i + GAP ) % NUMS )
-            H.insert( ""+i );
-        for( int i = GAP; i != 0; i = ( i + GAP ) % NUMS )
-            if( H.insert( ""+i ) )
-                System.out.println( "OOPS!!! " + i );
-        for( int i = 1; i < NUMS; i+= 2 )
-            H.remove( ""+i );
-
-        for( int i = 2; i < NUMS; i+=2 )
-            if( !H.contains( ""+i ) )
-                System.out.println( "Find fails " + i );
-
-        for( int i = 1; i < NUMS; i+=2 )
-        {
-            if( H.contains( ""+i ) )
-                System.out.println( "OOPS!!! " +  i  );
-        }
-        
-        long endTime = System.currentTimeMillis( );
-        
-        System.out.println( "Elapsed time: " + (endTime - startTime) );
-        System.out.println( "H size is: " + H.size( ) );
-        System.out.println( "Array size is: " + H.capacity( ) );
+		} else {
+				System.out.println("Two dictionaries and input files not properly specified. Please try again!");
+				System.exit(1);
+			}
+	}
+	
+	public static QuadraticProbingHashTable<String> DictionaryHasher(String fileName){
+		QuadraticProbingHashTable<String> dictionary = new QuadraticProbingHashTable<>( );
+		File inFile = new File(fileName);
+		if (inFile.exists()) {
+			Scanner input = new Scanner(inFile);
+			while (input.hasNextLine()) {
+				String entry = input.nextLine();
+				dictionary.insert(entry);
+			}
+			input.close();
+			return dictionary;
+		} else {
+				System.out
+						.print("That file does not appear to exist. Please try again!");
+				return null;
+				System.exit(1);
+			}
+	}
+	
+	public static LinkedList<String> FileLineParser(String fileName) {
+		File inFile = new File(fileName);
+		if (inFile.exists()) {
+			LinkedList<String> linesList = new LinkedList<>();
+			Scanner input = new Scanner(inFile);
+			while (input.hasNextLine()) {
+				String line = input.nextLine();
+				linesList.add(line);
+			}
+			input.close();
+			return linesList;
+		} else {
+				System.out
+						.print("That file does not appear to exist. Please try again!");
+				return null;
+				System.exit(1);
+			}
+	}
+	
+	public static void spellChecker(LinkedList<String> LoL, QuadraticProbingHashTable<String> dict1, QuadraticProbingHashTable<String> dict2) {
+		int lineNumber = 1;
+		Iterator<String> lines = LoL.iterator();
+		// Insert words and line number from each line into the tree
+		while (lines.hasNext()) {
+			String line = lines.next();
+			StringTokenizer words = new StringTokenizer(line);
+			while (words.hasMoreTokens()) {
+				String word = words.nextToken();
+				// Check that token contains alphabetical characters i.e. a word
+				if (word.matches(".*[a-zA-Z]+.*")) {
+					// Remove punctuation before and after each word (but not
+					// inside, or single quotes)
+					word = word.replaceFirst("^[^a-zA-Z']+", "")
+							.replaceAll("[^a-zA-Z']+$", "").toLowerCase();
+					if (!dict1.contains(word) && !dict2.contains(word));
+					System.out.println(word + ", line " + lineNumber);
+				}
+			}
+			lineNumber++;
+		}
+	}
+    
+//    public static void main( String [ ] args )
+//    {	
+//        QuadraticProbingHashTable<String> H = new QuadraticProbingHashTable<>( );
+//
+//        
+//        long startTime = System.currentTimeMillis( );
+//        
+//        final int NUMS = 2000000;
+//        final int GAP  =   37;
+//
+//        System.out.println( "Checking... (no more output means success)" );
+//
+//
+//        for( int i = GAP; i != 0; i = ( i + GAP ) % NUMS )
+//            H.insert( ""+i );
+//        for( int i = GAP; i != 0; i = ( i + GAP ) % NUMS )
+//            if( H.insert( ""+i ) )
+//                System.out.println( "OOPS!!! " + i );
+//        for( int i = 1; i < NUMS; i+= 2 )
+//            H.remove( ""+i );
+//
+//        for( int i = 2; i < NUMS; i+=2 )
+//            if( !H.contains( ""+i ) )
+//                System.out.println( "Find fails " + i );
+//
+//        for( int i = 1; i < NUMS; i+=2 )
+//        {
+//            if( H.contains( ""+i ) )
+//                System.out.println( "OOPS!!! " +  i  );
+//        }
+//        
+//        long endTime = System.currentTimeMillis( );
+//        
+//        System.out.println( "Elapsed time: " + (endTime - startTime) );
+//        System.out.println( "H size is: " + H.size( ) );
+//        System.out.println( "Array size is: " + H.capacity( ) );
     }
 
 }
