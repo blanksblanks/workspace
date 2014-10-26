@@ -1,5 +1,44 @@
+/**
+ * 
+ * Exercise 5.21
+ * 
+ * @author nb2406
+ * 
+ *         Weiss, Exercise 5.21: Implement a spelling checker by using a hash
+ *         table. Assume that the dictionary comes from two sources: an existing
+ *         large dictionary and a second file containing a personal dictionary.
+ *         Output all misspelled words and the line numbers in which they occur.
+ *         Also, for each misspelled word, list any words in the dictionary that
+ *         are obtainable by applying any of the following rules: a. Add one
+ *         character. b. Remove one character. c. Exchange adjacent characters.
+ * 
+ *         This is a command line application. The dictionary files should be
+ *         provided as command line arguments to the programming. Here is a
+ *         sample dictionary file. You do not have to submit the big dictionary
+ *         file with your program, but you should submit a sample small
+ *         dictionary file. Write your own hash function. In addition, the file
+ *         being spellchecked should be provided as a command line argument.
+ * 
+ *         Pseudo code: hash "apple" key and point to []/LL/tree of possible misspellings
+ *         add one char:
+ *         string s = apple;
+ *         while (apple has next)/for char in s{
+ *         string t = s(remove i)
+ *         if (s = hash)
+ *          	insert t;
+ *         i++;
+ *         }
+ *         
+ *         exchange chars: (temp = next; next = current next; previous = current; current = temp)
+ *         temp = i;
+ *         i = i.next;
+ *         i.next = temp;
+ * 
+ */
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -322,12 +361,62 @@ public class QuadraticProbingHashTable<AnyType>
 					// inside, or single quotes)
 					word = word.replaceFirst("^[^a-zA-Z']+", "")
 							.replaceAll("[^a-zA-Z']+$", "").toLowerCase();
-					if (!dict1.contains(word) && !dict2.contains(word))
-						System.out.println(word + ", line " + lineNumber);
+					if (!dict1.contains(word) && !dict2.contains(word)){
+						System.out.print(word + ", line " + lineNumber + ", suggestions: ");
+						LinkedList<String> suggestions = wordSuggester(word, dict1, dict2);
+						Iterator<String> suggestionsIterator = suggestions.iterator();
+						while (suggestionsIterator.hasNext()){
+							System.out.print(suggestionsIterator.next());
+			    			if (suggestionsIterator.hasNext())
+			    				System.out.print(", ");
+			    			else
+			    				System.out.println();
+						}
+						
+					}
 				}
 			}
 			lineNumber++;
 		}
+	}
+	
+	public static LinkedList<String> wordSuggester(String word, QuadraticProbingHashTable<String> dict1, QuadraticProbingHashTable<String> dict2){
+		char[] wordCharArr = word.toCharArray();
+	    LinkedList<String> words = new LinkedList<String>();
+	    
+	    // Add one character
+	    for (int i = 0; i <= wordCharArr.length; i++) {
+        	String addedApostrophe = word.substring(0,i) + "'" + word.substring(i,wordCharArr.length);
+	        for (char j = 'a'; j <= 'z'; j++) {
+	        	String addedChar = word.substring(0,i) + j + word.substring(i,wordCharArr.length);
+	        	if (dict1.contains(addedApostrophe) || dict2.contains(addedApostrophe))
+	        		words.add(addedApostrophe);
+	        	if (dict1.contains(addedChar) || dict2.contains(addedChar))
+	        		words.add(addedChar);
+	        }
+	    }
+	    
+	    // Remove one character
+	    for (int i = 0; i <= wordCharArr.length - 1; i++) {
+        	String removedChar = word.substring(0,i) + word.substring(i+1);
+	        	if (dict1.contains(removedChar) || dict2.contains(removedChar))
+	        		if (!words.contains(removedChar))
+	        			words.add(removedChar);
+	    }
+	    
+
+	 // Swap adjacent characters
+		for (int i = 0; i < wordCharArr.length - 1; i++) {
+			char temp = wordCharArr[i];
+			wordCharArr[i] = wordCharArr[i + 1];
+			wordCharArr[i + 1] = temp;
+			String swapped = new String(wordCharArr);
+        	if (dict1.contains(swapped) || dict2.contains(swapped))
+        		if (!words.contains(swapped))
+        			words.add(swapped);
+		}
+		
+		return words;
 	}
     
 //    public static void main( String [ ] args )
