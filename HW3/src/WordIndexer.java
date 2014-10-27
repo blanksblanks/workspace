@@ -57,13 +57,14 @@ public class WordIndexer {
 		// Insert words and line number from each line into the tree
 		while (lines.hasNext()) {
 			String line = lines.next();
+			// Delimit words by spaces
 			StringTokenizer words = new StringTokenizer(line);
 			while (words.hasMoreTokens()) {
 				String word = words.nextToken();
-				// Check that token contains alphabetical characters i.e. a word
+				// Check that token contains alphabetical characters i.e. is a word
 				if (word.matches(".*[a-zA-Z]+.*")) {
-					// Remove punctuation before and after each word (but not
-					// inside, or single quotes)
+					// Remove punctuation (except for apostrophes) that come before or after each word
+					// (keep punctuation in the middle of alphabetical characters)
 					word = word.replaceFirst("^[^a-zA-Z']+", "")
 							.replaceAll("[^a-zA-Z']+$", "").toLowerCase();
 					wordTree.insert(word, lineNumber);
