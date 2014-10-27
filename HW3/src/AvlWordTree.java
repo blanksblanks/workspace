@@ -1,23 +1,3 @@
-/**
- * 
- * AvlWordTree
- * 
- * @author nb2406
- * 
- *         Write a command line application that indexes the words contained in
- *         a text file (provided to the program as a command line argument).
- *         Your program should go through the input file line by line. For each
- *         line, extract each word, and insert that word, along with it's
- *         location into an AVL tree. Each element of the AVL tree should
- *         contain a unique word and a linked list of line numbers where that
- *         word occurs. If word already exists in the AVL Tree, simply add the
- *         new line number to the existing node. When you have finished, print
- *         out each unique word that appeared in the input file along with a
- *         list of line on which that word appears. You may use Weiss' AVL tree
- *         code as a starting point for your program.
- * 
- */
-
 // Modifies AvlTree class by Weiss
 //
 // CONSTRUCTION: with no initializer
@@ -38,10 +18,7 @@
 // ******************ERRORS********************************
 // Throws UnderflowException as appropriate
 
-import java.io.*;
 import java.util.LinkedList;
-import java.util.Scanner;
-import java.util.StringTokenizer;
 import java.util.Iterator;
 
 /**
@@ -402,57 +379,4 @@ public class AvlWordTree<AnyType extends Comparable<? super AnyType>> {
 	/** The tree root. */
 	private AvlWordNode<AnyType> root;
 
-	// TODO: Should this method be private and initialized in the wordTree
-	// constructor?
-	public static AvlWordTree<String> buildTree(LinkedList<String> LoL) {
-		// Initialize tree, line number and iterator for each line
-		AvlWordTree<String> wordTree = new AvlWordTree<>();
-		int lineNumber = 1;
-		Iterator<String> lines = LoL.iterator();
-		// Insert words and line number from each line into the tree
-		while (lines.hasNext()) {
-			String line = lines.next();
-			StringTokenizer words = new StringTokenizer(line);
-			while (words.hasMoreTokens()) {
-				String word = words.nextToken();
-				// Check that token contains alphabetical characters i.e. a word
-				if (word.matches(".*[a-zA-Z]+.*")) {
-					// Remove punctuation before and after each word (but not
-					// inside, or single quotes)
-					word = word.replaceFirst("^[^a-zA-Z']+", "")
-							.replaceAll("[^a-zA-Z']+$", "").toLowerCase();
-					wordTree.insert(word, lineNumber);
-				}
-			}
-			lineNumber++;
-		}
-		return wordTree;
-	}
-	
-	// Test program
-
-	public static void main(String[] args) throws FileNotFoundException {
-		if (args.length < 1 || args.length > 1) {
-			System.out
-					.println("Input file not properly specified. Please try again!");
-			System.exit(1);
-		} else {
-			File inFile = new File(args[0]);
-			if (inFile.exists()) {
-				LinkedList<String> linesList = new LinkedList<>();
-				Scanner input = new Scanner(inFile);
-				while (input.hasNextLine()) {
-					String line = input.nextLine();
-					linesList.add(line);
-				}
-				input.close();
-				AvlWordTree<String> wordTree = buildTree(linesList);
-				wordTree.printTree();
-			} else {
-				System.out
-						.print("That file does not appear to exist. Please try again!");
-				System.exit(1);
-			}
-		}
-	}
 }
