@@ -39,6 +39,7 @@ public class CompleteMatrixSolver {
 	}
 
 	// Transform augmented matrix into RREF
+	// Pseudocode: 
 	public static double[][] toRREF(double[][] M, int m, int n) {
 		int piv = 0;
 		for (int k = 0; k < m; k++) {
