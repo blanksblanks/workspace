@@ -38,18 +38,22 @@ public class CompleteMatrixSolver {
 		return augmented;
 	}
 
-	// Transform augmented matrix into RREF
-	// Pseudocode: 
+	/* Transform augmented matrix into RREF:
+	 * a. Search down and right for 1st non-zero entry
+	 * b. Swap rows if necessary so pivot is in first row
+	 * c. Subtract multiples of 1st row from other rows to get all 0's below pivot in the column
+	 * d. Repeat steps on all elements below and to the right of current pivot
+	 */
 	public static double[][] toRREF(double[][] M, int m, int n) {
 		int piv = 0;
-		for (int k = 0; k < m; k++) {
-			if (piv >= n) // done
+		for (int k = 0; k < m; k++) { // go down rows
+			if (piv >= n) // done - full rank
 				break;
 			{
 				int i = k;
 				while (M[i][piv] == 0) {
-					i++; // search column for nonzero element
-					if (i == m) {
+					i++; // search down column for nonzero element
+					if (i == m) { // if we reach end of row
 						i = k; // move on to next column 
 						piv++;
 						if (piv == n)
@@ -63,7 +67,7 @@ public class CompleteMatrixSolver {
 			// turn pivots into 1's
 			{
 				double factor = M[k][piv];
-				for (int j = 0; j < n+1; j++)
+				for (int j = 0; j < n+1; j++) // divide by same factor including vector b
 					M[k][j] /= factor;
 			}
 			// eliminate other elements in the same column
@@ -188,10 +192,10 @@ public class CompleteMatrixSolver {
 					int NA = 0;
 					if (findPiv[t] == 0) {
 						print("");
-						for (int y = 0; y < n; y++) {
-							if (findPiv[y] == 0 && y == t) {
+						for (int u = 0; u < n; u++) {
+							if (findPiv[u] == 0 && u == t) {
 								print("1.00");
-							} else if (findPiv[y] == 1) {
+							} else if (findPiv[u] == 1) {
 								print(0 - matrix[NA][t]);
 								NA++;
 							} else {
@@ -227,23 +231,17 @@ public class CompleteMatrixSolver {
 	// Overloaded print methods to print to console and output file
 	public static void print(String s) {
 		System.out.println(s);
-		output.println(s);
 	}
 
 	public static void print(double d) {
 		System.out.printf("%.2f\n", d);
-		output.printf("%.2f\n", d);
 	}
-
-	public static File outFile;
-	public static PrintWriter output;
 
 	public static void main(String[] args) throws IOException {
 
-		if (args.length == 2) {
+		if (args.length == 1) {
 			// Assign command-line args to file names
 			File inFile = new File(args[0]);
-			outFile = new File(args[1]);
 
 			if (inFile.exists()) {
 				// Introduction
@@ -251,7 +249,6 @@ public class CompleteMatrixSolver {
 						.println("This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix. It has three types of output: no solution, unique solution, and infinitely many solutions.");
 
 				Scanner input = new Scanner(inFile);
-				output = new PrintWriter(outFile);
 				System.out.println("Reading in input values from \"" + args[0]
 						+ "\"...\n");
 
@@ -288,14 +285,7 @@ public class CompleteMatrixSolver {
 				System.out.println("Reduced row echelon form:\n"
 						+ toString(rref, 1));
 
-				boolean found = findSol(rref, m, n);
-
-				if (found)
-					System.out
-							.println("\nSuccessfully wrote solution set to \""
-									+ args[1] + "\"");
-
-				output.close();
+				findSol(rref, m, n);
 
 			} else {
 				System.out.println("No such input file found, good bye!");
