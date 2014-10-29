@@ -56,18 +56,18 @@ public class WordIndexer {
 		while (lines.hasNext()) {
 			String line = lines.next();
 			// Please ignore case, but preserve punctuation EXCEPT for commas and periods that are followed by a space
-			line = line.replace(". ", "").replace(", ", "").toLowerCase();
+			// line = line.replace(". ", "").replace(", ", "").toLowerCase();
 			// Delimit words by spaces
 			StringTokenizer words = new StringTokenizer(line);
 			while (words.hasMoreTokens()) {
 				String word = words.nextToken();
 				// Check that token contains alphabetical characters i.e. is a word
-				//if (word.matches(".*[a-zA-Z]+.*")) {
-					// Remove punctuation (except for apostrophes) that come before or after each word
+				if (word.matches(".*[a-zA-Z]+.*")) {
+					// Remove all punctuation (except for apostrophes) that come before or after each word
 					// (that is, keep punctuation in the middle of alphabetical characters)
-					// word = word.replaceFirst("^[^a-zA-Z']+", "").replaceAll("[^a-zA-Z']+$", "").toLowerCase();
+					word = word.replaceFirst("^[^a-zA-Z']+", "").replaceAll("[^a-zA-Z']+$", "").toLowerCase();
 					wordTree.insert(word, lineNumber);
-				//}
+				}
 			}
 			lineNumber++;
 		}

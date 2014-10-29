@@ -58,7 +58,7 @@ public class SpellChecker {
 			input.close();
 		} else {
 				System.out
-						.print("That file does not appear to exist. Please try again!");
+						.print("One of these files does not appear to exist. Please try again!");
 				System.exit(1);
 			}
 	}
@@ -91,25 +91,29 @@ public class SpellChecker {
 		// Insert words and line number from each line into the tree
 		while (lines.hasNext()) {
 			String line = lines.next();
-			line = line.replace(". ", "").replace(", ", "").toLowerCase();
+//			line = line.replace(". ", "").replace(", ", "").toLowerCase();
 			StringTokenizer words = new StringTokenizer(line);
 			while (words.hasMoreTokens()) {
 				String word = words.nextToken();
-				if (!dict.contains(word)) {
-					System.out.print(word + ", line " + lineNumber);
-					LinkedList<String> suggestions = wordSuggester(word);
-					if (suggestions.size() == 0)
-						System.out.println(", no suggestions");
-					else {
-						System.out.print(", suggestions: ");
-						Iterator<String> suggestionsIterator = suggestions
-								.iterator();
-						while (suggestionsIterator.hasNext()) {
-							System.out.print(suggestionsIterator.next());
-							if (suggestionsIterator.hasNext())
-								System.out.print(", ");
-							else
-								System.out.println();
+				if (word.matches(".*[a-zA-Z]+.*")) {
+					word = word.replaceFirst("^[^a-zA-Z']+", "")
+							.replaceAll("[^a-zA-Z']+$", "").toLowerCase();
+					if (!dict.contains(word)) {
+						System.out.print(word + ", line " + lineNumber);
+						LinkedList<String> suggestions = wordSuggester(word);
+						if (suggestions.size() == 0)
+							System.out.println(", no suggestions");
+						else {
+							System.out.print(", suggestions: ");
+							Iterator<String> suggestionsIterator = suggestions
+									.iterator();
+							while (suggestionsIterator.hasNext()) {
+								System.out.print(suggestionsIterator.next());
+								if (suggestionsIterator.hasNext())
+									System.out.print(", ");
+								else
+									System.out.println();
+							}
 						}
 					}
 
