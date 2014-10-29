@@ -45,9 +45,7 @@ public class WordIndexer {
 				return null;
 			}
 	}
-	
-	// TODO: Should this method be private and initialized in the wordTree constructor?
-	
+		
 	// Build tree containing words and line numbers from a linked list
 	private static AvlWordTree<String> indexWords(LinkedList<String> ListOfLines) {
 		// Initialize tree, line number and iterator for each line
@@ -57,18 +55,19 @@ public class WordIndexer {
 		// Insert words and line number from each line into the tree
 		while (lines.hasNext()) {
 			String line = lines.next();
+			// Please ignore case, but preserve punctuation EXCEPT for commas and periods that are followed by a space
+			line = line.replace(". ", "").replace(", ", "").toLowerCase();
 			// Delimit words by spaces
 			StringTokenizer words = new StringTokenizer(line);
 			while (words.hasMoreTokens()) {
 				String word = words.nextToken();
 				// Check that token contains alphabetical characters i.e. is a word
-				if (word.matches(".*[a-zA-Z]+.*")) {
+				//if (word.matches(".*[a-zA-Z]+.*")) {
 					// Remove punctuation (except for apostrophes) that come before or after each word
-					// (keep punctuation in the middle of alphabetical characters)
-					word = word.replaceFirst("^[^a-zA-Z']+", "")
-							.replaceAll("[^a-zA-Z']+$", "").toLowerCase();
+					// (that is, keep punctuation in the middle of alphabetical characters)
+					// word = word.replaceFirst("^[^a-zA-Z']+", "").replaceAll("[^a-zA-Z']+$", "").toLowerCase();
 					wordTree.insert(word, lineNumber);
-				}
+				//}
 			}
 			lineNumber++;
 		}
