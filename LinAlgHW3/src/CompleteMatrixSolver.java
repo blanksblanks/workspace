@@ -23,14 +23,7 @@ import java.util.Scanner;
 
 public class CompleteMatrixSolver {
 
-	// private final String inFileName;
-	// private final String outFileName;
-	// private int m;
-	// private int n;
-	// private double[][] A;
-	// private double[][] b;
-
-	// Takes matrix A and vector b and returns an augmented matrix
+	// Take matrix mxn A and mx1 vector b and returns an augmented matrix
 	public static double[][] augment(double[][] matrix, double[][] vector,
 			int m, int n) {
 		double[][] augmented = new double[m][n + 1];
@@ -45,90 +38,174 @@ public class CompleteMatrixSolver {
 		return augmented;
 	}
 
-	/*
-	 * Forward elimination reduces the system to upper-triangular form.
-	 */
-	public static double[][] forwardEliminate(double[][] A, int m, int n) {
-		for (int k = 0; k < n; k++) {
-			for (int i = k + 1; i < m; i++) {
-				double multiplier;
-				if (A[k][k] != 0)
-					multiplier = A[i][k] / A[k][k]; // # by which A[k][j]
-				// is multiplied before being subtracted from A[i][j]
-				else
-					multiplier = 0;
-				for (int j = k; j < n; j++) {
-					A[i][j] = A[i][j] - (multiplier * A[k][j]); // zeroes out
-					// non-zero entries in A below the diagonal - moving from
-					// top left to bottom right
+	// Transform augmented matrix into RREF
+	public static double[][] toRREF(double[][] M, int m, int n) {
+		int piv = 0;
+		for (int k = 0; k < m; k++) {
+			if (piv >= n) // done
+				break;
+			{
+				int i = k;
+				while (M[i][piv] == 0) {
+					i++; // search column for nonzero element
+					if (i == m) {
+						i = k; // move on to next column 
+						piv++;
+						if (piv == n)
+							return M; // already rref
+					}
 				}
-				if (A[i][n] != 0) // updates b entries
-					A[i][n] = A[i][n] - (multiplier * A[k][n]);
+				double[] temp = M[k]; // row swap
+				M[k] = M[i];
+				M[i] = temp;
 			}
+			// turn pivots into 1's
+			{
+				double factor = M[k][piv];
+				for (int j = 0; j < n+1; j++)
+					M[k][j] /= factor;
+			}
+			// eliminate other elements in the same column
+			for (int i = 0; i < m; i++) {
+				if (i != k) {
+					double factor = M[i][piv];
+					for (int j = 0; j < n+1; j++) {
+						M[i][j] -= factor * M[k][j];
+						if (M[i][j] == -0.00)
+							M[i][j] = 0.00;
+					}
+				}
+			}
+			piv++;
 		}
-		return A;
+		return M;
 	}
 
-	//
-	// public static void swapRows(double[][] matrix, int r1, int r2){
-	// double temp;
-	// for(int i = 0; i < matrix[0].length; i++){
-	// temp = matrix[r1][i];
-	// matrix[r1][i] = matrix[r2][i];
-	// matrix[r2][i] = temp;
-	// }
-	// }
+	/* Find possible solutions, which depend on rank r:
+	 * r == m && r == n has one solution
+	 * r == m && r < n infinite solutions
+	 * r < m && r == n has 0 or 1 solution
+	 * r < m && r < n has 0 or infinity solutions
+	 */
+	public static boolean findSol(double[][] matrix, int m, int n) {
+		double[] b = new double[m];
+		int r = 0;
 
-	public static double[][] eliminate(double[][] matrix, int m, int n) {
-		double pivot = 0;
-		int x = 0;
+		// create new vector b with updated values
+		for (int i = 0; i < m; i++) {
+			b[i] = matrix[i][n];
+		}
 
-		for (int i = 0; i < Math.min(m, n) && x < n; i++) {
-			x = i;
-			boolean found = false;
-			if (matrix[i][x] != 0) {
-				pivot = matrix[i][x];
-			} else {
-				for (int j = (i + 1); j < m; j++) {
-					if (matrix[j][i] != 0) { // swap rows
-					// swapRows(matrix, i, j);
-						double temp;
-						for (int k = 0; k < n; k++) {
-							temp = matrix[i][k]; // store r1
-							matrix[i][k] = matrix[j][k]; // replace r1 with r2
-							matrix[j][k] = temp; // replace r2 with r2
-						}
-						found = true;
+		// Find rank by traversing down the diagonal, skipping columns if necessary to count the number of pivot columns
+		for (int i = 0; i < m; i++) {
+			for (int j = i; j < n; j++) {
+				if (matrix[i][j] != 0) {
+					r++;
+					break; // go to the next row if pivot is found
+				} else {
+					while (matrix[i][j] == 0 && j < (n - 1)) {
+						j++; // skip to next column if finding 0's in the row
+					}
+					if (matrix[i][j] != 0) {
+						r++;
 						break;
 					}
 				}
-				if (!found) {
-					while (matrix[i][x] == 0 && x < (n - 1)) {
-						x++;
-					}
-					if (x < n) {
-						pivot = matrix[i][x];
-					}
-				} else {
-					pivot = matrix[i][x];
-				}
-			}
-			// At this point we've found the pivot
-			// Elimination
-			if (x < n && pivot != 0) {
-				for (int j = (i + 1); j < m; j++) {
-					double multiplier = -1 * matrix[j][x] / pivot;
-					for (int k = x; k <= n; k++) {
-						matrix[j][k] += multiplier * matrix[i][k];
-					}
-				}
 			}
 		}
-		return matrix;
+
+		System.out.println("Rank: " + r + "\n");
+
+		int solSet = 1; // default, but all cases below should be accounted for below
+		int diff = m - r; // rows - rank
+		
+		if (r == m && r == n) // 1 solution
+			solSet = 1;
+		else if (r == m && r < n) // infinite solutions
+			solSet = 2;
+		else if (r < m && r == n) {
+			solSet = 1; // 1 solution
+			for (int i = m - 1; i > (m - diff - 1); i--) { // check from bottom up
+				if (b[i] != 0) // change to 0 solution if any zeroe'd out rows have non-zero b elements
+					solSet = 0;
+			}
+		} else {
+			solSet = 2; // infinite solutions
+			for (int i = m - 1; i > (m - diff - 1); i--){
+				if (b[i] != 0) // change to 0 solution
+					solSet = 0;
+			}
+		}
+
+		switch (solSet) {
+			case 0:
+				print("There is no solution.");
+				break;
+			case 1:
+				print("There is one unique solution.\n");
+				double[] x = new double[m - diff];
+				for (int i = (m - 1 - diff); i >= 0; i--) {
+					double sum = 0;
+					for (int j = i + 1; j < m - diff; j++) {
+						sum += matrix[i][j] * x[j];
+					}
+					x[i] = (b[i] - sum) / matrix[i][i];
+				}
+				for (int i = 0; i < x.length; i++) {
+					print(x[i]);
+				}
+				break;
+			case 2:
+				print("There are infinitely many solutions.\n");
+				print("Particular solution xp:\n");
+				int i = 0;
+				int j = 0;
+				int[] findPiv = new int[n];
+				while (j < n && i < m) {
+					if (matrix[i][j] != 0) {
+						findPiv[j] = 1; // found pivot
+						i++;
+						j++;
+					} else {
+						while (matrix[i][j] == 0 && j < n) {
+							findPiv[j] = 0; // found free
+							j++;
+						}
+					}
+				}
+				int k = 0;
+				for (int s = 0; s < findPiv.length; s++) {
+					if (findPiv[s] != 0) {
+						print(matrix[k][n]);
+						k++;
+					} else {
+						print("0.00");
+					}
+				}
+				print("\nSpecial solutions: ");
+				for (int t = 0; t < findPiv.length; t++) {
+					int NA = 0;
+					if (findPiv[t] == 0) {
+						print("");
+						for (int y = 0; y < n; y++) {
+							if (findPiv[y] == 0 && y == t) {
+								print("1.00");
+							} else if (findPiv[y] == 1) {
+								print(0 - matrix[NA][t]);
+								NA++;
+							} else {
+								print("0.00");
+							}
+						}
+					}
+				}
+				break;
+		}
+		return true;
+
 	}
 
-	/*
-	 * Prints out the 2D array matrices with blanks between row entries to the
+	/* Print out the 2D array matrices with blanks between row entries to the
 	 * console. Format option 0: full values, option 1: truncated
 	 */
 	public static String toString(double[][] matrix, int format) {
@@ -146,283 +223,34 @@ public class CompleteMatrixSolver {
 		return s;
 	}
 
-	public static void findNumberOfSols(double[][] matrix, int m, int n) {
-		boolean noSol = false;
-		double[] b = new double[m];
-		int pivots = 0;
-
-		// create new vector b
-		for (int i = 0; i < m; i++) {
-			b[i] = matrix[i][n];
-		}
-
-		// traverse down the diagonal, skipping columns if necessary
-		// to count the number of pivot columns
-		for (int i = 0; i < m; i++) {
-			for (int j = i; j < n; j++) {
-				if (matrix[i][j] != 0) {
-					pivots++;
-					break; // go to the next row if pivot is found
-				} else {
-					while (matrix[i][j] == 0 && j < (n - 1)) {
-						j++; // skip to next column if finding 0's in the row
-					}
-					if (matrix[i][j] != 0) {
-						pivots++;
-						break;
-					}
-				}
-			}
-		}
-		
-		System.out.println("Number of pivot columns, or the rank: " + pivots);
-
-		if (matrix.length == matrix[0].length - 1 && pivots == n) { //
-			System.out.println("There is one solution:\n");
-			double[] solVector = new double[m];
-			for (int i = (m - 1); i >= 0; i--) {
-				double sum = 0;
-				for (int j = i + 1; j < m; j++) {
-					sum += matrix[i][j] * solVector[j];
-				}
-				solVector[i] = (b[i] - sum) / matrix[i][i];
-			}
-
-			for (int i = 0; i < solVector.length; i++) {
-				System.out.println(solVector[i]);
-			}
-		} else if (pivots == n && pivots < m) {
-			int potentialZeroRows = m - pivots;
-			for (int i = b.length - 1; i > ((b.length - 1) - potentialZeroRows); i--) {
-				if (b[i] != 0) {
-					System.out.println("There is no solution\n");
-					noSol = true;
-					break;
-				}
-			}
-			if (!noSol) {
-				System.out.println("There is one solution: \n");
-				double[] solVector = new double[m - potentialZeroRows];
-				for (int i = (m - 1 - potentialZeroRows); i >= 0; i--) {
-					double sum = 0;
-					for (int j = i + 1; j < m - potentialZeroRows; j++) {
-						sum += matrix[i][j] * solVector[j];
-					}
-					solVector[i] = (b[i] - sum) / matrix[i][i];
-				}
-
-				for (int i = 0; i < solVector.length; i++) {
-					System.out.println(solVector[i]);
-				}
-			}
-		}
-
-		else if (pivots == m && pivots < n) {
-			double divideBy = 0;
-			System.out.println("There are infinite solutions.\n");
-			System.out.println("The RREF is: \n");
-			boolean contFlag = false;
-			for (int i = 0; i < m; i++) {
-				contFlag = false;
-				for (int j = i; j < n; j++) {
-					if (matrix[i][j] != 0) {
-						divideBy = matrix[i][j];
-						contFlag = true;
-					}
-					if (contFlag) {
-						for (int k = i; k < (n + 1); k++) {
-							if (divideBy != 0) {
-								matrix[i][k] = (matrix[i][k] / divideBy);
-							}
-						}
-						break;
-					}
-				}
-			}
-
-			boolean firstTime = true;
-			for (int i = m - 1; i >= 0; i--) {
-				firstTime = true;
-				for (int j = 0; j < n; j++) {
-					if (matrix[i][j] != 0 && firstTime) {
-						for (int k = (i - 1); k >= 0; k--) {
-							double pivot = -matrix[k][j];
-							firstTime = false;
-							for (int l = j; l < (n + 1); l++) {
-								if (pivot != 0) {
-									matrix[k][l] += pivot
-											* matrix[i][l];
-								}
-							}
-						}
-					}
-				}
-			}
-
-			System.out.println(toString(matrix, 1));
-
-			System.out.println("\nA particular solution is: \n");
-			int i = 0;
-			int j = 0;
-			boolean[] fpArray = new boolean[n];
-			while (j < n && i < m) {
-				if (matrix[i][j] != 0) {
-					fpArray[j] = true; // true means pivot
-					i++;
-					j++;
-				} else {
-					while (matrix[i][j] == 0 && j < n) {
-						fpArray[j] = false; // false means free
-						j++;
-					}
-				}
-			}
-			int counter = 0;
-
-			for (int r = 0; r < fpArray.length; r++) {
-				if (fpArray[r]) {
-					System.out.printf("%.2f\n", matrix[counter][n]);
-					counter++;
-				} else {
-					System.out.println("0.00");
-				}
-			}
-			System.out.println("\nThe special solution(s) is/are: ");
-			for (int t = 0; t < fpArray.length; t++) {
-				int counterNullspace = 0;
-				if (fpArray[t] == false) {
-					System.out.println();
-					for (int y = 0; y < n; y++) {
-						if (fpArray[y] == false && y == t) {
-							System.out.println(1);
-						} else if (fpArray[y] == true) {
-							System.out.printf("%.2f\n",
-									(-1 * matrix[counterNullspace][t]));
-							counterNullspace++;
-						} else {
-							System.out.println(0);
-						}
-					}
-				}
-			}
-
-		} else {
-			int potentialZeroRows = m - pivots;
-			for (int i = b.length - 1; i > ((b.length - 1) - potentialZeroRows); i--) {
-				if (b[i] != 0) {
-					System.out.println("There is no solution\n");
-					noSol = true;
-					break;
-				}
-			}
-			if (!noSol) {
-				double divideBy = 0;
-				System.out.println("There are infinite solutions\n");
-				System.out.println("The RREF is:\n");
-				boolean contFlag = false;
-				for (int i = 0; i < m; i++) {
-					contFlag = false;
-					for (int j = i; j < n; j++) {
-						if (matrix[i][j] != 0) {
-							divideBy = matrix[i][j];
-							contFlag = true;
-						}
-						if (contFlag) {
-							for (int k = i; k < (n + 1); k++) {
-								if (divideBy != 0) {
-									matrix[i][k] = (matrix[i][k] / divideBy);
-								}
-							}
-							break;
-						}
-					}
-				}
-				boolean firstTime = true;
-				for (int i = m - 1; i >= 0; i--) {
-					firstTime = true;
-					for (int j = 0; j < n; j++) {
-						if (matrix[i][j] != 0 && firstTime) {
-							for (int k = (i - 1); k >= 0; k--) {
-								double pivot = -matrix[k][j];
-								firstTime = false;
-								for (int l = j; l < (n + 1); l++) {
-									if (pivot != 0) {
-										matrix[k][l] += pivot
-												* matrix[i][l];
-									}
-								}
-							}
-						}
-					}
-				}
-
-				System.out.println(toString(matrix, 1));
-
-				System.out.println("A particular solution is:\n");
-				int i = 0;
-				int j = 0;
-				boolean[] fpArray = new boolean[n];
-				while (j < n && i < m) {
-					if (matrix[i][j] != 0) {
-						fpArray[j] = true; // true means pivot
-						i++;
-						j++;
-					} else {
-						while (matrix[i][j] == 0 && j < n) {
-							fpArray[j] = false; // false means free
-							j++;
-						}
-					}
-				}
-				int counter = 0;
-
-				for (int r = 0; r < fpArray.length; r++) {
-					if (fpArray[r]) {
-						System.out.printf("%.2f\n", matrix[counter][n]);
-						counter++;
-					} else {
-						System.out.println("0.00");
-					}
-				}
-
-				System.out.println("\nThe special solutions are: ");
-				for (int t = 0; t < fpArray.length; t++) {
-					int counterNullspace = 0;
-					if (fpArray[t] == false) {
-						System.out.println();
-						for (int y = 0; y < n; y++) {
-							if (fpArray[y] == false && y == t) {
-								System.out.println("1.00");
-							} else if (fpArray[y] == true) {
-								System.out.printf("%.2f\n", -1
-										* matrix[counterNullspace][t]);
-								counterNullspace++;
-							} else {
-								System.out.println("0.00");
-							}
-						}
-					}
-				}
-			}
-		}
-
+	// Overloaded print methods to print to console and output file
+	public static void print(String s) {
+		System.out.println(s);
+		output.println(s);
 	}
+
+	public static void print(double d) {
+		System.out.printf("%.2f\n", d);
+		output.printf("%.2f\n", d);
+	}
+
+	public static File outFile;
+	public static PrintWriter output;
 
 	public static void main(String[] args) throws IOException {
 
 		if (args.length == 2) {
-
-			// Introduction
-			System.out
-					.println("\nThis program gives a complete solution for a system of of linear equations (A x = b) as described b any m x n matrix.");
-
 			// Assign command-line args to file names
 			File inFile = new File(args[0]);
-			// File outFile = new File(args[1]);
+			outFile = new File(args[1]);
 
 			if (inFile.exists()) {
+				// Introduction
+				System.out
+						.println("This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix. It has three types of output: no solution, unique solution, and infinitely many solutions.");
+
 				Scanner input = new Scanner(inFile);
-				// PrintWriter output = new PrintWriter(outFile);
+				output = new PrintWriter(outFile);
 				System.out.println("Reading in input values from \"" + args[0]
 						+ "\"...\n");
 
@@ -452,30 +280,21 @@ public class CompleteMatrixSolver {
 
 				double[][] aug = new double[m][n + 1];
 				aug = augment(A, b, m, n);
-				System.out.println("Augmented matrix:\n" + toString(aug, 1));
+				System.out.println("Augmented form:\n" + toString(aug, 1));
 
-				double[][] elim = new double[n][n + 1];
-				elim = forwardEliminate(aug, m, n);
-				System.out
-						.println("Forward Elimination:\n" + toString(elim, 1));
+				double[][] rref = new double[m][n + 1];
+				rref = toRREF(aug, m, n);
+				System.out.println("Reduced row echelon form:\n"
+						+ toString(rref, 1));
 
-				double[][] eliminated = new double[m][n + 1];
-				eliminated = eliminate(aug, m, n);
-				System.out.println("Elimination with pivots:\n"
-						+ toString(eliminated, 1));
+				boolean found = findSol(rref, m, n);
 
-				findNumberOfSols(elim, m, n);
-				//
-				//
-				// double[][] x = new double[n][1];
-				// x = backSubstitute(elim, n);
-				// System.out.println("Vector x:\n" + toString(x, 1));
-				//
-				// output.println(toString(x, 0));
-				// System.out.println("Successfully wrote solution x to \""
-				// + args[1] +
-				// "\" (*Note values in the output file are not truncated)\n");
-				// output.close();
+				if (found)
+					System.out
+							.println("\nSuccessfully wrote solution set to \""
+									+ args[1] + "\"");
+
+				output.close();
 
 			} else {
 				System.out.println("No such input file found, good bye!");

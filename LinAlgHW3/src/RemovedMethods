@@ -1,0 +1,276 @@
+
+    // private final String inFileName;
+    // private final String outFileName;
+    // private int m;
+    // private int n;
+    // private double[][] A;
+    // private double[][] b;
+
+    /*
+     * Forward elimination reduces the system to upper-triangular form.
+     */
+//  public static double[][] forwardEliminate(double[][] A, int m, int n) {
+//      for (int k = 0; k < n; k++) {
+//          for (int i = k + 1; i < m; i++) {
+//              double multiplier;
+//              if (A[k][k] != 0)
+//                  multiplier = A[i][k] / A[k][k]; // # by which A[k][j]
+//              // is multiplied before being subtracted from A[i][j]
+//              else
+//                  multiplier = 0;
+//              for (int j = k; j < n; j++) {
+//                  A[i][j] = A[i][j] - (multiplier * A[k][j]); // zeroes out
+//                  // non-zero entries in A below the diagonal - moving from
+//                  // top left to bottom right
+//              }
+//              if (A[i][n] != 0) // updates b entries
+//                  A[i][n] = A[i][n] - (multiplier * A[k][n]);
+//          }
+//      }
+//      return A;
+//  }
+
+    //
+    // public static void swapRows(double[][] matrix, int r1, int r2){
+    // double temp;
+    // for(int i = 0; i < matrix[0].length; i++){
+    // temp = matrix[r1][i];
+    // matrix[r1][i] = matrix[r2][i];
+    // matrix[r2][i] = temp;
+    // }
+    // }
+    
+    
+        public static double[][] GaussianElimination(double[][] A, int m, int n) {
+        double pivot, factor;
+        int i, j, k;
+        for (i = 0; i < n; i++) { // Process row i and select pivot
+            pivot = A[i][i];
+            // Normalize row i
+            for (j = 0; j < m; j++)
+                A[i][j] = A[i][j] / pivot;
+            // Sweep using row i
+            for (k = 0; k < n; k++) {
+                if (k != i) {
+                    factor = A[k][i];
+
+                    for (j = 0; j < n; j++)
+                        A[k][j] = A[k][j] - factor * A[i][j];
+                }
+            }
+        }
+        return A;
+    }
+    
+                    double[][] gauss = new double[m][n + 1];
+                gauss = GaussianElimination(aug, m, n);
+                System.out.println("Elimination with r:\n"
+                        + toString(gauss, 1));
+                        
+                        
+                        
+    /*
+     * Forward elimination reduces the system to upper-triangular form.
+     */
+  public static double[][] forwardEliminate(double[][] A, int m, int n) {
+      for (int k = 0; k < n; k++) {
+          for (int i = k + 1; i < m; i++) {
+              double multiplier;
+              if (A[k][k] != 0)
+                  multiplier = A[i][k] / A[k][k]; // # by which A[k][j]
+              // is multiplied before being subtracted from A[i][j]
+              else
+                  multiplier = 0;
+              for (int j = k; j < n; j++) {
+                  A[i][j] = A[i][j] - (multiplier * A[k][j]); // zeroes out
+                  // non-zero entries in A below the diagonal - moving from
+                  // top left to bottom right
+              }
+              if (A[i][n] != 0) // updates b entries
+                  A[i][n] = A[i][n] - (multiplier * A[k][n]);
+          }
+      }
+      return A;
+  }
+    
+    public static double[][] eliminate(double[][] matrix, int m, int n) {
+        double pivot = 0;
+        int x = 0;
+
+        for (int i = 0; i < Math.min(m, n) && x < n; i++) {
+            x = i;
+            boolean found = false;
+            if (matrix[i][x] != 0) {
+                pivot = matrix[i][x];
+            } else {
+                for (int j = (i + 1); j < m; j++) {
+                    if (matrix[j][i] != 0) { // swap rows
+                    // swapRows(matrix, i, j);
+                        double temp;
+                        for (int k = 0; k < n; k++) {
+                            temp = matrix[i][k]; // store r1
+                            matrix[i][k] = matrix[j][k]; // replace r1 with r2
+                            matrix[j][k] = temp; // replace r2 with r2
+                        }
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    while (matrix[i][x] == 0 && x < (n - 1)) {
+                        x++;
+                    }
+                    if (x < n) {
+                        pivot = matrix[i][x];
+                    }
+                } else {
+                    pivot = matrix[i][x];
+                }
+            }
+            // At this point we've found the pivot
+            // Elimination
+            if (x < n && pivot != 0) {
+                for (int j = (i + 1); j < m; j++) {
+                    double multiplier = -1 * matrix[j][x] / pivot;
+                    for (int k = x; k <= n; k++) {
+                        matrix[j][k] += multiplier * matrix[i][k];
+                    }
+                }
+            }
+        }
+        return matrix;
+    }
+    
+    
+    
+    
+                    double[][] elim = new double[m][n + 1];
+                elim = forwardEliminate(aug, m, n);
+                System.out
+                        .println("Forward Elimination:\n" + toString(elim, 1));
+
+                
+                double[][] eliminated = new double[m][n + 1];
+                eliminated = eliminate(aug, m, n);
+                System.out.println("Elimination with r:\n"
+                        + toString(eliminated, 1));
+                        
+                        
+                                // Turn r into 1's
+        double divider = 0;
+        boolean done = true;
+        for (int i = 0; i < m; i++) {
+            done = true;
+            for (int j = i; j < n; j++) {
+                if (matrix[i][j] != 0) {
+                    divider = matrix[i][j];
+                    done = false;
+                }
+                if (!done) {
+                    for (int k = i; k < (n + 1); k++) {
+                        if (divider != 0)
+                            matrix[i][k] = (matrix[i][k] / divider);
+                    }
+                    break;
+                }
+            }
+        }
+        
+        System.out.println("Transforming r to 1:");
+        System.out.println(toString(matrix, 1));
+        
+        // Backward elimination (above the diagonal)
+        boolean again = true;
+        for (int i = m - 1; i >= 0; i--) {
+            again = true;
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] != 0 && again) {
+                    for (int k = (i - 1); k >= 0; k--) {
+                        double pivot = -matrix[k][j];
+                        again = false;
+                        for (int l = j; l < (n + 1); l++) {
+                            if (pivot != 0) {
+                                matrix[k][l] += pivot
+                                        * matrix[i][l];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        System.out.println("Reduced Row Echelon Form:\n");
+        System.out.println(toString(matrix, 1));
+    
+    
+    
+    
+               
+                --
+                
+                                System.out.println("There are infinite solutions!\n");
+                System.out.println("\nA particular solution is: \n");
+                int i = 0;
+                int j = 0;
+                boolean[] fp = new boolean[n];
+                while (j < n && i < m) {
+                    if (matrix[i][j] != 0) {
+                        fp[j] = true; // true means pivot
+                        i++;
+                        j++;
+                    } else {
+                        while (matrix[i][j] == 0 && j < n) {
+                            fp[j] = false; // false means free
+                            j++;
+                        }
+                    }
+                }
+                int counter = 0;
+
+                for (int s = 0; s < fp.length; s++) {
+                    if (fp[s]) {
+                        System.out.printf("%.2f\n", matrix[counter][n]);
+                        counter++;
+                    } else {
+                        System.out.println("0.00");
+                    }
+                }
+                System.out.println("\nThe special solution(s) is/are: ");
+                for (int t = 0; t < fp.length; t++) {
+                    int nullspace = 0;
+                    if (fp[t] == false) {
+                        System.out.println();
+                        for (int y = 0; y < n; y++) {
+                            if (fp[y] == false && y == t) {
+                                System.out.println(1);
+                            } else if (fp[y] == true) {
+                                System.out.printf("%.2f\n",
+                                        (-1 * matrix[nullspace][t]));
+                                nullspace++;
+                            } else {
+                                System.out.println(0);
+                            }
+                        }
+                    }
+                }
+                
+                
+                
+                
+                
+                
+                
+                print("There is one unique solution. \n");
+                double[] solVector = new double[m - zerows];
+                for (int i = (m - 1 - zerows); i >= 0; i--) {
+                    double sum = 0;
+                    for (int j = i + 1; j < m - zerows; j++) {
+                        sum += matrix[i][j] * solVector[j];
+                    }
+                    solVector[i] = (b[i] - sum) / matrix[i][i];
+                }
+
+                for (int i = 0; i < solVector.length; i++) {
+                    print(solVector[i]);
+                }
+                
