@@ -167,8 +167,6 @@ Special solutions:
 0.00
 1.00
 
-Successfully wrote solution set to "out.txt"
-
 TEST CASE 2
 
 This program gives a complete solution for a system of of linear equations (A x = b) as described b any m x n matrix.
@@ -214,8 +212,6 @@ There is one unique solution.
 1.00
 0.00
 3.00
-
-Successfully wrote solution set to "out.txt"
 
 TEST CASE 3
 
@@ -269,9 +265,58 @@ Rank: 3
 
 There is no solution.
 
-Successfully wrote solution set to "out.txt"
-
 TEST CASE 4
+
+This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix. It has three types of output: no solution, unique solution, and infinitely many solutions.
+Reading in input values from "input4.txt"...
+
+m: 3
+n: 4
+
+Matrix A:
+    1.00    1.00    2.00    3.00
+    2.00    2.00    8.00   10.00
+    3.00    3.00   10.00   13.00
+
+Vector b:
+    0.00
+    0.00
+    0.00
+
+Augmented form:
+    1.00    1.00    2.00    3.00    0.00
+    2.00    2.00    8.00   10.00    0.00
+    3.00    3.00   10.00   13.00    0.00
+
+Reduced row echelon form:
+    1.00    1.00    0.00    1.00    0.00
+    0.00    0.00    1.00    1.00    0.00
+    0.00    0.00    0.00    0.00    0.00
+
+Rank: 2
+
+There are infinitely many solutions.
+
+Particular solution xp:
+
+0.00
+0.00
+0.00
+0.00
+
+Special solutions: 
+
+-1.00
+1.00
+0.00
+0.00
+
+-1.00
+0.00
+-1.00
+1.00
+
+TEST CASE 5
 
 This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix. It has three types of output: no solution, unique solution, and infinitely many solutions.
 Reading in input values from "input5.txt"...
@@ -350,5 +395,3 @@ Special solutions:
 0.00
 0.00
 1.00
-
-Successfully wrote solution set to "out.txt"

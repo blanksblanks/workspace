@@ -46,36 +46,36 @@ public class CompleteMatrixSolver {
 	 */
 	public static double[][] toRREF(double[][] M, int m, int n) {
 		int piv = 0;
-		for (int k = 0; k < m; k++) { // go down rows
-			if (piv >= n) // done - full rank
-				break;
+		for (int r = 0; r < m; r++) { // go down rows
+			if (piv >= n)
+				break; // done - full rank
 			{
-				int i = k;
-				while (M[i][piv] == 0) {
-					i++; // search down column for nonzero element
-					if (i == m) { // if we reach end of row
-						i = k; // move on to next column 
+				int k = r;
+				while (M[k][piv] == 0) {
+					k++; // search down column for nonzero element
+					if (k == m) { // if we reach end of row
+						k = r; // move on to next column 
 						piv++;
 						if (piv == n)
-							return M; // already rref
+							return M; // done
 					}
 				}
-				double[] temp = M[k]; // row swap
-				M[k] = M[i];
-				M[i] = temp;
+				double[] temp = M[r]; // swap rows i and r
+				M[r] = M[k];
+				M[k] = temp;
 			}
 			// turn pivots into 1's
 			{
-				double factor = M[k][piv];
-				for (int j = 0; j < n+1; j++) // divide by same factor including vector b
-					M[k][j] /= factor;
+				double divisor = M[r][piv];
+				for (int j = 0; j < n+1; j++) // divide by pivot value including vector b
+					M[r][j] /= divisor;
 			}
 			// eliminate other elements in the same column
 			for (int i = 0; i < m; i++) {
-				if (i != k) {
-					double factor = M[i][piv];
+				if (i != r) {
+					double multiplier = M[i][piv];
 					for (int j = 0; j < n+1; j++) {
-						M[i][j] -= factor * M[k][j];
+						M[i][j] -= multiplier * M[r][j];
 						if (M[i][j] == -0.00)
 							M[i][j] = 0.00;
 					}
@@ -85,6 +85,7 @@ public class CompleteMatrixSolver {
 		}
 		return M;
 	}
+
 
 	/* Find possible solutions, which depend on rank r:
 	 * r == m && r == n has one solution
@@ -148,8 +149,9 @@ public class CompleteMatrixSolver {
 				break;
 			case 1:
 				print("There is one unique solution.\n");
+				// diff is m-r, it will be the number of nonzero elements in solution
 				double[] x = new double[m - diff];
-				for (int i = (m - 1 - diff); i >= 0; i--) {
+				for (int i = (m - 1 - diff); i >= 0; i--) { // backsub from the bottom up
 					double sum = 0;
 					for (int j = i + 1; j < m - diff; j++) {
 						sum += matrix[i][j] * x[j];
@@ -168,28 +170,28 @@ public class CompleteMatrixSolver {
 				int[] findPiv = new int[n];
 				while (j < n && i < m) {
 					if (matrix[i][j] != 0) {
-						findPiv[j] = 1; // found pivot
-						i++;
-						j++;
+						findPiv[j] = 1; // found pivot, move to next row and col
+						i++; j++;
 					} else {
 						while (matrix[i][j] == 0 && j < n) {
-							findPiv[j] = 0; // found free
-							j++;
+							findPiv[j] = 0; j++; // found free, move to next col
 						}
 					}
 				}
-				int k = 0;
-				for (int s = 0; s < findPiv.length; s++) {
+				// print b at pivot rows, 0 elsewhere in the vector
+				int c = 0;
+				for (int s = 0; s < n; s++) {
 					if (findPiv[s] != 0) {
-						print(matrix[k][n]);
-						k++;
+						print(matrix[c][n]);
+						c++;
 					} else {
 						print("0.00");
 					}
 				}
+				// Go to each free col and find special solutions
 				print("\nSpecial solutions: ");
-				for (int t = 0; t < findPiv.length; t++) {
-					int NA = 0;
+				for (int t = 0; t < n; t++) {
+					int NA = 0; // reinitialize
 					if (findPiv[t] == 0) {
 						print("");
 						for (int u = 0; u < n; u++) {

@@ -274,3 +274,44 @@
                     print(solVector[i]);
                 }
                 
+                
+                
+                
+                    public static double[][] toRREF(double[][] M, int m, int n) {
+        int piv = 0;
+        for (int r = 0; r < m; r++) { // go down rows
+            if (piv >= n)
+                break; // done - full rank
+            int k = r;
+            while (M[k][piv] == 0) {
+                k++; // search down column for nonzero element
+                if (k == m) { // if we reach end of row
+                    k = r; // move on to next column
+                    piv++;
+                    if (piv == n)
+                        return M; // already rref
+                }
+                double[] temp = M[r]; // swap rows i and r
+                M[r] = M[k];
+                M[k] = temp;
+            }
+            // turn pivots into 1's
+            double factor = M[r][piv];
+            for (int j = 0; j < n + 1; j++)
+                // divide by same factor including vector b
+                M[r][j] /= factor;
+            // eliminate other elements in the same column
+            for (int i = 0; i < m; i++) {
+                if (i != r) {
+                    double multiplier = M[i][piv];
+                    for (int j = 0; j < n + 1; j++) {
+                        M[i][j] -= multiplier * M[r][j];
+                        if (M[i][j] == -0.00)
+                            M[i][j] = 0.00;
+                    }
+                }
+            }
+            ++piv;
+        }
+        return M;
+    }
