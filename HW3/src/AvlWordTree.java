@@ -21,49 +21,20 @@
 import java.util.LinkedList;
 import java.util.Iterator;
 
-/**
- * Implements an AVL tree. Note that all "matching" is based on the compareTo
- * method.
- * 
- * @author Mark Allen Weiss
- */
 public class AvlWordTree<AnyType extends Comparable<? super AnyType>> {
-	/**
-	 * Construct the tree.
-	 */
+
 	public AvlWordTree() {
 		root = null;
 	}
 
-	/**
-	 * Insert into the tree; duplicates are ignored.
-	 * 
-	 * @param x
-	 *            the item to insert.
-	 */
 	public void insert(AnyType x, int line) {
 		root = insert(x, root, line);
 	}
 
-	/**
-	 * Remove from the tree. Nothing is done if x is not found.
-	 * 
-	 * @param x
-	 *            the item to remove.
-	 */
 	public void remove(AnyType x) {
 		root = remove(x, root);
 	}
 
-	/**
-	 * Internal method to remove from a subtree.
-	 * 
-	 * @param x
-	 *            the item to remove.
-	 * @param t
-	 *            the node that roots the subtree.
-	 * @return the new root of the subtree.
-	 */
 	private AvlWordNode<AnyType> remove(AnyType x, AvlWordNode<AnyType> t) {
 		if (t == null)
 			return t; // Item not found; do nothing
@@ -83,58 +54,30 @@ public class AvlWordTree<AnyType extends Comparable<? super AnyType>> {
 		return balance(t);
 	}
 
-	/**
-	 * Find the smallest item in the tree.
-	 * 
-	 * @return smallest item or null if empty.
-	 */
 	public AnyType findMin() {
 		if (isEmpty())
 			throw new UnderflowException();
 		return findMin(root).element;
 	}
 
-	/**
-	 * Find the largest item in the tree.
-	 * 
-	 * @return the largest item of null if empty.
-	 */
 	public AnyType findMax() {
 		if (isEmpty())
 			throw new UnderflowException();
 		return findMax(root).element;
 	}
 
-	/**
-	 * Find an item in the tree.
-	 * 
-	 * @param x
-	 *            the item to search for.
-	 * @return true if x is found.
-	 */
 	public boolean contains(AnyType x) {
 		return contains(x, root);
 	}
 
-	/**
-	 * Make the tree logically empty.
-	 */
 	public void makeEmpty() {
 		root = null;
 	}
 
-	/**
-	 * Test if the tree is logically empty.
-	 * 
-	 * @return true if empty, false otherwise.
-	 */
 	public boolean isEmpty() {
 		return root == null;
 	}
 
-	/**
-	 * Print the tree contents in sorted order.
-	 */
 	public void printTree() {
 		if (isEmpty())
 			System.out.println("Empty tree");
@@ -144,7 +87,6 @@ public class AvlWordTree<AnyType extends Comparable<? super AnyType>> {
 
 	private static final int ALLOWED_IMBALANCE = 1;
 
-	// Assume t is either balanced or within one of being balanced
 	private AvlWordNode<AnyType> balance(AvlWordNode<AnyType> t) {
 		if (t == null)
 			return t;
@@ -183,16 +125,6 @@ public class AvlWordTree<AnyType extends Comparable<? super AnyType>> {
 		return height(t);
 	}
 
-	/**
-	 * Internal method to insert into a subtree.
-	 * 
-	 * @param x
-	 *            the item to insert.
-	 * @param t
-	 *            the node that roots the subtree.
-	 * @return the new root of the subtree.
-	 */
-
 	// Added line number parameter
 	private AvlWordNode<AnyType> insert(AnyType x, AvlWordNode<AnyType> t,
 			int line) {
@@ -210,13 +142,6 @@ public class AvlWordTree<AnyType extends Comparable<? super AnyType>> {
 		return balance(t);
 	}
 
-	/**
-	 * Internal method to find the smallest item in a subtree.
-	 * 
-	 * @param t
-	 *            the node that roots the tree.
-	 * @return node containing the smallest item.
-	 */
 	private AvlWordNode<AnyType> findMin(AvlWordNode<AnyType> t) {
 		if (t == null)
 			return t;
@@ -226,13 +151,6 @@ public class AvlWordTree<AnyType extends Comparable<? super AnyType>> {
 		return t;
 	}
 
-	/**
-	 * Internal method to find the largest item in a subtree.
-	 * 
-	 * @param t
-	 *            the node that roots the tree.
-	 * @return node containing the largest item.
-	 */
 	private AvlWordNode<AnyType> findMax(AvlWordNode<AnyType> t) {
 		if (t == null)
 			return t;
@@ -242,15 +160,6 @@ public class AvlWordTree<AnyType extends Comparable<? super AnyType>> {
 		return t;
 	}
 
-	/**
-	 * Internal method to find an item in a subtree.
-	 * 
-	 * @param x
-	 *            is item to search for.
-	 * @param t
-	 *            the node that roots the tree.
-	 * @return true if x is found in subtree.
-	 */
 	private boolean contains(AnyType x, AvlWordNode<AnyType> t) {
 		while (t != null) {
 			int compareResult = x.compareTo(t.element);
@@ -266,12 +175,6 @@ public class AvlWordTree<AnyType extends Comparable<? super AnyType>> {
 		return false; // No match
 	}
 
-	/**
-	 * Internal method to print a subtree in sorted order.
-	 * 
-	 * @param t
-	 *            the node that roots the tree.
-	 */
 	// Prints out line numbers using an iterator
 	private void printTree( AvlWordNode<AnyType> t )
     {
@@ -291,17 +194,11 @@ public class AvlWordTree<AnyType extends Comparable<? super AnyType>> {
         }
     }
 
-	/**
-	 * Return the height of node t, or -1, if null.
-	 */
+
 	private int height(AvlWordNode<AnyType> t) {
 		return t == null ? -1 : t.height;
 	}
 
-	/**
-	 * Rotate binary tree node with left child. For AVL trees, this is a single
-	 * rotation for case 1. Update heights, then return new root.
-	 */
 	private AvlWordNode<AnyType> rotateWithLeftChild(AvlWordNode<AnyType> k2) {
 		AvlWordNode<AnyType> k1 = k2.left;
 		k2.left = k1.right;
@@ -311,10 +208,6 @@ public class AvlWordTree<AnyType extends Comparable<? super AnyType>> {
 		return k1;
 	}
 
-	/**
-	 * Rotate binary tree node with right child. For AVL trees, this is a single
-	 * rotation for case 4. Update heights, then return new root.
-	 */
 	private AvlWordNode<AnyType> rotateWithRightChild(AvlWordNode<AnyType> k1) {
 		AvlWordNode<AnyType> k2 = k1.right;
 		k1.right = k2.left;
@@ -324,21 +217,11 @@ public class AvlWordTree<AnyType extends Comparable<? super AnyType>> {
 		return k2;
 	}
 
-	/**
-	 * Double rotate binary tree node: first left child with its right child;
-	 * then node k3 with new left child. For AVL trees, this is a double
-	 * rotation for case 2. Update heights, then return new root.
-	 */
 	private AvlWordNode<AnyType> doubleWithLeftChild(AvlWordNode<AnyType> k3) {
 		k3.left = rotateWithRightChild(k3.left);
 		return rotateWithLeftChild(k3);
 	}
 
-	/**
-	 * Double rotate binary tree node: first right child with its left child;
-	 * then node k1 with new right child. For AVL trees, this is a double
-	 * rotation for case 3. Update heights, then return new root.
-	 */
 	private AvlWordNode<AnyType> doubleWithRightChild(AvlWordNode<AnyType> k1) {
 		k1.right = rotateWithLeftChild(k1.right);
 		return rotateWithRightChild(k1);
@@ -376,7 +259,6 @@ public class AvlWordTree<AnyType extends Comparable<? super AnyType>> {
 		LinkedList<Integer> lines; // Line number
 	}
 
-	/** The tree root. */
-	private AvlWordNode<AnyType> root;
+	private AvlWordNode<AnyType> root; // Tree root
 
 }

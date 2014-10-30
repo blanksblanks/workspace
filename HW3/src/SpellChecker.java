@@ -163,12 +163,12 @@ public class SpellChecker {
 		return words;
 	}
 	
-    private static QuadraticProbingHashTable<String> dict;
+    private static MyHashTable dict;
 
     // Tester method that takes two dictionary files and an input file from the command line
 	public static void main(String[] args) throws FileNotFoundException {
 		if (args.length == 3) {
-			dict = new QuadraticProbingHashTable<>( );
+			dict = new MyHashTable( );
 			DictionaryHasher(args[0]);
 			DictionaryHasher(args[1]);
 			LinkedList<String> inputFile = FileLineParser(args[2]);
