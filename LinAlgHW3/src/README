@@ -75,9 +75,10 @@ CLASSES & METHODS
 
 ***
 
-TEST CASE 1
+➜  TEST CASE 1
 
-This program gives a complete solution for a system of of linear equations (A x = b) as described b any m x n matrix.
+This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix.
+It has three types of output: no solution, unique solution, and infinitely many solutions.
 Reading in input values from "input1.txt"...
 
 m: 5
@@ -117,59 +118,63 @@ There are infinitely many solutions.
 
 Particular solution xp:
 
--5.00
-0.00
-2.00
-0.00
-0.00
-0.00
-0.00
+   -5.00
+    0.00
+    2.00
+    0.00
+    0.00
+    0.00
+    0.00
 
-Special solutions: 
+Special solution s1:
+   -2.00
+    1.00
+    0.00
+    0.00
+    0.00
+    0.00
+    0.00
 
--2.00
-1.00
-0.00
-0.00
-0.00
-0.00
-0.00
+Special solution s2:
+    2.00
+    0.00
+   -2.00
+    1.00
+    0.00
+    0.00
+    0.00
 
-2.00
-0.00
--2.00
-1.00
-0.00
-0.00
-0.00
+Special solution s3:
+    4.00
+    0.00
+   -3.00
+    0.00
+    1.00
+    0.00
+    0.00
 
-4.00
-0.00
--3.00
-0.00
-1.00
-0.00
-0.00
+Special solution s4:
+    6.00
+    0.00
+   -4.00
+    0.00
+    0.00
+    1.00
+    0.00
 
-6.00
-0.00
--4.00
-0.00
-0.00
-1.00
-0.00
+Special solution s5:
+    8.00
+    0.00
+   -5.00
+    0.00
+    0.00
+    0.00
+    1.00
 
-8.00
-0.00
--5.00
-0.00
-0.00
-0.00
-1.00
+➜  TEST CASE 2
 
-TEST CASE 2
-
-This program gives a complete solution for a system of of linear equations (A x = b) as described b any m x n matrix.
+This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix.
+It has three types of output: no solution, unique solution, and infinitely many solutions.
 Reading in input values from "input2.txt"...
 
 m: 5
@@ -207,15 +212,16 @@ Rank: 5
 
 There is one unique solution.
 
-4.00
-0.00
-1.00
-0.00
-3.00
+    4.00
+    0.00
+    1.00
+    0.00
+    3.00
 
-TEST CASE 3
+➜  TEST CASE 3
 
-This program gives a complete solution for a system of of linear equations (A x = b) as described b any m x n matrix.
+This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix.
+It has three types of output: no solution, unique solution, and infinitely many solutions.
 Reading in input values from "input3.txt"...
 
 m: 8
@@ -265,9 +271,10 @@ Rank: 3
 
 There is no solution.
 
-TEST CASE 4
+➜  TEST CASE 4
 
-This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix. It has three types of output: no solution, unique solution, and infinitely many solutions.
+This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix.
+It has three types of output: no solution, unique solution, and infinitely many solutions.
 Reading in input values from "input4.txt"...
 
 m: 3
@@ -299,26 +306,27 @@ There are infinitely many solutions.
 
 Particular solution xp:
 
-0.00
-0.00
-0.00
-0.00
+    0.00
+    0.00
+    0.00
+    0.00
 
-Special solutions: 
+Special solution s1:
+   -1.00
+    1.00
+    0.00
+    0.00
 
--1.00
-1.00
-0.00
-0.00
+Special solution s2:
+   -1.00
+    0.00
+   -1.00
+    1.00
 
--1.00
-0.00
--1.00
-1.00
+➜  TEST CASE 5
 
-TEST CASE 5
-
-This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix. It has three types of output: no solution, unique solution, and infinitely many solutions.
+This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix.
+It has three types of output: no solution, unique solution, and infinitely many solutions.
 Reading in input values from "input5.txt"...
 
 m: 5
@@ -358,40 +366,43 @@ There are infinitely many solutions.
 
 Particular solution xp:
 
-0.00
-0.00
-0.00
-0.00
-0.00
+    0.00
+    0.00
+    0.00
+    0.00
+    0.00
 
-Special solutions: 
+Special solution s1:
+    1.00
+    0.00
+    0.00
+    0.00
+    0.00
 
-1.00
-0.00
-0.00
-0.00
-0.00
+Special solution s2:
+    0.00
+    1.00
+    0.00
+    0.00
+    0.00
 
-0.00
-1.00
-0.00
-0.00
-0.00
+Special solution s3:
+    0.00
+    0.00
+    1.00
+    0.00
+    0.00
 
-0.00
-0.00
-1.00
-0.00
-0.00
+Special solution s4:
+    0.00
+    0.00
+    0.00
+    1.00
+    0.00
 
-0.00
-0.00
-0.00
-1.00
-0.00
-
-0.00
-0.00
-0.00
-0.00
-1.00
+Special solution s5:
+    0.00
+    0.00
+    0.00
+    0.00
+    1.00
