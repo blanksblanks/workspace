@@ -113,24 +113,18 @@ public class CompleteMatrixSolver {
 
 	/*
 	 * Find possible solutions, which depend on rank r:
-	 * r == m && r == n has one solution
-	 * r == m && r < n infinite solutions
-	 * r < m && r == n has 0 or 1 solution
-	 * r < m && r < n has 0 or infinity solutions
+	 * r == m && r == n has 1 solution (t2 check)
+	 * r == m && r < n has infinite solutions (t7 check)
+	 * r < m && r == n has 0 or 1 solution (t3 check0, t6 check1)
+	 * r < m && r < n has 0 or infinite solutions (t1 check, t4 check
+	 * with 0 vector b, t5 check with 0 matrix and vector, t8 check0)
 	 */
 	public static boolean findSol(double[][] matrix, int m, int n) {
 		int r = findRank(matrix, m, n);
 		print("Rank: " + r + "\n");
-
-
-		double[] b = new double[m];
-		// create new vector b with updated values
-		for (int i = 0; i < m; i++) {
-			b[i] = matrix[i][n];
-		}
-
-		int solSet = 1; // default, but all cases below should be accounted for below
 		int diff = m - r; // rows - rank
+		int solSet = 1; // default, but all cases below should be accounted for below
+
 		if (r == m && r == n) // 1 solution
 			solSet = 1;
 		else if (r == m && r < n) // infinite solutions
@@ -138,15 +132,13 @@ public class CompleteMatrixSolver {
 		else if (r < m && r == n) {
 			solSet = 1; // 1 solution
 			for (int i = m - 1; i > (m - diff - 1); i--) { // check from bottom
-															// up
-				if (b[i] != 0) // change to 0 solution if any zeroe'd out rows
-								// have non-zero b elements
+				if (matrix[i][n] != 0) // if any zeroe'd out rows have non zero b, no sol
 					solSet = 0;
 			}
 		} else {
 			solSet = 2; // infinite solutions
 			for (int i = m - 1; i > (m - diff - 1); i--) {
-				if (b[i] != 0) // change to 0 solution
+				if (matrix[i][n] != 0) // no sol
 					solSet = 0;
 			}
 		}
@@ -157,22 +149,18 @@ public class CompleteMatrixSolver {
 				break;
 			case 1:
 				print("There is one unique solution.\n");
-				// diff is m-r, it will be the number of nonzero elements in
-				// solution
-				double[][] x = new double[m - diff][1];
-				for (int i = (m - 1 - diff); i >= 0; i--) { // backsub from the
-															// bottom up
-					double sum = 0;
+				double[][] x = new double[n][1]; // r == n
+				for (int i = (m - 1 - diff); i >= 0; i--) { // backsub from bottom
 					for (int j = i + 1; j < m - diff; j++) {
-						sum += matrix[i][j] * x[j][0];
+						matrix[i][n] -= matrix[i][j] * x[j][0]; // subtract known val from b
 					}
-					x[i][0] = (b[i] - sum) / matrix[i][i];
+					x[i][0] = matrix[i][n] / matrix[i][i]; // finds x by dividing new b by
 				}
 				print(toString(x, 1));
 				break;
 			case 2:
 				print("There are infinitely many solutions.\n");
-				print("Particular solution xp:\n");
+				print("Particular solution xp:");
 				int i = 0;
 				int j = 0;
 				int[] findPiv = new int[n];

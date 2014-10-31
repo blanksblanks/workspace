@@ -75,7 +75,15 @@ CLASSES & METHODS
 
 ***
 
-➜  TEST CASE 1
+TESTED ALL POSSIBLE SOLUTION SETS ACROSS 8 CASES:
+
+    1.  r == m && r == n with 1 solution (TEST2)
+    2.  r == m && r < n with infinite solutions (TEST7)
+    3.  r < m && r == n with 0 or 1 solution (TEST3 / TEST6)
+    4.  r < m && r < n with 0 or infinite solutions (TEST8 / TEST1
+        (also tested last case with 0 vector b in TEST4 and TEST5)
+       
+➜  TEST CASE 1: r < m && r < n with infinite solutions
 
 This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix.
 It has three types of output: no solution, unique solution, and infinitely many solutions.
@@ -171,7 +179,7 @@ Special solution s5:
     0.00
     1.00
 
-➜  TEST CASE 2
+➜  TEST CASE 2: r == m && r == n with 1 solution
 
 This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix.
 It has three types of output: no solution, unique solution, and infinitely many solutions.
@@ -218,7 +226,7 @@ There is one unique solution.
     0.00
     3.00
 
-➜  TEST CASE 3
+➜  TEST CASE 3: r < m && r == n with no solutions
 
 This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix.
 It has three types of output: no solution, unique solution, and infinitely many solutions.
@@ -271,7 +279,7 @@ Rank: 3
 
 There is no solution.
 
-➜  TEST CASE 4
+➜  TEST CASE 4: r < m && r < n with zero vector b and infinite solutions
 
 This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix.
 It has three types of output: no solution, unique solution, and infinitely many solutions.
@@ -305,7 +313,6 @@ Rank: 2
 There are infinitely many solutions.
 
 Particular solution xp:
-
     0.00
     0.00
     0.00
@@ -323,7 +330,7 @@ Special solution s2:
    -1.00
     1.00
 
-➜  TEST CASE 5
+➜  TEST CASE 5: r < m && r < n with zero matrix and vector, and infinite solutions
 
 This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix.
 It has three types of output: no solution, unique solution, and infinitely many solutions.
@@ -365,7 +372,6 @@ Rank: 0
 There are infinitely many solutions.
 
 Particular solution xp:
-
     0.00
     0.00
     0.00
@@ -406,3 +412,126 @@ Special solution s5:
     0.00
     0.00
     1.00
+    
+➜  TEST CASE 6: r < m && r == n with one solution
+
+This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix.
+It has three types of output: no solution, unique solution, and infinitely many solutions.
+Reading in input values from "input6.txt"...
+
+m: 5
+n: 3
+
+Matrix A:
+    1.00    0.00    0.00
+    0.00    2.00    0.00
+    0.00    0.00    3.00
+    0.00    0.00    0.00
+    0.00    0.00    0.00
+
+Vector b:
+    1.00
+    1.00
+    1.00
+    0.00
+    0.00
+
+Augmented form:
+    1.00    0.00    0.00    1.00
+    0.00    2.00    0.00    1.00
+    0.00    0.00    3.00    1.00
+    0.00    0.00    0.00    0.00
+    0.00    0.00    0.00    0.00
+
+Reduced row echelon form:
+    1.00    0.00    0.00    1.00
+    0.00    1.00    0.00    0.50
+    0.00    0.00    1.00    0.33
+    0.00    0.00    0.00    0.00
+    0.00    0.00    0.00    0.00
+
+Rank: 3
+
+There is one unique solution.
+
+    1.00
+    0.50
+    0.33
+    
+➜  TEST CASE 7: r == m && r < n with infinite solutions
+ 
+This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix.
+It has three types of output: no solution, unique solution, and infinitely many solutions.
+Reading in input values from "input7.txt"...
+
+m: 3
+n: 4
+
+Matrix A:
+    1.00    0.00    0.00    0.00
+    0.00    1.00    0.00    0.00
+    0.00    0.00    1.00    0.00
+
+Vector b:
+    1.00
+    2.00
+    3.00
+
+Augmented form:
+    1.00    0.00    0.00    0.00    1.00
+    0.00    1.00    0.00    0.00    2.00
+    0.00    0.00    1.00    0.00    3.00
+
+Reduced row echelon form:
+    1.00    0.00    0.00    0.00    1.00
+    0.00    1.00    0.00    0.00    2.00
+    0.00    0.00    1.00    0.00    3.00
+
+Rank: 3
+
+There are infinitely many solutions.
+
+Particular solution xp:
+    1.00
+    2.00
+    3.00
+    0.00
+
+Special solution s1:
+    0.00
+    0.00
+    0.00
+    1.00
+
+➜  TEST CASE 8: r < m && r < n with no solution
+ 
+This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix.
+It has three types of output: no solution, unique solution, and infinitely many solutions.
+Reading in input values from "input8.txt"...
+
+m: 3
+n: 4
+
+Matrix A:
+    1.00    1.00    2.00    3.00
+    2.00    2.00    8.00   10.00
+    3.00    3.00   10.00   13.00
+
+Vector b:
+    1.00
+    2.00
+    4.00
+
+Augmented form:
+    1.00    1.00    2.00    3.00    1.00
+    2.00    2.00    8.00   10.00    2.00
+    3.00    3.00   10.00   13.00    4.00
+
+Reduced row echelon form:
+    1.00    1.00    0.00    1.00    1.00
+    0.00    0.00    1.00    1.00    0.00
+    0.00    0.00    0.00    0.00    1.00
+
+Rank: 2
+
+There is no solution.
