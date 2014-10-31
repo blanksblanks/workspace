@@ -52,7 +52,7 @@ public class SpellChecker {
 		if (inFile.exists()) {
 			Scanner input = new Scanner(inFile);
 			while (input.hasNextLine()) {
-				String entry = input.nextLine();
+				String entry = input.nextLine().toLowerCase();
 				dict.insert(entry);
 			}
 			input.close();
@@ -130,15 +130,16 @@ public class SpellChecker {
 	    // 1) Add one character
 	    for (int i = 0; i <= wordCharArr.length; i++) {
         	String addedApostrophe = word.substring(0,i) + "'" + word.substring(i,wordCharArr.length);
+    	        if (dict.contains(addedApostrophe))
+	        		if (!words.contains(addedApostrophe))
+	        			words.add(addedApostrophe);
 	        for (char j = 'a'; j <= 'z'; j++) {
 	        	String addedChar = word.substring(0,i) + j + word.substring(i,wordCharArr.length);
-	        	if (dict.contains(addedApostrophe))
-	        		words.add(addedApostrophe);
 	        	if (dict.contains(addedChar))
-	        		words.add(addedChar);
+	        		if (!words.contains(addedChar))
+	        			words.add(addedChar);
 	        }
 	    }
-	    
 	    // 2) Remove one character
 	    for (int i = 0; i <= wordCharArr.length - 1; i++) {
         	String removedChar = word.substring(0,i) + word.substring(i+1);
@@ -146,8 +147,6 @@ public class SpellChecker {
 	        		if (!words.contains(removedChar))
 	        			words.add(removedChar);
 	    }
-	    
-
 	 // 3) Swap adjacent characters
 		for (int i = 0; i < wordCharArr.length - 1; i++) {
 			char[] c = word.toCharArray();

@@ -33,21 +33,18 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>
     public int countNodes(){
     	return countNodes(root);
     }
-    
-    public int countLeaves(){
-    	return countLeaves(root);
-    }
-    
-    public int countFullNodes(){
-    	return countFullNodes(root);
-    }
-    
+
     private int countNodes(BinaryNode<AnyType> t) {
     	if (t == null)
     		return 0;
     	return countNodes(t.left) + countNodes(t.right) + 1; // + 1 root node
     }
 
+    
+    public int countLeaves(){
+    	return countLeaves(root);
+    }
+    
     // Leaves: no kids
     private int countLeaves(BinaryNode<AnyType> t) {
     	if (t == null)
@@ -57,12 +54,16 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>
     	return countLeaves(t.left) + countLeaves(t.right);
     }
 
+    public int countFullNodes(){
+    	return countFullNodes(root);
+    }
+    
     // Full node: two non-null children links
     private int countFullNodes(BinaryNode<AnyType> t) {
     	if (t == null)
     		return 0;
-    	if (t.left != null && t.right != null)
-    		return 1;
+    	else if (t.left != null && t.right != null) // increments
+    		return countFullNodes(t.left) + countFullNodes(t.right) + 1;
     	return countFullNodes(t.left) + countFullNodes(t.right);
     } 
     
@@ -299,16 +300,20 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>>
     {
         BinarySearchTree<Integer> t = new BinarySearchTree<>( );
 
-        final int NUMS = 20;
+        final int NUMS = 10;
 		final int GAP = 7;
 
 		System.out.println("Testing three new methods added to Binary Search Tree:");
 
         System.out.print("Inserted ");
 		for (int i = GAP; i != 0; i = (i + GAP) % NUMS) {
-			t.insert(i);
+			if (i != 8)
+				t.insert(i);
 			System.out.print(i +" ");
 		}
+		t.insert(0);
+		t.insert(8);
+		t.insert(10);
 
 		System.out.println("\nPrinting tree...");
 		t.printTree();
