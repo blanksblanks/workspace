@@ -39,57 +39,59 @@ public class CompleteMatrixSolver {
 	}
 
 	/*
-	 * Transform augmented matrix into RREF: a. Search down and right for 1st
-	 * non-zero entry b. Swap rows if necessary so pivot is in first row c.
-	 * Subtract multiples of 1st row from other rows to get all 0's below pivot
-	 * in the column d. Repeat steps on all elements below and to the right of
-	 * current pivot
+	 * Transform augmented matrix into RREF: 
+	 * a. Search down and right for 1st non-zero entry
+	 * b. Swap rows if necessary so pivot is in first row 
+	 * c. Subtract multiples of 1st row from other rows to get all 0's below pivot in the column
+	 * d. Repeat steps on all elements below and to the right of current pivot
 	 */
-	public static double[][] toRREF(double[][] M, int m, int n) {
+	public static double[][] toRREF(double[][] matrix, int m, int n) {
 		int piv = 0;
 		for (int r = 0; r < m; r++) { // go down rows
 			if (piv >= n)
 				break; // done - full rank
 			{
 				int k = r;
-				while (M[k][piv] == 0) {
+				while (matrix[k][piv] == 0) {
 					k++; // search down column for nonzero element
 					if (k == m) { // if we reach end of row
 						k = r; // move on to next column
 						piv++;
 						if (piv == n)
-							return M; // done
+							return matrix; // done
 					}
 				}
-				double[] temp = M[r]; // swap rows i and r
-				M[r] = M[k];
-				M[k] = temp;
+				double[] temp = matrix[r]; // swap rows i and r
+				matrix[r] = matrix[k];
+				matrix[k] = temp;
 			}
 			// turn pivots into 1's
 			{
-				double divisor = M[r][piv];
+				double divisor = matrix[r][piv];
 				for (int j = 0; j < n + 1; j++)
 					// divide by pivot value including vector b
-					M[r][j] /= divisor;
+					matrix[r][j] /= divisor;
 			}
 			// eliminate other elements in the same column
 			for (int i = 0; i < m; i++) {
 				if (i != r) {
-					double multiplier = M[i][piv];
+					double multiplier = matrix[i][piv];
 					for (int j = 0; j < n + 1; j++) {
-						M[i][j] -= multiplier * M[r][j];
-						if (M[i][j] == -0.00)
-							M[i][j] = 0.00;
+						matrix[i][j] -= multiplier * matrix[r][j];
+						if (matrix[i][j] == -0.00)
+							matrix[i][j] = 0.00;
 					}
 				}
 			}
 			piv++;
 		}
-		return M;
+		return matrix;
 	}
 
-	// Find rank by traversing down the diagonal, skipping columns if
-	// necessary to count the number of pivot columns
+	/*
+	* Find rank by traversing down the diagonal, skipping columns if
+	* necessary to count the number of pivot columns
+	*/
 	public static int findRank(double[][] matrix, int m, int n){
 		int r = 0;
 		for (int i = 0; i < m; i++) {
@@ -110,6 +112,16 @@ public class CompleteMatrixSolver {
 		}
 		return r;
 	}
+	
+	/* Check from bottom up to right below the row containing the pivot, i.e.
+	* the zeroed out rows; if any non-zero elements are found, there is no solution
+	*/
+	public static boolean findNonzeroes(double[][] matrix, int m, int n, int r){
+		for (int i = m - 1; i > (r - 1); i--){
+			if (matrix[i][n] != 0)
+				return true;
+		} return false;
+	}
 
 	/*
 	 * Find possible solutions, which depend on rank r:
@@ -122,26 +134,19 @@ public class CompleteMatrixSolver {
 	public static boolean findSol(double[][] matrix, int m, int n) {
 		int r = findRank(matrix, m, n);
 		print("Rank: " + r + "\n");
-		int diff = m - r; // rows - rank
-		int solSet = 1; // default, but all cases below should be accounted for below
+		int solSet = 1; // initializing by default, but all cases below should be accounted for below
+		boolean foundNonzero = findNonzeroes(matrix, m, n, r);
 
-		if (r == m && r == n) // 1 solution
+		if (foundNonzero)
+			solSet = 0;
+		else if (r == m && r == n) // 1 solution
 			solSet = 1;
 		else if (r == m && r < n) // infinite solutions
 			solSet = 2;
-		else if (r < m && r == n) {
-			solSet = 1; // 1 solution
-			for (int i = m - 1; i > (m - diff - 1); i--) { // check from bottom
-				if (matrix[i][n] != 0) // if any zeroe'd out rows have non zero b, no sol
-					solSet = 0;
-			}
-		} else {
-			solSet = 2; // infinite solutions
-			for (int i = m - 1; i > (m - diff - 1); i--) {
-				if (matrix[i][n] != 0) // no sol
-					solSet = 0;
-			}
-		}
+		else if (r < m && r == n)
+			solSet = 1; // 1 solution if no nonzeroes in the wrong place
+		else // ( r < m && r < n)
+			solSet = 2; // infinite solutions if no nonzeroes in the wrong place
 
 		switch (solSet) {
 			case 0:
@@ -150,8 +155,8 @@ public class CompleteMatrixSolver {
 			case 1:
 				print("There is one unique solution.\n");
 				double[][] x = new double[n][1]; // r == n
-				for (int i = (m - 1 - diff); i >= 0; i--) { // backsub from bottom
-					for (int j = i + 1; j < m - diff; j++) {
+				for (int i = (r - 1); i >= 0; i--) { // backsub from bottom
+					for (int j = i + 1; j < r; j++) {
 						matrix[i][n] -= matrix[i][j] * x[j][0]; // subtract known val from b
 					}
 					x[i][0] = matrix[i][n] / matrix[i][i]; // finds x by dividing new b by
@@ -163,48 +168,47 @@ public class CompleteMatrixSolver {
 				print("Particular solution xp:");
 				int i = 0;
 				int j = 0;
-				int[] findPiv = new int[n];
+				int[] pivotArray = new int[n];
 				double[][] xp = new double[n][1];
 				while (j < n && i < m) {
 					if (matrix[i][j] != 0) {
-						findPiv[j] = 1; // found pivot, move to next row and col
-						i++;
-						j++;
+						pivotArray[j] = 1; // found pivot, move to next row and col
+						i++; j++;
 					} else {
 						while (matrix[i][j] == 0 && j < n) {
-							findPiv[j] = 0;
+							pivotArray[j] = 0;
 							j++; // found free, move to next col
 						}
 					}
 				}
 				// print b at pivot rows, 0 elsewhere in the vector to get xp
-				int c = 0;
-				for (int s = 0; s < n; s++) {
-					if (findPiv[s] != 0) {
-						xp[s][0] = matrix[c][n];
-						c++;
+				int piv = 0;
+				for (int row = 0; row < n; row++) {
+					if (pivotArray[row] != 0) {
+						xp[row][0] = matrix[piv][n];
+						piv++;
 					} else {
-						xp[s][0] = 0;
+						xp[row][0] = 0;
 					}
 				}
 				print(toString(xp, 1));
 
-				// Go to each free col and find special solutions
+				// go to each free col and find special solutions
 				int solnum = 0;
-				for (int t = 0; t < n; t++) {
-					int k = 0; // reinitialize vector that spans N(A)
-					if (findPiv[t] == 0) {
+				for (int col = 0; col < n; col++) {
+					int free = 0; // reinitialize vector that spans N(A)
+					if (pivotArray[col] == 0) {
 						solnum++;
 						print("Special solution s" + solnum + ":");
 						double[][] xs = new double[n][1];
-						for (int u = 0; u < n; u++) {
-							if (findPiv[u] == 0 && u == t) {
-								xs[u][0] = 1;
-							} else if (findPiv[u] == 1) {
-								xs[u][0] = (0 - matrix[k][t]);
-								k++;
+						for (int rows = 0; rows < n; rows++) {
+							if (pivotArray[rows] == 0 && rows == col) {
+								xs[rows][0] = 1;
+							} else if (pivotArray[rows] == 1) {
+								xs[rows][0] = (0 - matrix[free][col]);
+								free++;
 							} else {
-								xs[u][0] = 0;
+								xs[rows][0] = 0;
 							}
 						}
 						print(toString(xs, 1));
