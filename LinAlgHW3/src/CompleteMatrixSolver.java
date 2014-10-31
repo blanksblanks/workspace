@@ -38,11 +38,12 @@ public class CompleteMatrixSolver {
 		return augmented;
 	}
 
-	/* Transform augmented matrix into RREF:
-	 * a. Search down and right for 1st non-zero entry
-	 * b. Swap rows if necessary so pivot is in first row
-	 * c. Subtract multiples of 1st row from other rows to get all 0's below pivot in the column
-	 * d. Repeat steps on all elements below and to the right of current pivot
+	/*
+	 * Transform augmented matrix into RREF: a. Search down and right for 1st
+	 * non-zero entry b. Swap rows if necessary so pivot is in first row c.
+	 * Subtract multiples of 1st row from other rows to get all 0's below pivot
+	 * in the column d. Repeat steps on all elements below and to the right of
+	 * current pivot
 	 */
 	public static double[][] toRREF(double[][] M, int m, int n) {
 		int piv = 0;
@@ -54,7 +55,7 @@ public class CompleteMatrixSolver {
 				while (M[k][piv] == 0) {
 					k++; // search down column for nonzero element
 					if (k == m) { // if we reach end of row
-						k = r; // move on to next column 
+						k = r; // move on to next column
 						piv++;
 						if (piv == n)
 							return M; // done
@@ -67,14 +68,15 @@ public class CompleteMatrixSolver {
 			// turn pivots into 1's
 			{
 				double divisor = M[r][piv];
-				for (int j = 0; j < n+1; j++) // divide by pivot value including vector b
+				for (int j = 0; j < n + 1; j++)
+					// divide by pivot value including vector b
 					M[r][j] /= divisor;
 			}
 			// eliminate other elements in the same column
 			for (int i = 0; i < m; i++) {
 				if (i != r) {
 					double multiplier = M[i][piv];
-					for (int j = 0; j < n+1; j++) {
+					for (int j = 0; j < n + 1; j++) {
 						M[i][j] -= multiplier * M[r][j];
 						if (M[i][j] == -0.00)
 							M[i][j] = 0.00;
@@ -86,23 +88,10 @@ public class CompleteMatrixSolver {
 		return M;
 	}
 
-
-	/* Find possible solutions, which depend on rank r:
-	 * r == m && r == n has one solution
-	 * r == m && r < n infinite solutions
-	 * r < m && r == n has 0 or 1 solution
-	 * r < m && r < n has 0 or infinity solutions
-	 */
-	public static boolean findSol(double[][] matrix, int m, int n) {
-		double[] b = new double[m];
+	// Find rank by traversing down the diagonal, skipping columns if
+	// necessary to count the number of pivot columns
+	public static int findRank(double[][] matrix, int m, int n){
 		int r = 0;
-
-		// create new vector b with updated values
-		for (int i = 0; i < m; i++) {
-			b[i] = matrix[i][n];
-		}
-
-		// Find rank by traversing down the diagonal, skipping columns if necessary to count the number of pivot columns
 		for (int i = 0; i < m; i++) {
 			for (int j = i; j < n; j++) {
 				if (matrix[i][j] != 0) {
@@ -119,25 +108,44 @@ public class CompleteMatrixSolver {
 				}
 			}
 		}
+		return r;
+	}
 
-		System.out.println("Rank: " + r + "\n");
+	/*
+	 * Find possible solutions, which depend on rank r:
+	 * r == m && r == n has one solution
+	 * r == m && r < n infinite solutions
+	 * r < m && r == n has 0 or 1 solution
+	 * r < m && r < n has 0 or infinity solutions
+	 */
+	public static boolean findSol(double[][] matrix, int m, int n) {
+		int r = findRank(matrix, m, n);
+		print("Rank: " + r + "\n");
+
+
+		double[] b = new double[m];
+		// create new vector b with updated values
+		for (int i = 0; i < m; i++) {
+			b[i] = matrix[i][n];
+		}
 
 		int solSet = 1; // default, but all cases below should be accounted for below
 		int diff = m - r; // rows - rank
-		
 		if (r == m && r == n) // 1 solution
 			solSet = 1;
 		else if (r == m && r < n) // infinite solutions
 			solSet = 2;
 		else if (r < m && r == n) {
 			solSet = 1; // 1 solution
-			for (int i = m - 1; i > (m - diff - 1); i--) { // check from bottom up
-				if (b[i] != 0) // change to 0 solution if any zeroe'd out rows have non-zero b elements
+			for (int i = m - 1; i > (m - diff - 1); i--) { // check from bottom
+															// up
+				if (b[i] != 0) // change to 0 solution if any zeroe'd out rows
+								// have non-zero b elements
 					solSet = 0;
 			}
 		} else {
 			solSet = 2; // infinite solutions
-			for (int i = m - 1; i > (m - diff - 1); i--){
+			for (int i = m - 1; i > (m - diff - 1); i--) {
 				if (b[i] != 0) // change to 0 solution
 					solSet = 0;
 			}
@@ -149,18 +157,18 @@ public class CompleteMatrixSolver {
 				break;
 			case 1:
 				print("There is one unique solution.\n");
-				// diff is m-r, it will be the number of nonzero elements in solution
-				double[] x = new double[m - diff];
-				for (int i = (m - 1 - diff); i >= 0; i--) { // backsub from the bottom up
+				// diff is m-r, it will be the number of nonzero elements in
+				// solution
+				double[][] x = new double[m - diff][1];
+				for (int i = (m - 1 - diff); i >= 0; i--) { // backsub from the
+															// bottom up
 					double sum = 0;
 					for (int j = i + 1; j < m - diff; j++) {
-						sum += matrix[i][j] * x[j];
+						sum += matrix[i][j] * x[j][0];
 					}
-					x[i] = (b[i] - sum) / matrix[i][i];
+					x[i][0] = (b[i] - sum) / matrix[i][i];
 				}
-				for (int i = 0; i < x.length; i++) {
-					print(x[i]);
-				}
+				print(toString(x, 1));
 				break;
 			case 2:
 				print("There are infinitely many solutions.\n");
@@ -168,42 +176,50 @@ public class CompleteMatrixSolver {
 				int i = 0;
 				int j = 0;
 				int[] findPiv = new int[n];
+				double[][] xp = new double[n][1];
 				while (j < n && i < m) {
 					if (matrix[i][j] != 0) {
 						findPiv[j] = 1; // found pivot, move to next row and col
-						i++; j++;
+						i++;
+						j++;
 					} else {
 						while (matrix[i][j] == 0 && j < n) {
-							findPiv[j] = 0; j++; // found free, move to next col
+							findPiv[j] = 0;
+							j++; // found free, move to next col
 						}
 					}
 				}
-				// print b at pivot rows, 0 elsewhere in the vector
+				// print b at pivot rows, 0 elsewhere in the vector to get xp
 				int c = 0;
 				for (int s = 0; s < n; s++) {
 					if (findPiv[s] != 0) {
-						print(matrix[c][n]);
+						xp[s][0] = matrix[c][n];
 						c++;
 					} else {
-						print("0.00");
+						xp[s][0] = 0;
 					}
 				}
+				print(toString(xp, 1));
+
 				// Go to each free col and find special solutions
-				print("\nSpecial solutions: ");
+				int solnum = 0;
 				for (int t = 0; t < n; t++) {
-					int NA = 0; // reinitialize
+					int k = 0; // reinitialize vector that spans N(A)
 					if (findPiv[t] == 0) {
-						print("");
+						solnum++;
+						print("Special solution s" + solnum + ":");
+						double[][] xs = new double[n][1];
 						for (int u = 0; u < n; u++) {
 							if (findPiv[u] == 0 && u == t) {
-								print("1.00");
+								xs[u][0] = 1;
 							} else if (findPiv[u] == 1) {
-								print(0 - matrix[NA][t]);
-								NA++;
+								xs[u][0] = (0 - matrix[k][t]);
+								k++;
 							} else {
-								print("0.00");
+								xs[u][0] = 0;
 							}
 						}
+						print(toString(xs, 1));
 					}
 				}
 				break;
@@ -212,7 +228,8 @@ public class CompleteMatrixSolver {
 
 	}
 
-	/* Print out the 2D array matrices with blanks between row entries to the
+	/*
+	 * Print out the 2D array matrices with blanks between row entries to the
 	 * console. Format option 0: full values, option 1: truncated
 	 */
 	public static String toString(double[][] matrix, int format) {
@@ -230,7 +247,7 @@ public class CompleteMatrixSolver {
 		return s;
 	}
 
-	// Overloaded print methods to print to console and output file
+	// Overloaded print methods
 	public static void print(String s) {
 		System.out.println(s);
 	}
@@ -248,10 +265,11 @@ public class CompleteMatrixSolver {
 			if (inFile.exists()) {
 				// Introduction
 				System.out
-						.println("This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix. It has three types of output: no solution, unique solution, and infinitely many solutions.");
+						.println("This program gives a complete solution for a system of of linear equations (A x = b) as described by any m x n matrix."
+								+ "\nIt has three types of output: no solution, unique solution, and infinitely many solutions.");
 
 				Scanner input = new Scanner(inFile);
-				System.out.println("Reading in input values from \"" + args[0]
+				print("Reading in input values from \"" + args[0]
 						+ "\"...\n");
 
 				// Parses input file for m, n coefficient matrix, rhs
@@ -273,24 +291,24 @@ public class CompleteMatrixSolver {
 				input.close();
 
 				// Prints out matrix from the input file
-				System.out.println("m: " + m);
-				System.out.println("n: " + n + "\n");
-				System.out.println("Matrix A:\n" + toString(A, 1));
-				System.out.println("Vector b:\n" + toString(b, 1));
+				print("m: " + m);
+				print("n: " + n + "\n");
+				print("Matrix A:\n" + toString(A, 1));
+				print("Vector b:\n" + toString(b, 1));
 
 				double[][] aug = new double[m][n + 1];
 				aug = augment(A, b, m, n);
-				System.out.println("Augmented form:\n" + toString(aug, 1));
+				print("Augmented form:\n" + toString(aug, 1));
 
 				double[][] rref = new double[m][n + 1];
 				rref = toRREF(aug, m, n);
-				System.out.println("Reduced row echelon form:\n"
+				print("Reduced row echelon form:\n"
 						+ toString(rref, 1));
 
 				findSol(rref, m, n);
 
 			} else {
-				System.out.println("No such input file found, good bye!");
+				print("No such input file found, good bye!");
 			}
 		} else {
 			System.out
