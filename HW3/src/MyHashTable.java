@@ -1,6 +1,7 @@
 // Modifies Quadratic Probing Hash Table class by Weiss
 // Makes a hash table of Strings instead of AnyType
-// 
+// myhash takes the value of every other String character
+// and obtains hash value after applying Horner's rule
 
 public class MyHashTable {
 
@@ -67,8 +68,7 @@ public class MyHashTable {
 		} else
 			return false;
 	}
-
-
+	
 	public int size() {
 		return theSize;
 	}
@@ -98,16 +98,18 @@ public class MyHashTable {
 			array[i] = null;
 	}
 
-	// Hashes odd characters in String using polynomial function
+	// Hashes only odd characters in String using polynomial function
 	/// of 37 by Horner's rule and finding the mod of that value
-	// and the table size
+	// and the table size (note can't directly use theSize variable
+	// because when hash table is first initialized it has a
+	// divide by zero error
 	private int myhash(String key) {
 		int hashVal = 0;
 		for (int i = 0; i < key.length(); i += 2)
 			hashVal = 37 * hashVal + key.charAt(i);
 		hashVal %= array.length;
 		if (hashVal < 0)
-			hashVal += array.length;
+			hashVal += array.length; 
 		return hashVal;
 	}
 
