@@ -93,6 +93,21 @@ public class LeastSquares {
 				print("C: " + C + "\tD: " + D + "\tE: " + E);
 				print("y = " + C + " + " + D + "t + " + E + "t*t");
 
+				double[][] A = new double[m][3];
+				double[][] b = new double[m][1];
+				for (int t = 0; t < m; t++){
+					A[t][0] = 1;
+					A[t][1] = t;
+					A[t][2] = t*t;
+					double r = Math.random(); // perturbation r_i, > 0.0 and < 1.0
+					double perturbed = C + D*t + E*t*t + r;
+					b[t][0] = perturbed;
+				}
+				print("A:");
+				print(toString(A, 1));
+				print("b:");
+				print(toString(b, 1));
+
 			} else {
 				print("No such input file found, good bye!");
 			}
