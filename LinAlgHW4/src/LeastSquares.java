@@ -35,9 +35,81 @@ import java.util.Scanner;
  * of m, the second C, the third D and the fourth E.
  * 
  * As output, you can either print to the terminal or to a file or both.
+ *
+ * TODO: Complete solver with all functions, private/public methods,
+ * let computer do work of figuring out row/col # of new matrices, not you,
+ * overloaded method for forward eliminate too will be nice
  */
 
 public class LeastSquares {
+	
+	public static double[][] transpose(double[][] matrix, int row, int col){
+		double[][] transpose = new double[col][row];
+		for (int i = 0; i < row; i++)
+			for (int j = 0; j < col; j++)
+				transpose[j][i] = matrix[i][j];
+		return transpose;
+	}
+	
+	public static double[][] multiply(double[][] first, double[][] second, int m, int n){
+		
+		return second;
+	}
+	
+	// Takes matrix A and vector b and returns an augmented matrix
+	public static double[][] augment(double[][] matrix, double[][] vector, int n) {
+		double[][] augmented = new double[n][n + 1];
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				augmented[i][j] = matrix[i][j];
+			}
+		}
+		for (int i = 0; i < n; i++) {
+			augmented[i][n] = vector[i][0];
+		}
+		return augmented;
+	}
+
+	/*
+	 * Forward elimination reduces the system to upper-triangular form.
+	 */
+	public static double[][] forwardEliminate(double[][] A, int n) {
+		for (int k = 0; k < (n - 1); k++) {
+			for (int i = k + 1; i < n; i++) {
+				double multiplier = A[i][k] / A[k][k]; // # by which A[k][j]
+				// is multiplied before being subtracted from A[i][j]
+				for (int j = k; j < n; j++) {
+					A[i][j] = A[i][j] - (multiplier * A[k][j]); // zeroes out
+					// non-zero entries in A below the diagonal - moving from
+					// top left to bottom right
+				}
+				A[i][n] = A[i][n] - (multiplier * A[k][n]); // updates b's
+															// entries
+
+			}
+		}
+		return A;
+	}
+
+	/*
+	 * Back substitution solves the simplified system of equations, in upper
+	 * triangular form, to find the values of x[i] (all in column [0]) - moving
+	 * top to bottom
+	 */
+	public static double[][] backSubstitute(double[][] U, int n) {
+		double[][] x = new double[n][1];
+		x[n - 1][0] = U[n - 1][n] / U[n - 1][n - 1]; // finds initial x by
+		// dividing bottom b value by bottom coefficient value of matrix A
+		for (int i = (n - 1); i >= 0; i--) {
+			for (int j = i + 1; j < n; j++) {
+				U[i][n] -= U[i][j] * x[j][0]; // subtracts known value(s) from b
+			}
+			x[i][0] = U[i][n] / U[i][i]; // finds x by dividing new b by
+											// coefficient
+		}
+		return x;
+	}
+
 	
 	/*
 	 * Print out the 2D array matrices with blanks between row entries to the
@@ -107,10 +179,13 @@ public class LeastSquares {
 				print(toString(A, 1));
 				print("b:");
 				print(toString(b, 1));
+				
+				double[][] AT = new double[3][m];
+				AT = transpose(A, m, 3);
+				print(toString(AT, 1));
 
 				/* Solve ATA xhat = ATb
 				 *
-				double[][] AT = new double[3][m];
 				double[][] ATA = [3][3];
 				double[][] ATb = [3][1];
 				AT = transpose(A)
