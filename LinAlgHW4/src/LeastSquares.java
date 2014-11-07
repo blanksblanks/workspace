@@ -91,9 +91,9 @@ public class LeastSquares {
 				// Prints out matrix from the input file
 				print("m: " + m + " data points");
 				print("C: " + C + "\tD: " + D + "\tE: " + E);
-				print("y = " + C + " + " + D + "t + " + E + "t*t");
+				print("y = " + C + " + " + D + "t + " + E + "t*t\n");
 
-				double[][] A = new double[m][3];
+				double[][] A = new double[m][3]; // bc 3 unknowns, C, D, E
 				double[][] b = new double[m][1];
 				for (int t = 0; t < m; t++){
 					A[t][0] = 1;
@@ -108,6 +108,19 @@ public class LeastSquares {
 				print("b:");
 				print(toString(b, 1));
 
+				/* Solve ATA xhat = ATb
+				 *
+				double[][] AT = new double[3][m];
+				double[][] ATA = [3][3];
+				double[][] ATb = [3][1];
+				AT = transpose(A)
+				ATA = multiply(AT, A)
+				ATb = dot(AT, b)
+				aug = augment(ATA, Atb)
+				elim = forwardEliminate(aug)
+				double[][] xhat = new double [3][1];
+				xhat = backSubstitute(elim)
+				 */
 			} else {
 				print("No such input file found, good bye!");
 			}
