@@ -35,27 +35,44 @@ import java.util.Scanner;
  * of m, the second C, the third D and the fourth E.
  * 
  * As output, you can either print to the terminal or to a file or both.
- *
- * TODO: Complete solver with all functions, private/public methods,
- * let computer do work of figuring out row/col # of new matrices, not you,
+ * 
+ * TODO: Complete solver with all functions, private/public methods, let
+ * computer do work of figuring out row/col # of new matrices, not you,
  * overloaded method for forward eliminate too will be nice
+ * 
+ * Ways to test: increase the number of data points/ reduce the noise in randomizer
  */
 
+
+
 public class LeastSquares {
-	
-	public static double[][] transpose(double[][] matrix, int row, int col){
+
+	public static double[][] transpose(double[][] matrix, int row, int col) {
 		double[][] transpose = new double[col][row];
 		for (int i = 0; i < row; i++)
 			for (int j = 0; j < col; j++)
 				transpose[j][i] = matrix[i][j];
 		return transpose;
 	}
-	
-	public static double[][] multiply(double[][] first, double[][] second, int m, int n){
-		
-		return second;
+
+	public static double[][] multiply(double[][] first, double[][] second,
+			int m, int col, int row, int n) {
+		if (col != row) {
+			System.err
+					.println("Number of columns of first matrix doesn't equal number of rows of second matrix");
+			System.exit(0);
+		}
+		double[][] product = new double[m][n];
+		for (int i = 0; i < m; i++)
+			for (int j = 0; j < n; j++) {
+				double dot = 0;
+				for (int k = 0; k < col; k++)
+					dot += first[i][k] * second[k][j];
+				product[i][j] = dot;
+			}
+		return product;
 	}
-	
+
 	// Takes matrix A and vector b and returns an augmented matrix
 	public static double[][] augment(double[][] matrix, double[][] vector, int n) {
 		double[][] augmented = new double[n][n + 1];
@@ -83,9 +100,7 @@ public class LeastSquares {
 					// non-zero entries in A below the diagonal - moving from
 					// top left to bottom right
 				}
-				A[i][n] = A[i][n] - (multiplier * A[k][n]); // updates b's
-															// entries
-
+				A[i][n] = A[i][n] - (multiplier * A[k][n]); // updates bi
 			}
 		}
 		return A;
@@ -110,20 +125,20 @@ public class LeastSquares {
 		return x;
 	}
 
-	
 	/*
 	 * Print out the 2D array matrices with blanks between row entries to the
-	 * console. Format option 0: full values, option 1: truncated
+	 * console. Format opt 0: full values, opt 1: truncated, opt 3: long trunc
 	 */
 	public static String toString(double[][] matrix, int format) {
 		String s = "";
 		for (int i = 0; i < matrix.length; i++) {
 			for (int j = 0; j < matrix[i].length; j++) {
-				if (format == 1) {
+				if (format == 1)
 					s += String.format("%8.2f", matrix[i][j]);
-				} else {
-					s += (matrix[i][j] + "\t");
-				}
+				else if (format == 2)
+					s += String.format("%10.2f", matrix[i][j]);
+				else
+					s += ("    " + matrix[i][j]);
 			}
 			s += "\n";
 		}
@@ -131,12 +146,12 @@ public class LeastSquares {
 	}
 
 	// Overloaded print methods
-	public static void print(String s) {
-		System.out.println(s);
+	public static void print(double d) {
+		System.out.printf("%8.2f\n", d);
 	}
 
-	public static void print(double d) {
-		System.out.printf("%.2f\n", d);
+	public static void print(String s) {
+		System.out.println(s);
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -152,9 +167,10 @@ public class LeastSquares {
 
 				// Parses input file for  m  (# data points), and C, D, E
 				// (coefficients of parabola equation y = C + Dt + Et*t)
-				int m;
+				int m, n;
 				double C, D, E;
 				m = input.nextInt();
+				n = 3; // bc 3 unknowns: C, D, E
 				C = input.nextDouble();
 				D = input.nextDouble();
 				E = input.nextDouble();
@@ -165,37 +181,52 @@ public class LeastSquares {
 				print("C: " + C + "\tD: " + D + "\tE: " + E);
 				print("y = " + C + " + " + D + "t + " + E + "t*t\n");
 
-				double[][] A = new double[m][3]; // bc 3 unknowns, C, D, E
+				double[][] A = new double[m][n];
 				double[][] b = new double[m][1];
 				for (int t = 0; t < m; t++){
 					A[t][0] = 1;
 					A[t][1] = t;
 					A[t][2] = t*t;
-					double r = Math.random(); // perturbation r_i, > 0.0 and < 1.0
-					double perturbed = C + D*t + E*t*t + r;
-					b[t][0] = perturbed;
+					double yi = C + D*t + E*t*t;
+					double ri = Math.random(); // perturbation bt 0.0 and 1.0
+					// ways to test: /1000 to see if xhat values are closer
+					double bi =  yi + ri;
+					b[t][0] = bi;
 				}
-				print("A:");
-				print(toString(A, 1));
-				print("b:");
-				print(toString(b, 1));
 				
-				double[][] AT = new double[3][m];
-				AT = transpose(A, m, 3);
-				print(toString(AT, 1));
+				print("A where m row vectors each contain 1, ti and ti*ti:\n" + toString(A, 1));
+				print("b where bi = yi + ri:\n" + toString(b, 1));
+				
+				print("Step by step, we can solve solve ATA x_hat = ATb\n");
+				
+				double[][] AT = new double[n][m];
+				AT = transpose(A, m, n);
+				print("AT:\n" + toString(AT, 1));
+				
+				double[][] ATA = new double[n][n];
+				ATA = multiply(AT, A, n, m, m, n);
+				print("ATA:\n" + toString(ATA, 2));
 
-				/* Solve ATA xhat = ATb
-				 *
-				double[][] ATA = [3][3];
-				double[][] ATb = [3][1];
-				AT = transpose(A)
-				ATA = multiply(AT, A)
-				ATb = dot(AT, b)
-				aug = augment(ATA, Atb)
-				elim = forwardEliminate(aug)
-				double[][] xhat = new double [3][1];
-				xhat = backSubstitute(elim)
-				 */
+				double[][] ATb = new double[n][1];
+				ATb = multiply(AT, b, 3, m, m, 1);
+				print("ATb:\n" + toString(ATb, 2));
+				
+				double[][] aug = new double[n][n + 1];
+				aug = augment(ATA, ATb, 3);
+				print("Augmented form:\n" + toString(aug, 2));
+
+				double[][] elim = new double[n][n + 1];
+				elim = forwardEliminate(aug, 3);
+				print("Upper triangle form:\n" + toString(elim, 2));
+
+				double[][] x_hat = new double[n][1];
+				x_hat = backSubstitute(elim, n);
+				print("Vector x_hat contains our calculated coefficients:\n" + toString(x_hat, 0));
+				
+				print("We can compare these to the original C, D, E values:");
+				print(C);
+				print(D);
+				print(E);
 			} else {
 				print("No such input file found, good bye!");
 			}
@@ -206,5 +237,4 @@ public class LeastSquares {
 		}
 
 	}
-	
 }

@@ -19,9 +19,14 @@ HOW TO RUN
   
     $ java Least Squares input.txt
     
-    Note: Input file can be called whatever you like. It should contain:
-    input m (the number of data points),
-    and C, D, E (the coefficients of the parabola equation y = C + Dt + Et*t)
+    Note: Input file can be called whatever you like. It should contain on each line:
+    m
+    C
+    D
+    E
+    
+    where m = the nunumber of data points
+    and C, D, E = the coefficients of the parabola equation y = C + Dt + Et*t
 
     Example:
     20
@@ -38,6 +43,10 @@ This program fits a parabola to the data (ti , bi), i = 1...m.
 To generate the data, it uses a parabola equation, samples it at m equally spaced points ti,
 and uses a random number generator to perturb each yi to get bi = yi + ri for i = 1...m.
 Finally, it computes the vector x_hat in the equation ATA x_hat = ATb.
+
+Note: to further test this program, I also played with the value of m (the number of data
+points in the input file - from 1 to 20 to 100) and also reduced the noise in the random
+number generator (by hardcoding it so that ri were values between 0 and 0.0001.)
 
 ***
 
@@ -85,7 +94,9 @@ $ cat input.txt
     -9
     3
 
-$ java LeastSquares input.txtReading in input values from "input2.txt"...
+$ java LeastSquares input.txt
+
+Reading in input values from "input2.txt"...
 
 m: 20 data points
 C: 6.0  D: -9.0 E: 3.0
