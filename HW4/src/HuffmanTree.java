@@ -4,37 +4,33 @@ import java.util.Queue;
 public class HuffmanTree {
 	
 	private HuffmanNode root;
-	private BinaryHeap<HuffmanNode> tree;
 	
-	public HuffmanTree(HuffmanNode[] array) throws UnderflowException {
-		
-		this.tree = new BinaryHeap<HuffmanNode>(array);
-		int leaves = array.length;
-		buildTree(leaves);
-		
-		String binaryCode = "";
-		buildBinaryCode(root, binaryCode);
+	public HuffmanTree(HuffmanNode[] array) throws UnderflowException {		
+		BinaryHeap<HuffmanNode> heap = new BinaryHeap<HuffmanNode>(array);
+		buildHuffmanTree(heap);
+		String binaryCode = ""; // After tree is built, build binary codes for leaves
+		encodeLeaves(root, binaryCode);
 	}
 	
-	private void buildTree(int leaves) throws UnderflowException {
-		int num = 1; // init at T1
-		while (tree.getCurrentSize() > 1) {
-			HuffmanNode right = tree.deleteMin();
-			HuffmanNode left = tree.deleteMin();
+	private void buildHuffmanTree(BinaryHeap<HuffmanNode> heap) throws UnderflowException {
+		int num = 1; // initialize num at T1
+		while (heap.getCurrentSize() > 1) {
+			HuffmanNode right = heap.deleteMin();
+			HuffmanNode left = heap.deleteMin();
 			HuffmanNode t = new HuffmanNode(num++, right, left);
 			System.out.println("Inserted t-l-r: " + t.getCharacter() + ", " + left.getCharacter() + " and " + right.getCharacter());
-			tree.insert(t);
+			heap.insert(t); // throw it back in the heap
 			root = t; // last node is the root of the tree
 		}
 	}
 	
 	// TODO: edge cases: what happens if t is null or only one letter in the tree?
-	private String buildBinaryCode(HuffmanNode t, String digits) {
+	private String encodeLeaves(HuffmanNode t, String digits) {
 		if (t.right == null && t.left == null) // we've reached a leaf!
 			t.setBinaryCode(digits);
 		else {
-			buildBinaryCode(t.left, digits + "0");
-			buildBinaryCode(t.right, digits + "1");
+			encodeLeaves(t.left, digits + "0");
+			encodeLeaves(t.right, digits + "1");
 		}
 		return digits;
 	}
