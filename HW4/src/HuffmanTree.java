@@ -5,23 +5,24 @@ public class HuffmanTree {
 	
 	private HuffmanNode root;
 	private BinaryHeap<HuffmanNode> tree;
-	private String binaryCode;
-	private int tNumber;	
 	
 	public HuffmanTree(HuffmanNode[] array) throws UnderflowException {
 		
-		binaryCode = "";
 		this.tree = new BinaryHeap<HuffmanNode>(array);
 		int leaves = array.length;
 		buildTree(leaves);
+		
+		String binaryCode = "";
 		buildBinaryCode(root, binaryCode);
 	}
 	
 	private void buildTree(int leaves) throws UnderflowException {
+		int num = 1; // init at T1
 		while (tree.getCurrentSize() > 1) {
 			HuffmanNode right = tree.deleteMin();
 			HuffmanNode left = tree.deleteMin();
-			HuffmanNode t = new HuffmanNode(++tNumber, right, left);
+			HuffmanNode t = new HuffmanNode(num++, right, left);
+			System.out.println("Inserted t-l-r: " + t.getCharacter() + ", " + left.getCharacter() + " and " + right.getCharacter());
 			tree.insert(t);
 			root = t; // last node is the root of the tree
 		}

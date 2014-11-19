@@ -95,7 +95,19 @@ public class HuffmanCode {
 	
     // Tester method that takes an input file from the command line
 	public static void main(String[] args) throws FileNotFoundException {
-
+		
+		if (args.length == 1) {
+			LinkedList<String> input = FileLineParser(args[0]);
+			HuffmanNode[] forest = forestOfTinyHuffmanTrees(input);
+			HuffmanTree tree = new HuffmanTree(forest);
+	        for (int i = 0; i < forest.length; i++)
+	            System.out.println(forest[i].toString() + "  frequency: " + forest[i].getFrequency());
+	        tree.printTree();
+		} else {
+				System.out.println("One input file needs to be specified. Please try again!");
+				System.exit(1);
+			}
+		
 		// Creating the JFrame
 		JFrame frame = new JFrame();
 		HuffmanTreeComponent mc = new HuffmanTreeComponent();
@@ -126,19 +138,6 @@ public class HuffmanCode {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
-		
-		if (args.length == 1) {
-			LinkedList<String> input = FileLineParser(args[0]);
-			HuffmanNode[] forest = forestOfTinyHuffmanTrees(input);
-			HuffmanTree tree = new HuffmanTree(forest);
-	        for (int i = 0; i < forest.length; i++){
-	            System.out.println(forest[i].toString() + "  frequency: " + forest[i].getFrequency());
-	        }
-	        tree.printTree();
-		} else {
-				System.out.println("One input file needs to be specified. Please try again!");
-				System.exit(1);
-			}
 	}
 
 
