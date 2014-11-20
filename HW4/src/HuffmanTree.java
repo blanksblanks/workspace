@@ -35,8 +35,6 @@ public class HuffmanTree {
 		return digits;
 	}
 	
-
-	
 	public String decode(String binary){
 //		String text = decode(root, binary, 0, "");
 		String text = "";
@@ -55,24 +53,24 @@ public class HuffmanTree {
 	}
 	
 	
-	@SuppressWarnings("unused")
-	private String decode(HuffmanNode t, String code, int index, String text){
-		if (index <= code.length()){
-			if (t.isLeaf()) {
-				text += t.getCharacter(); // concatenate char
-				if (index == code.length())
-					return text;
-				else
-					decode(root, code, index, text);
-			} else {
-				if (code.charAt(index) == '0')
-					decode(t.left, code, index+1, text);
-				else if (code.charAt(index) == '1')
-					decode(t.right, code, index+1, text);
-			}
-		}
-		return text;
-	}
+//	@SuppressWarnings("unused")
+//	private String decode(HuffmanNode t, String code, int index, String text){
+//		if (index <= code.length()){
+//			if (t.isLeaf()) {
+//				text += t.getCharacter(); // concatenate char
+//				if (index == code.length())
+//					return text;
+//				else
+//					decode(root, code, index, text);
+//			} else {
+//				if (code.charAt(index) == '0')
+//					decode(t.left, code, index+1, text);
+//				else if (code.charAt(index) == '1')
+//					decode(t.right, code, index+1, text);
+//			}
+//		}
+//		return text;
+//	}
 	
 	public void printTree(){
 		this.printTree(root);
@@ -96,24 +94,27 @@ public class HuffmanTree {
             	q.add(node.right);
             	System.out.print("/\\");
 //            	System.out.println("Added " + node.left.getCharacter() + " and " + node.right.getCharacter() + " to queue");
-            } else if (node.left != null && node.right == null) { // draw /
-//                nodes++;
-                q.add(node.left);
-            	HuffmanNode blankr = new HuffmanNode("blankr");
-                q.add(blankr);
-            	System.out.print("/");
-//            	System.out.println("Added " + node.left.getCharacter() + " and blank to queue");
-            } else if (node.left == null && node.right != null) { // draw \
-//            	nodes++;
-            	HuffmanNode blankl = new HuffmanNode("blankl");
-            	q.add(blankl);
-            	q.add(node.right);
-            	System.out.print("\\");
-//            	System.out.println("Added blank and " + node.right.getCharacter() + " to queue");
-            } else { // (node.left == null && node.right == null)
-//            	 nodes += (Math.pow(2.0, level) - nodes);
-            	//System.out.println("Reached leaf. do nothing");
-            }
+            } 
+            
+            
+//            else if (node.left != null && node.right == null) { // draw /
+////                nodes++;
+//                q.add(node.left);
+////            	HuffmanNode blankr = new HuffmanNode("blankr");
+////                q.add(blankr);
+//            	System.out.print("/");
+////            	System.out.println("Added " + node.left.getCharacter() + " and blank to queue");
+//            } else if (node.left == null && node.right != null) { // draw \
+////            	nodes++;
+////            	HuffmanNode blankl = new HuffmanNode("blankl");
+////            	q.add(blankl);
+//            	q.add(node.right);
+//            	System.out.print("\\");
+////            	System.out.println("Added blank and " + node.right.getCharacter() + " to queue");
+//            } else { // (node.left == null && node.right == null)
+////            	 nodes += (Math.pow(2.0, level) - nodes);
+//            	//System.out.println("Reached leaf. do nothing");
+//            }
             
             System.out.print(node.getCharacter() + "\t");
             nodes++; // node
