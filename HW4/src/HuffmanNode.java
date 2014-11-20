@@ -40,6 +40,10 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 				return 0;
 		}
 		
+		public boolean isLeaf(){
+			return (this.right == null && this.left == null);
+		}
+		
 		public void incrementFrequency() {
 	        frequency += 1;
 	    }

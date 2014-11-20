@@ -102,7 +102,9 @@ public class HuffmanCode {
 			HuffmanTree tree = new HuffmanTree(forest);
 	        for (int i = 0; i < forest.length; i++)
 	            System.out.println(forest[i].toString() + "  frequency: " + forest[i].getFrequency());
-	        tree.printTree();
+//	        tree.printTree();
+	        System.out.println("0110110010");
+	        System.out.println(tree.decode("0110110010"));
 		} else {
 				System.out.println("One input file needs to be specified. Please try again!");
 				System.exit(1);
