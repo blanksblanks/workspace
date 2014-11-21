@@ -13,7 +13,6 @@ public class HuffmanTree {
 		buildHuffmanTree(heap);
 		String binaryCode = ""; // After tree is built, build binary codes for leaves
 		encodeLeaves(root, binaryCode);
-		
 	}
 	
 	private void buildHuffmanTree(BinaryHeap<HuffmanNode> heap) throws UnderflowException {
@@ -33,9 +32,12 @@ public class HuffmanTree {
 	private String encodeLeaves(HuffmanNode t, String digits) {
 		if (t.isLeaf()) {
 			t.setBinaryCode(digits);
-			hash.put(t.getCharacter(), digits);
-			String s = t.getCharacter();
-			System.out.println(hash.get(s));
+			hash.put(t.getCharacter(), t.getBinaryCode());
+			String s = hash.get(t.getCharacter());
+			System.out.println(s);
+			System.out.println(hash.get("e"));
+//			String s = t.getCharacter();
+//			System.out.println(hash.get(s));
 //			System.out.println(t.getCharacter() + digits);
 		} else {
 			encodeLeaves(t.left, digits + "0");
@@ -47,14 +49,12 @@ public class HuffmanTree {
 	public String decode(String binary){
 		String text = "";
 		String error = "This is not a valid binary encoding.";
-		int length = binary.length();
-		int i = 0;
 		try {
-			while (i < length) {
+			int i = 0;
+			while (i < binary.length()) {
 				HuffmanNode t = root;
 				while (!t.isLeaf()) {
 					t = (binary.charAt(i) == '0') ? t.left : t.right;
-
 					i++;
 				}
 				text += t.getCharacter();
@@ -62,22 +62,28 @@ public class HuffmanTree {
 			return text;
 		} catch (IndexOutOfBoundsException e) {
 			return error;
-		} catch (NullPointerException r) {
+		} catch (NullPointerException n) {
 			return error;
 		}
 	}
 	
 	public String encode(String s){
 		String binary = "";
+//		try {
 		for (int i = 0; i < s.length(); i++){
-			System.out.print(s.charAt(i));
-			String code = hash.get(s.charAt(i));
-//			if (code == null)
-//				return (s.charAt(i) + " is not in the Huffman tree.");
-//			else
+			String character = Character.toString(s.charAt(i));
+			String code = hash.get(character);
+//			System.out.print(code);
+//			System.out.println(hash.get("e"));
+			if (code == null)
+				return (character + " is not in the Huffman tree.");
+			else
 				binary += code;		
 		}
 		return binary;
+//		} catch (NullPointerException n) {
+//			return "One of your character doesn't have an encoding. Sorry!";
+//		}
 	}
 
 	public void printTree(){

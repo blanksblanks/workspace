@@ -61,21 +61,19 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 	    }
 	    
 	    public String getCharacter(){
-	    	if (character.equals(" "))              
-                return "sp";
-            else if (character.equals("\n"))               
-                return "nl";
+//	    	if (character.equals(" "))              
+//                return "sp";
+//            else if (character.equals("\n"))               
+//                return "nl";
 	        return this.character;
 	    }
 
 	    public String toString() {
-	            if (character.equals(" "))              
-	                return "sp " + code;
-	            else if (character.equals("\n"))               
-	                return "nl " + code; 
-	            else if (code != null)
-	                return character + "  " + code;
+	            if (this.character.equals(" "))              
+	                return "sp ";
+	            else if (this.character.equals("\n"))               
+	                return "nl ";
 	            else
-	                return character;
+	                return this.character;
 	    }
 	}

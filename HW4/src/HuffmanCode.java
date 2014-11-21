@@ -105,8 +105,8 @@ public class HuffmanCode {
 	        tree.printTree();
 	        System.out.println("0110110010 = " + tree.decode("0110110010"));
 	        System.out.println("01101100101 = " + tree.decode("01101100101"));
-	        System.out.println(tree.encode("eats"));
-	        System.out.println(tree.encode("good eats"));
+	        System.out.println("eats = " + tree.encode("east"));
+	        System.out.println("good eats = " + tree.encode("good eats"));
 		} else {
 				System.out.println("One input file needs to be specified. Please try again!");
 				System.exit(1);
