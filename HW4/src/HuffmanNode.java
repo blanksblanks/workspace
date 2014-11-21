@@ -70,9 +70,9 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 
 	    public String toString() {
 	            if (this.character.equals(" "))              
-	                return "sp ";
+	                return "sp";
 	            else if (this.character.equals("\n"))               
-	                return "nl ";
+	                return "nl";
 	            else
 	                return this.character;
 	    }

@@ -22,7 +22,7 @@ public class HuffmanTree {
 			HuffmanNode right = heap.deleteMin();
 			HuffmanNode left = heap.deleteMin();
 			HuffmanNode t = new HuffmanNode(num++, right, left);
-			System.out.println("Inserted t-l-r: " + t.getCharacter() + ", " + left.getCharacter() + " and " + right.getCharacter());
+			System.out.println("Inserted t-l-r: " + t.toString() + ", " + left.toString() + " and " + right.toString());
 			heap.insert(t); // throw it back in the heap
 			root = t; // last node is the root of the tree
 		}
@@ -33,12 +33,6 @@ public class HuffmanTree {
 		if (t.isLeaf()) {
 			t.setBinaryCode(digits);
 			hash.put(t.getCharacter(), t.getBinaryCode());
-			String s = hash.get(t.getCharacter());
-			System.out.println(s);
-			System.out.println(hash.get("e"));
-//			String s = t.getCharacter();
-//			System.out.println(hash.get(s));
-//			System.out.println(t.getCharacter() + digits);
 		} else {
 			encodeLeaves(t.left, digits + "0");
 			encodeLeaves(t.right, digits + "1");
@@ -69,21 +63,15 @@ public class HuffmanTree {
 	
 	public String encode(String s){
 		String binary = "";
-//		try {
 		for (int i = 0; i < s.length(); i++){
 			String character = Character.toString(s.charAt(i));
 			String code = hash.get(character);
-//			System.out.print(code);
-//			System.out.println(hash.get("e"));
 			if (code == null)
 				return (character + " is not in the Huffman tree.");
 			else
 				binary += code;		
 		}
 		return binary;
-//		} catch (NullPointerException n) {
-//			return "One of your character doesn't have an encoding. Sorry!";
-//		}
 	}
 
 	public void printTree(){
@@ -132,7 +120,7 @@ public class HuffmanTree {
 //            	//System.out.println("Reached leaf. do nothing");
 //            }
             
-            System.out.print(node.getCharacter() + "\t");
+            System.out.print(node.toString() + "\t");
             nodes++; // node
 //          System.out.println(Math.pow(2.0, level) + " compared to number of nodes " + nodes);
           if (Math.pow(2.0, level) == nodes) {
