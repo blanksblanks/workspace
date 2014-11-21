@@ -45,40 +45,26 @@ public class HuffmanTree {
 	}
 	
 	public String decode(String binary){
-//		String text = decode(root, binary, 0, "");
 		String text = "";
 		String error = "This is not a valid binary encoding.";
 		int length = binary.length();
 		int i = 0;
 		try {
-		while (i < length){
-			HuffmanNode t = root;
-			while (!t.isLeaf()){
-//				System.out.println(binary.charAt(i));
-				t = (binary.charAt(i) == '0') ? t.left : t.right;
-//				if (binary.charAt(i) == '0') {
-//					if (t.left != null)
-//						t = t.left;
-//					else
-//						return error; 
-//				} else if (binary.charAt(i) == '1') {
-//					if (t.right != null)
-//						t = t.right;
-//					else
-//						return error;
-//				} else {
-//					return error;
-//				}
-				i++;
+			while (i < length) {
+				HuffmanNode t = root;
+				while (!t.isLeaf()) {
+					t = (binary.charAt(i) == '0') ? t.left : t.right;
+
+					i++;
+				}
+				text += t.getCharacter();
 			}
-			text += t.getCharacter();
-		}
-		return text;
+			return text;
 		} catch (IndexOutOfBoundsException e) {
-	        return error;
-	    } catch (NullPointerException r) {
-	    	return error;
-	    }
+			return error;
+		} catch (NullPointerException r) {
+			return error;
+		}
 	}
 	
 	public String encode(String s){
@@ -93,26 +79,7 @@ public class HuffmanTree {
 		}
 		return binary;
 	}
-	
-//	@SuppressWarnings("unused")
-//	private String decode(HuffmanNode t, String code, int index, String text){
-//		if (index <= code.length()){
-//			if (t.isLeaf()) {
-//				text += t.getCharacter(); // concatenate char
-//				if (index == code.length())
-//					return text;
-//				else
-//					decode(root, code, index, text);
-//			} else {
-//				if (code.charAt(index) == '0')
-//					decode(t.left, code, index+1, text);
-//				else if (code.charAt(index) == '1')
-//					decode(t.right, code, index+1, text);
-//			}
-//		}
-//		return text;
-//	}
-	
+
 	public void printTree(){
 		this.printTree(root);
 	}
