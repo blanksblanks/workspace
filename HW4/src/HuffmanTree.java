@@ -1,18 +1,23 @@
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Hashtable;
+
 
 public class HuffmanTree {
 	
 	private HuffmanNode root;
+	private Hashtable<String, String> hash;
 	
 	public HuffmanTree(HuffmanNode[] array) throws UnderflowException {		
 		BinaryHeap<HuffmanNode> heap = new BinaryHeap<HuffmanNode>(array);
 		buildHuffmanTree(heap);
 		String binaryCode = ""; // After tree is built, build binary codes for leaves
 		encodeLeaves(root, binaryCode);
+		
 	}
 	
 	private void buildHuffmanTree(BinaryHeap<HuffmanNode> heap) throws UnderflowException {
+		hash = new Hashtable<String, String>();
 		int num = 1; // initialize at T1
 		while (heap.getCurrentSize() > 1) { // merge two smallest trees
 			HuffmanNode right = heap.deleteMin();
@@ -24,11 +29,15 @@ public class HuffmanTree {
 		}
 	}
 	
-	// TODO: edge cases: what happens if t is null or only one letter in the tree?
+	// TODO: edge cases: what happens if t is null or only o ne letter in the tree?
 	private String encodeLeaves(HuffmanNode t, String digits) {
-		if (t.isLeaf())
+		if (t.isLeaf()) {
 			t.setBinaryCode(digits);
-		else {
+			hash.put(t.getCharacter(), digits);
+			String s = t.getCharacter();
+			System.out.println(hash.get(s));
+//			System.out.println(t.getCharacter() + digits);
+		} else {
 			encodeLeaves(t.left, digits + "0");
 			encodeLeaves(t.right, digits + "1");
 		}
@@ -38,20 +47,52 @@ public class HuffmanTree {
 	public String decode(String binary){
 //		String text = decode(root, binary, 0, "");
 		String text = "";
+		String error = "This is not a valid binary encoding.";
 		int length = binary.length();
 		int i = 0;
+		try {
 		while (i < length){
 			HuffmanNode t = root;
 			while (!t.isLeaf()){
-				System.out.println(binary.charAt(i));
+//				System.out.println(binary.charAt(i));
 				t = (binary.charAt(i) == '0') ? t.left : t.right;
+//				if (binary.charAt(i) == '0') {
+//					if (t.left != null)
+//						t = t.left;
+//					else
+//						return error; 
+//				} else if (binary.charAt(i) == '1') {
+//					if (t.right != null)
+//						t = t.right;
+//					else
+//						return error;
+//				} else {
+//					return error;
+//				}
 				i++;
 			}
 			text += t.getCharacter();
 		}
 		return text;
+		} catch (IndexOutOfBoundsException e) {
+	        return error;
+	    } catch (NullPointerException r) {
+	    	return error;
+	    }
 	}
 	
+	public String encode(String s){
+		String binary = "";
+		for (int i = 0; i < s.length(); i++){
+			System.out.print(s.charAt(i));
+			String code = hash.get(s.charAt(i));
+//			if (code == null)
+//				return (s.charAt(i) + " is not in the Huffman tree.");
+//			else
+				binary += code;		
+		}
+		return binary;
+	}
 	
 //	@SuppressWarnings("unused")
 //	private String decode(HuffmanNode t, String code, int index, String text){
@@ -95,6 +136,8 @@ public class HuffmanTree {
             	System.out.print("/\\");
 //            	System.out.println("Added " + node.left.getCharacter() + " and " + node.right.getCharacter() + " to queue");
             } 
+            //else if (node.isLeaf())
+            	//level--;
             
             
 //            else if (node.left != null && node.right == null) { // draw /
