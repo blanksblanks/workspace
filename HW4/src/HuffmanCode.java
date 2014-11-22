@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
 
@@ -93,13 +94,15 @@ public class HuffmanCode {
         return babyForest;
 	}
 	
+	public static HuffmanTree tree;
+	
     // Tester method that takes an input file from the command line
 	public static void main(String[] args) throws FileNotFoundException {
 		
 		if (args.length == 1) {
 			LinkedList<String> input = FileLineParser(args[0]);
 			HuffmanNode[] forest = forestOfTinyHuffmanTrees(input);
-			HuffmanTree tree = new HuffmanTree(forest);
+			tree = new HuffmanTree(forest);
 	        for (int i = 0; i < forest.length; i++)
 	            System.out.println(forest[i].toString() + "  frequency: " + forest[i].getFrequency());
 	        tree.printTree();
@@ -116,7 +119,7 @@ public class HuffmanCode {
 		JFrame frame = new JFrame();
 		HuffmanTreeComponent mc = new HuffmanTreeComponent();
 		
-		//Constants
+		// Constants
 		final int FIELD_WIDTH = 20;
 		final JTextField textField = new JTextField(FIELD_WIDTH);
 		final JTextField binaryField = new JTextField(FIELD_WIDTH);
@@ -127,7 +130,40 @@ public class HuffmanCode {
 		
 		JButton encodeButton = new JButton("Encode");
 		JButton decodeButton = new JButton("Decode");
-//		encodeButton.addActionListener(new HuffmanListener(""))
+		
+        textField.addMouseListener(new MouseAdapter(){
+            public void mouseClicked(MouseEvent e){
+                textField.setText("");
+            }
+        });
+        
+        binaryField.addMouseListener(new MouseAdapter(){
+            public void mouseClicked(MouseEvent m){
+                binaryField.setText("");
+            }
+        });
+		
+        encodeButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+            	if (ae.getActionCommand().equals("Encode")) {
+            	    String s = tree.encode(textField.getText());
+            		textField.setText(s);
+//            	    binaryLabel.setText(s);
+            		System.out.println("Encode got pressed");
+            	}
+            }
+        });
+        
+        decodeButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+            	if (ae.getActionCommand().equals("Decode")) {
+            	    String s = tree.decode(binaryField.getText());
+            		binaryField.setText(s);
+//            	    textLabel.setText(s);
+            		System.out.println("Decode got pressed");
+                }
+            }
+        });
 	
 		// Add all the components
 		frame.setLayout(new FlowLayout());

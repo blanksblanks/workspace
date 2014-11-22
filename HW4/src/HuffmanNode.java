@@ -8,7 +8,6 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 		@SuppressWarnings("unused")
 		private int height;
 		private String code;
-
 		
 		// Base constructor
 		public HuffmanNode(String c){
