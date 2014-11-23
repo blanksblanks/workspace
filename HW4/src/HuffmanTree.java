@@ -39,6 +39,7 @@ public class HuffmanTree extends JComponent {
 			HuffmanNode t = new HuffmanNode(num++, right, left);
 			int h = Math.max(t.getHeight(t.left), t.getHeight(t.right)) + 1;
 			t.setHeight(h);
+			t.fixHeight();
 			System.out.println("Inserted " + t.toString() + " with kids " + left.toString() + " and " + right.toString() + " at height" + t.getHeight(t) + " and " + t.getHeight(t.left) + " and " + t.getHeight(t.right));
 			heap.insert(t); // throw it back in the heap
 			root = t; // last node is the root of the tree
@@ -69,6 +70,7 @@ public class HuffmanTree extends JComponent {
 					i++;
 				}
 				text += t.getCharacter();
+				System.out.println("Found " + t.getCharacter() + " at height " + t.getHeight(t));
 			}
 			return text;
 		} catch (IndexOutOfBoundsException e) {

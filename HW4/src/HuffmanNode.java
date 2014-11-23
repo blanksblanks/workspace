@@ -53,10 +53,24 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 	    public void setHeight(int h){
 	    	this.height = h;
 	    }
-	    
+	    	    
 		public int getHeight(HuffmanNode t) {
 			return t == null ? -1 : t.height;
 		}
+		
+	    public void fixHeight(){
+	    	if (this.left.height != this.height - 1){
+	    		this.left.height = this.height - 1;
+	    		if (!this.left.isLeaf())
+	    			this.left.fixHeight();
+	    	}
+	    	if (this.right.height != this.height - 1){
+	    		this.right.height = this.height - 1;
+	    		if (!this.right.isLeaf())
+	    			this.right.fixHeight();
+	    	}
+	    }
+
 	    
 //		public void increaseDepth(HuffmanNode node) {
 //			node.depth++;
