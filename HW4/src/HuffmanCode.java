@@ -66,32 +66,31 @@ public class HuffmanCode {
 			}
 	}
 	
-	private static HuffmanNode[] forestOfTinyHuffmanTrees(LinkedList<String> input){
-		Iterator<String> lines = input.iterator();
-        HuffmanNode[] bigForest = new HuffmanNode[128];
-		int counter = 0;
+	private static HuffmanNode[] buildTinyTrees(LinkedList<String> listOfLines){ // of tiny Huffman trees!
+		Iterator<String> lines = listOfLines.iterator();
+        HuffmanNode[] original = new HuffmanNode[128]; // initializes array with capacity for max number of ascii characters
+		int characters = 0;
 		while (lines.hasNext()) {
 			String line = lines.next();
             for (int i = 0; i < line.length(); i++) {
-                int ascii = (int) line.charAt(i); // extracts ascii representation of this char
-                if (bigForest[ascii] == null) { // first time seeing this char
-                    String character = Character.toString(line.charAt(i));
-                    bigForest[ascii] = new HuffmanNode(character);
-                    counter += 1;
+                int ascii = (int) line.charAt(i); // extracts ascii so characters are indexed in alphabetical order
+                if (original[ascii] == null) { // this is the first time seeing this char
+                    String character = Character.toString(line.charAt(i)); // casts the character as String
+                    original[ascii] = new HuffmanNode(character); // creates a tiny Huffman tree
+                    characters++;
                 } else // seen this char so increment its frequency
-                    bigForest[ascii].incrementFrequency();
+                    original[ascii].increaseFrequency();
             }	
 		}
-        HuffmanNode[] babyForest = new HuffmanNode[counter];
-        int j = 0;
-        for (int k = 0; k < bigForest.length; k++) {
-            if (bigForest[k] != null) {
-                babyForest[j] = bigForest[k];
-//                System.out.println("Inserted " + bigForest[k] + "into index " + j);
-                j++;
+        HuffmanNode[] tinyTrees = new HuffmanNode[characters]; // initialize tiny tree array with capacity for actual number of characters seen
+        int incrementer = 0;
+        for (int j = 0; j < original.length; j++) {
+            if (original[j] != null) { // copy character from original array into next incremental index of tiny tree array
+                tinyTrees[incrementer] = original[j];
+                incrementer++;
             }
         }
-        return babyForest;
+        return tinyTrees;
 	}
 	
 	public static HuffmanTree tree;
@@ -101,7 +100,7 @@ public class HuffmanCode {
 		
 		if (args.length == 1) {
 			LinkedList<String> input = FileLineParser(args[0]);
-			HuffmanNode[] forest = forestOfTinyHuffmanTrees(input);
+			HuffmanNode[] forest = buildTinyTrees(input);
 			tree = new HuffmanTree(forest);
 	        for (int i = 0; i < forest.length; i++)
 	            System.out.println(forest[i].toString() + " " + forest[i].getBinaryCode());
@@ -126,9 +125,9 @@ public class HuffmanCode {
 		final JLabel binaryLabel = new JLabel();
 		final JLabel textLabel = new JLabel();
 		textField.setText("");
-		binaryLabel.setText("Enter some text");
+		binaryLabel.setText("<- Enter some text here.");
 		binaryField.setText("");
-		textLabel.setText("Enter some 1's and 0's");
+		textLabel.setText("<- Enter some 1's and 0's here.");
 		
 		JButton encodeButton = new JButton("Encode");
 		JButton decodeButton = new JButton("Decode");
@@ -180,11 +179,13 @@ public class HuffmanCode {
 		// Add all the components
 		frame.setLayout(new FlowLayout());
 		frame.add(textField);
-		frame.add(encodeButton);
 		frame.add(binaryLabel);
+		frame.add(encodeButton);
+		
 		frame.add(binaryField);
-		frame.add(decodeButton);
 		frame.add(textLabel);
+		frame.add(decodeButton);
+
 		frame.add(tree);
 //		frame.add(mc);
 

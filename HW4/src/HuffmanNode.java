@@ -5,8 +5,7 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 		public HuffmanNode left;
 		public HuffmanNode right;
 		private int frequency;
-		@SuppressWarnings("unused")
-		private int height;
+		private int depth;
 		private String code;
 		
 		// Base constructor
@@ -14,18 +13,20 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 			this(c, null, null, 1, 0, "tempvalue");
 		}
 		
-		private HuffmanNode(String c, HuffmanNode lt, HuffmanNode rt, int f, int h, String bc) {
+		private HuffmanNode(String c, HuffmanNode lt, HuffmanNode rt, int f, int d, String bc) {
 			character =  c;
 			left = lt;
 			right = rt;
 			frequency = f;
-			height = h;
+			depth = d;
 			code = bc;
 		}
 		
 	    public HuffmanNode(int tn, HuffmanNode rt, HuffmanNode lt) {
 	        character = "T" + tn;
 	        frequency = rt.frequency + lt.frequency;
+//	        increaseDepth(rt);
+//			increaseDepth(lt);
 	        right = rt;
 	        left = lt;
 	    }
@@ -43,13 +44,25 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 			return (this.right == null && this.left == null);
 		}
 		
-		public void incrementFrequency() {
-	        frequency += 1;
+		public void increaseFrequency() {
+	        frequency++;
 	    }
-
+		
 	    public int getFrequency() {
 	        return this.frequency;
 	    }
+	    
+//		public void increaseDepth(HuffmanNode node) {
+//			node.depth++;
+//			if (!node.isLeaf()){ // if not a leaf increase depth of all its children
+//				increaseDepth(node.right);
+//				increaseDepth(node.left);
+//			}
+//		}
+		
+		public int getDepth() {
+			return this.depth;
+		}
 
 	    public void setBinaryCode(String binary) {
 	        code = binary;
@@ -60,10 +73,6 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 	    }
 	    
 	    public String getCharacter(){
-//	    	if (character.equals(" "))              
-//                return "sp";
-//            else if (character.equals("\n"))               
-//                return "nl";
 	        return this.character;
 	    }
 
