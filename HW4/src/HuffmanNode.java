@@ -31,13 +31,11 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 	        left = lt;
 	    }
 		
+	    // the promise
 		public int compareTo(HuffmanNode node){
-			if (this.frequency > node.frequency)
-				return 1;
-			else if (this.frequency < node.frequency)
-				return -1;
-			else
-				return 0;
+			if (this.frequency > node.frequency) return 1;
+			else if (this.frequency < node.frequency) return -1;
+			else return 0;
 		}
 		
 		public boolean isLeaf(){
