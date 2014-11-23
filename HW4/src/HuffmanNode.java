@@ -71,19 +71,6 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 	    	}
 	    }
 
-	    
-//		public void increaseDepth(HuffmanNode node) {
-//			node.depth++;
-//			if (!node.isLeaf()){ // if not a leaf increase depth of all its children
-//				increaseDepth(node.right);
-//				increaseDepth(node.left);
-//			}
-//		}
-		
-//		public int getDepth() {
-//			return this.depth;
-//		}
-
 	    public void setBinaryCode(String binary) {
 	        code = binary;
 	    }

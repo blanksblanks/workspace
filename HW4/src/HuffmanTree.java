@@ -70,7 +70,6 @@ public class HuffmanTree extends JComponent {
 					i++;
 				}
 				text += t.getCharacter();
-				System.out.println("Found " + t.getCharacter() + " at height " + t.getHeight(t));
 			}
 			return text;
 		} catch (IndexOutOfBoundsException e) {
