@@ -9,9 +9,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 
+
 //import java.awt.geom.Line2D;
 //import javax.swing.JPanel;
 import javax.swing.JComponent;
+
 import java.util.Random;
 
 @SuppressWarnings("serial")
@@ -35,7 +37,9 @@ public class HuffmanTree extends JComponent {
 			HuffmanNode right = heap.deleteMin();
 			HuffmanNode left = heap.deleteMin();
 			HuffmanNode t = new HuffmanNode(num++, right, left);
-			System.out.println("Inserted t-l-r: " + t.toString() + ", " + left.toString() + " and " + right.toString() + " at depth " + t.getDepth() + " and " + t.right.getDepth());
+			int h = Math.max(t.getHeight(t.left), t.getHeight(t.right)) + 1;
+			t.setHeight(h);
+			System.out.println("Inserted " + t.toString() + " with kids " + left.toString() + " and " + right.toString() + " at height" + t.getHeight(t) + " and " + t.getHeight(t.left) + " and " + t.getHeight(t.right));
 			heap.insert(t); // throw it back in the heap
 			root = t; // last node is the root of the tree
 		}
@@ -132,29 +136,29 @@ public class HuffmanTree extends JComponent {
 		Color color = new Color(red, green, blue);
 		return color;
 	}
-
-	public void dfs() {
-		// DFS uses Stack data structure
-		Stack stack = new Stack();
-		stack.push(this.rootNode);
-		rootNode.visited=true;
-		printNode(rootNode);
-		while(!stack.isEmpty()) {
-			Node node = (Node)s.peek();
-			Node child = getUnvisitedChildNode(n);
-			if(child != null) {
-				child.visited = true;
-				printNode(child);
-				s.push(child);
-			}
-			else {
-				s.pop();
-			}
-		}
-		// Clear visited property of nodes
-		clearNodes();
-	}
-}
+//
+//	public void dfs() {
+//		// DFS uses Stack data structure
+//		MyStack stack = new MyStack();
+//		stack.push(this.rootNode);
+//		rootNode.visited=true;
+//		printNode(rootNode);
+//		while(!stack.isEmpty()) {
+//			HuffmanNode node = (Node)s.peek();
+//			Node child = getUnvisitedChildNode(n);
+//			if(child != null) {
+//				child.visited = true;
+//				printNode(child);
+//				s.push(child);
+//			}
+//			else {
+//				s.pop();
+//			}
+//		}
+//		// Clear visited property of nodes
+//		clearNodes();
+//	}
+//}
 	
 	public void printTree(){
 		this.printTree(root);

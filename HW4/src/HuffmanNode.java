@@ -5,12 +5,12 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 		public HuffmanNode left;
 		public HuffmanNode right;
 		private int frequency;
-		private int depth;
+		private int height;
 		private String code;
 		
 		// Base constructor
 		public HuffmanNode(String c){
-			this(c, null, null, 1, 0, "tempvalue");
+			this(c, null, null, 1, 0, "");
 		}
 		
 		private HuffmanNode(String c, HuffmanNode lt, HuffmanNode rt, int f, int d, String bc) {
@@ -18,7 +18,7 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 			left = lt;
 			right = rt;
 			frequency = f;
-			depth = d;
+			height = 0;
 			code = bc;
 		}
 		
@@ -32,9 +32,9 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 	    }
 		
 	    // the promise
-		public int compareTo(HuffmanNode node){
-			if (this.frequency > node.frequency) return 1;
-			else if (this.frequency < node.frequency) return -1;
+		public int compareTo(HuffmanNode t){
+			if (this.frequency > t.frequency) return 1;
+			else if (this.frequency < t.frequency) return -1;
 			else return 0;
 		}
 		
@@ -43,12 +43,20 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 		}
 		
 		public void increaseFrequency() {
-	        frequency++;
+	        this.frequency++;
 	    }
 		
 	    public int getFrequency() {
 	        return this.frequency;
 	    }
+	    
+	    public void setHeight(int h){
+	    	this.height = h;
+	    }
+	    
+		public int getHeight(HuffmanNode t) {
+			return t == null ? -1 : t.height;
+		}
 	    
 //		public void increaseDepth(HuffmanNode node) {
 //			node.depth++;
@@ -58,9 +66,9 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 //			}
 //		}
 		
-		public int getDepth() {
-			return this.depth;
-		}
+//		public int getDepth() {
+//			return this.depth;
+//		}
 
 	    public void setBinaryCode(String binary) {
 	        code = binary;
