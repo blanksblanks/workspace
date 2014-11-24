@@ -68,7 +68,8 @@ public class HuffmanCode {
 
 	// TODO: Catch ArrayIndexOutOfBoundsException
 	private static HuffmanNode[] buildTinyTrees(LinkedList<String> listOfLines) {
-		Iterator<String> lines = listOfLines.iterator();
+		Iterator<String> lines = listOfLines.iterator();	
+		try {
 		// initializes original array with max capacity for ascii characters
 		HuffmanNode[] original = new HuffmanNode[128];
 		int characters = 0;
@@ -98,6 +99,11 @@ public class HuffmanCode {
 			}
 		}
 		return tinyTrees;
+		} catch (ArrayIndexOutOfBoundsException e){
+			System.err.println("Your input file contains non-ASCII characters, which this program does not support. Please try again. Good bye!");
+			System.exit(1);
+			return null;
+		}
 	}
 
 	public static HuffmanTree tree;
@@ -109,12 +115,12 @@ public class HuffmanCode {
 			LinkedList<String> input = FileLineParser(args[0]);
 			HuffmanNode[] forest = buildTinyTrees(input);
 			tree = new HuffmanTree(forest);
+			System.out.println("TABLE OF ASCII CHARACTERS AND HUFFMAN CODES:");
 			for (int i = 0; i < forest.length; i++)
 				System.out.println(forest[i].toString() + " "
 						+ forest[i].getBinaryCode());
 		} else {
-			System.out
-					.println("One input file needs to be specified. Please try again!");
+			System.err.println("A text input file needs to be specified. Please try again. Good bye!");
 			System.exit(1);
 		}
 
