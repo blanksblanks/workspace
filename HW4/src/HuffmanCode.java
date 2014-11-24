@@ -115,7 +115,7 @@ public class HuffmanCode {
 			LinkedList<String> input = FileLineParser(args[0]);
 			HuffmanNode[] forest = buildTinyTrees(input);
 			tree = new HuffmanTree(forest);
-			System.out.println("TABLE OF ASCII CHARACTERS AND HUFFMAN CODES:");
+			System.out.println("TABLE OF ASCII CHARACTERS AND CORRESPONDING HUFFMAN CODES:");
 			for (int i = 0; i < forest.length; i++)
 				System.out.println(forest[i].toString() + " "
 						+ forest[i].getBinaryCode());

@@ -22,11 +22,11 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 			code = bc;
 		}
 		
-	    public HuffmanNode(int tn, HuffmanNode rt, HuffmanNode lt) {
+	    public HuffmanNode(int tn, HuffmanNode lt, HuffmanNode rt) {
 	        character = "T" + tn;
-	        frequency = rt.frequency + lt.frequency;
-	        right = rt;
+	        frequency = lt.frequency + rt.frequency;
 	        left = lt;
+	        right = rt;
 	    }
 		
 	    // the promise

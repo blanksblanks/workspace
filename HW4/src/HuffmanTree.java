@@ -19,7 +19,7 @@ public class HuffmanTree extends JComponent {
 	private Hashtable<String, String> hash;
 	
 	final int RADIUS = 10;
-	final int HGAP = 320;
+	final int HGAP = 340;
 	final int VGAP = 60;
 	private int hGap;
 	private int levels;
@@ -56,9 +56,9 @@ public class HuffmanTree extends JComponent {
 		hash = new Hashtable<String, String>();
 		int num = 1; // initialize at T1
 		while (heap.getCurrentSize() > 1) { // merge two smallest trees
-			HuffmanNode right = heap.deleteMin();
 			HuffmanNode left = heap.deleteMin();
-			HuffmanNode t = new HuffmanNode(num++, right, left);
+			HuffmanNode right = heap.deleteMin();
+			HuffmanNode t = new HuffmanNode(num++, left, right);
 			int h = Math.max(t.getHeight(t.left), t.getHeight(t.right)) + 1;
 			t.setHeight(h);
 			t.fixHeight();
@@ -157,13 +157,13 @@ public class HuffmanTree extends JComponent {
 		if (root.left != null && root.right != null) {
 			g2.setColor(Color.black);
 			// Draw / line to left child
-			g2.drawLine(x, y + RADIUS, x + gap, y + VGAP - RADIUS);
-			// Draw the left subtree recursively
-			displayTree(g2, root.left, x + gap, y + VGAP, gap / 2);
-			// Draw \ line to right child
 			g2.drawLine(x, y + RADIUS, x - gap, y + VGAP - RADIUS);
+			// Draw the left subtree recursively
+			displayTree(g2, root.left, x - gap, y + VGAP, gap / 2);
+			// Draw \ line to right child
+			g2.drawLine(x, y + RADIUS, x + gap, y + VGAP - RADIUS);
 			// Draw the right subtree recursively
-			displayTree(g2, root.right, x - gap, y + VGAP, gap / 2);
+			displayTree(g2, root.right, x + gap, y + VGAP, gap / 2);
 		}
 	}
 

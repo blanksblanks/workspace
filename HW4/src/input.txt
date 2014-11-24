@@ -1,4 +1,4 @@
-hello there, this is just a tester file for chracters and stuff.
+hello there, this is just a tester file for characters and stuff.
 the quick brown fox jumps over the lazy dog.
 or does the lazy dog jump over the quick brown fox?
-needless to say, this file is pointless outside of testing purposes.
+needless to say, this file is (ABSOLUTELY!!!) pointless outside of testing purposes.
