@@ -62,14 +62,14 @@ public class HuffmanCode {
 			input.close();
 			return ListOfLines;
 		} else {
-			System.out
-					.print("This file does not appear to exist. Please try again!");
+			System.out.print("This file does not appear to exist. Please try again!");
 			System.exit(1);
 			return null;
 		}
 	}
 
-	private static HuffmanNode[] buildTinyTrees(LinkedList<String> listOfLines) { 
+	// TODO: Catch ArrayIndexOutOfBoundsException
+	private static HuffmanNode[] buildTinyTrees(LinkedList<String> listOfLines) {
 		Iterator<String> lines = listOfLines.iterator();
 		// initializes original array with max capacity for ascii characters
 		HuffmanNode[] original = new HuffmanNode[128];
@@ -128,38 +128,39 @@ public class HuffmanCode {
 		final int FIELD_WIDTH = 20;
 		final JTextField textField = new JTextField(FIELD_WIDTH);
 		final JTextField binaryField = new JTextField(FIELD_WIDTH);
-		final JLabel binaryLabel = new JLabel();
-		final JLabel textLabel = new JLabel();
-		textField.setText("");
-		binaryLabel.setText("<- Enter some text here.");
-		binaryField.setText("");
-		textLabel.setText("<- Enter some 1's and 0's here.");
+		final JTextField resultField = new JTextField(FIELD_WIDTH);
+		final JLabel resultLabel = new JLabel();
+		textField.setText("Enter some text here.");
+		binaryField.setText("Enter some 1's and 0's here.");
+		resultLabel.setText("Result: ");
 
 		JButton encodeButton = new JButton("Encode");
 		JButton decodeButton = new JButton("Decode");
 
-		// textField.addMouseListener(new MouseAdapter(){
-		// public void mouseClicked(MouseEvent e){
-		// textField.setText("");
-		// }
-		// });
-		//
-		// binaryField.addMouseListener(new MouseAdapter(){
-		// public void mouseClicked(MouseEvent m){
-		// binaryField.setText("");
-		// }
-		// });
+		textField.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				textField.setText("");
+			}
+		});
+
+		binaryField.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent m) {
+				binaryField.setText("");
+			}
+		});
 
 		encodeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				if (ae.getActionCommand().equals("Encode")) {
 					// System.out.println("Encode got pressed");
 					String in = textField.getText();
-					if (in == "") binaryLabel.setText("You forgot to input a value!");
+					if (in == "") resultLabel.setText("You forgot to input a value!");
 					else {
 						String out = tree.encode(in);
+						resultField.setText(out);
+						// binaryField.setText(out);
 						// textField.setText(out);
-						binaryLabel.setText(out);
+						// binaryLabel.setText(out);
 					}
 				}
 			}
@@ -170,11 +171,13 @@ public class HuffmanCode {
 				if (ae.getActionCommand().equals("Decode")) {
 					// System.out.println("Decode got pressed");
 					String in = binaryField.getText();
-					if (in == "") textLabel.setText("You forgot to input a value!");
+					if (in == "") resultLabel.setText("You forgot to input a value!");
 					else {
 						String out = tree.decode(in);
+						resultField.setText(out);
+						// textField.setText(out);
 						// binaryField.setText(out);
-						textLabel.setText(out);
+						// textLabel.setText(out);
 					}
 				}
 			}
@@ -183,15 +186,12 @@ public class HuffmanCode {
 		// Add all the components
 		frame.setLayout(new FlowLayout());
 		frame.add(textField);
-		frame.add(binaryLabel);
 		frame.add(encodeButton);
-
 		frame.add(binaryField);
-		frame.add(textLabel);
 		frame.add(decodeButton);
-
+		frame.add(resultLabel);
+		frame.add(resultField);
 		frame.add(tree);
-		// frame.add(mc);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();

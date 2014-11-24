@@ -20,7 +20,7 @@ public class HuffmanTree extends JComponent {
 	
 	final int RADIUS = 10;
 	final int HGAP = 10;
-	final int VGAP = 100;
+	final int VGAP = 60;
 	private int hGap;
 	private int levels;
 	private int frameHeight;
@@ -38,7 +38,7 @@ public class HuffmanTree extends JComponent {
 		for (int power = 1; power <= levels; power++)
 			frameWidth *= 2;
 		frameWidth = (frameWidth + 30) * RADIUS; // + 30 for padding
-		hGap = RADIUS + 1;
+		hGap = RADIUS;
 		for (int i = 1; i < levels-1; i++)
 			hGap *= 2;
 		System.out.println("Window height " + frameHeight + " and "
@@ -80,7 +80,7 @@ public class HuffmanTree extends JComponent {
 
 	public String decode(String binary) {
 		String text = "";
-		String error = "This is not a valid binary encoding.";
+		String error = "That was not a valid binary encoding.";
 		try {
 			if (!binary.matches("[01]+")) return error;
 			int i = 0;
@@ -101,13 +101,13 @@ public class HuffmanTree extends JComponent {
 	}
 
 	public String encode(String s) {
-		if (s == "") return "You forgot to enter text.";
+		if (s == null) return "You forgot to enter text in the text field.";
 		String binary = "";
 		for (int i = 0; i < s.length(); i++) {
 			String character = Character.toString(s.charAt(i));
 			String code = hash.get(character);
 			if (code == null)
-				return (character + " is not in the Huffman tree.");
+				return ("That was not a valid string as " + character + " is not in the Huffman tree.");
 			else
 				binary += code;
 		}
@@ -130,19 +130,23 @@ public class HuffmanTree extends JComponent {
 	}
 
 	private void displayTree(Graphics2D g2, HuffmanNode root, int x, int y, int gap){
+		
+		// Draw parent node with a random color
 		Color mint = new Color(162, 255, 204);
 		Color random = mixRandomColorWith(mint);
 		g2.setColor(random);
 		Ellipse2D.Double node = new Ellipse2D.Double(x - RADIUS, y - RADIUS, 2*RADIUS, 2*RADIUS);
 		g2.fill(node);
 		g2.draw(node);
-		if (root.getCharacter() != null) {
-			g2.setColor(Color.white);
-			printSimpleString(g2, " " + root.toString(), RADIUS*2, x-RADIUS, y+4);
-		}
+		
+		// Draw node label
+		g2.setColor(Color.white);
+		printSimpleString(g2, " " + root.toString(), RADIUS*2, x-RADIUS, y+4);
+		
+		// If node is a leaf, include binary code below
 		if (root.isLeaf()) {
 			g2.setColor(Color.black);			
-			printSimpleString(g2, " " + root.getBinaryCode(), RADIUS*2, x-RADIUS, y+2*RADIUS+3);
+			printVerticalString(g2, root.getBinaryCode(), RADIUS*2, x-RADIUS, y+RADIUS);
 		}
 
 		if (root.left != null && root.right != null) {
@@ -163,6 +167,15 @@ public class HuffmanTree extends JComponent {
         int start = width/2 - stringLen/2;  
         g2.drawString(s, start + x, y);
         } 
+    
+    private void printVerticalString(Graphics2D g2, String s, int width, int x, int y) {
+    	String text = "";
+		for (int i = 0; i < s.length(); i++)
+			text += s.charAt(i) + "\n";
+        for (String line : text.split("\n"))
+            printSimpleString(g2, line, width, x, y += g2.getFontMetrics().getHeight());
+    }
+
 	
 	private Color mixRandomColorWith(Color mix) {
 		Random random = new Random();
