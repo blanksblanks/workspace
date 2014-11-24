@@ -31,7 +31,8 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>>
      * Construct the binary heap.
      * @param capacity the capacity of the binary heap.
      */
-    public BinaryHeap( int capacity )
+    @SuppressWarnings("unchecked")
+	public BinaryHeap( int capacity )
     {
         currentSize = 0;
         array = (AnyType[]) new Comparable[ capacity + 1 ];
@@ -40,7 +41,8 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>>
     /**
      * Construct the binary heap given an array of items.
      */
-    public BinaryHeap( AnyType [ ] items )
+    @SuppressWarnings("unchecked")
+	public BinaryHeap( AnyType [ ] items )
     {
             currentSize = items.length;
             array = (AnyType[]) new Comparable[ ( currentSize + 2 ) * 11 / 10 ];
@@ -69,7 +71,8 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>>
     }
 
 
-    private void enlargeArray( int newSize )
+    @SuppressWarnings("unchecked")
+	private void enlargeArray( int newSize )
     {
             AnyType [] old = array;
             array = (AnyType []) new Comparable[ newSize ];
