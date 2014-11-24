@@ -42,7 +42,7 @@ public class HuffmanTree extends JComponent {
 		frameWidth = 1; // 2^(N+1) + 1
 		for (int power = 1; power <= levels; power++)
 			frameWidth *= 2;
-		frameWidth = (frameWidth + 20) * RADIUS; // + 1 for padding
+		frameWidth = (frameWidth + 30) * RADIUS; // + 30 for padding
 		hGap = RADIUS;
 		for (int i = 1; i < levels; i++)
 			hGap *= 2;
@@ -172,14 +172,17 @@ public class HuffmanTree extends JComponent {
 		}
 		if (root.isLeaf()) {
 			g2.setColor(Color.black);
+			
 			printSimpleString(g2, " " + root.getBinaryCode(), RADIUS*2, x-RADIUS, y+2*RADIUS+3);
 //			g2.drawString(root.getBinaryCode(), x-RADIUS, y+2*RADIUS);
 		}
 
 		if (root.left != null && root.right != null) {
 			g2.setColor(Color.black);
-			displayTree(g2, root.right, x - gap, y + VGAP, gap / 2);
+			g2.drawLine(x, y, x + gap, y + VGAP - RADIUS);
 			displayTree(g2, root.left, x + gap, y + VGAP, gap / 2);
+			g2.drawLine(x, y, x - gap, y + VGAP - RADIUS);
+			displayTree(g2, root.right, x - gap, y + VGAP, gap / 2);
 		}
 
 		
@@ -202,15 +205,16 @@ public class HuffmanTree extends JComponent {
 //	private void parent(Graphics2D g2, HuffmanNode root, int x, int y, int gap){
 //		
 //	}
-
-//	private void leftChild(Graphics2D g2, int x1, int y1, int x2, int y2) {
 //
+//	private void drawLeft(Graphics2D g2, int x1, int y1, int x2, int y2) {
+//		g2.setColor(Color.BLACK);
+//		g2.drawLine(x1, y1, x2, y2);
 //	}
 
-    private void printSimpleString(Graphics2D g2, String s, int width, int XPos, int YPos){  
+    private void printSimpleString(Graphics2D g2, String s, int width, int x, int y){  
         int stringLen = (int) g2.getFontMetrics().getStringBounds(s, g2).getWidth();  
         int start = width/2 - stringLen/2;  
-        g2.drawString(s, start + XPos, YPos);
+        g2.drawString(s, start + x, y);
         } 
 	
 	private Color mixRandomColorWith(Color mix) {
