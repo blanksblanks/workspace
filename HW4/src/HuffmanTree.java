@@ -38,8 +38,8 @@ public class HuffmanTree extends JComponent {
 		for (int power = 1; power <= levels; power++)
 			frameWidth *= 2;
 		frameWidth = (frameWidth + 30) * RADIUS; // + 30 for padding
-		hGap = RADIUS;
-		for (int i = 1; i < levels; i++)
+		hGap = RADIUS + 1;
+		for (int i = 1; i < levels-1; i++)
 			hGap *= 2;
 		System.out.println("Window height " + frameHeight + " and "
 				+ frameWidth + " and horizontal gap " + hGap);
@@ -57,10 +57,10 @@ public class HuffmanTree extends JComponent {
 			int h = Math.max(t.getHeight(t.left), t.getHeight(t.right)) + 1;
 			t.setHeight(h);
 			t.fixHeight();
-			System.out.println("Inserted " + t.toString() + " with kids "
-					+ left.toString() + " and " + right.toString()
-					+ " at height" + t.getHeight(t) + " and "
-					+ t.getHeight(t.left) + " and " + t.getHeight(t.right));
+//			System.out.println("Inserted " + t.toString() + " with kids "
+//					+ left.toString() + " and " + right.toString()
+//					+ " at height " + t.getHeight(t) + " and "
+//					+ t.getHeight(t.left) + " and " + t.getHeight(t.right));
 			heap.insert(t); // throw it back in the heap
 			root = t; // last node is the root of the tree
 		}
@@ -148,11 +148,11 @@ public class HuffmanTree extends JComponent {
 		if (root.left != null && root.right != null) {
 			g2.setColor(Color.black);
 			// Draw / line to left child
-			g2.drawLine(x, y + RADIUS, x + gap, y + VGAP);
+			g2.drawLine(x, y + RADIUS, x + gap, y + VGAP - RADIUS);
 			// Draw the left subtree recursively
 			displayTree(g2, root.left, x + gap, y + VGAP, gap / 2);
 			// Draw \ line to right child
-			g2.drawLine(x, y + RADIUS, x - gap, y + VGAP);
+			g2.drawLine(x, y + RADIUS, x - gap, y + VGAP - RADIUS);
 			// Draw the right subtree recursively
 			displayTree(g2, root.right, x - gap, y + VGAP, gap / 2);
 		}
