@@ -128,15 +128,17 @@ public class HuffmanCode {
 		final int FIELD_WIDTH = 20;
 		final JTextField textField = new JTextField(FIELD_WIDTH);
 		final JTextField binaryField = new JTextField(FIELD_WIDTH);
-		final JTextField resultField = new JTextField(FIELD_WIDTH);
+		final JTextField resultField = new JTextField(FIELD_WIDTH * 2);
 		final JLabel resultLabel = new JLabel();
 		textField.setText("Enter some text here.");
 		binaryField.setText("Enter some 1's and 0's here.");
 		resultLabel.setText("Result: ");
-
 		JButton encodeButton = new JButton("Encode");
 		JButton decodeButton = new JButton("Decode");
+//		JButton leftButton = new JButton("Left");
+//		JButton rightButton = new JButton("Right");
 
+			
 		textField.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				textField.setText("");
@@ -148,41 +150,10 @@ public class HuffmanCode {
 				binaryField.setText("");
 			}
 		});
-
-		encodeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				if (ae.getActionCommand().equals("Encode")) {
-					// System.out.println("Encode got pressed");
-					String in = textField.getText();
-					if (in == "") resultLabel.setText("You forgot to input a value!");
-					else {
-						String out = tree.encode(in);
-						resultField.setText(out);
-						// binaryField.setText(out);
-						// textField.setText(out);
-						// binaryLabel.setText(out);
-					}
-				}
-			}
-		});
-
-		decodeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				if (ae.getActionCommand().equals("Decode")) {
-					// System.out.println("Decode got pressed");
-					String in = binaryField.getText();
-					if (in == "") resultLabel.setText("You forgot to input a value!");
-					else {
-						String out = tree.decode(in);
-						resultField.setText(out);
-						// textField.setText(out);
-						// binaryField.setText(out);
-						// textLabel.setText(out);
-					}
-				}
-			}
-		});
-
+		
+		encodeButton.addActionListener(new ButtonListener(textField, resultField, tree));
+		decodeButton.addActionListener(new ButtonListener(binaryField, resultField, tree));
+		
 		// Add all the components
 		frame.setLayout(new FlowLayout());
 		frame.add(textField);
@@ -198,4 +169,31 @@ public class HuffmanCode {
 		frame.setVisible(true);
 	}
 
+}
+
+class ButtonListener implements ActionListener {
+	private String s;
+	private JTextField in;
+	private JTextField out;
+	private HuffmanTree tree;
+	
+	public ButtonListener(JTextField inputField, JTextField outputField, HuffmanTree hufftree){
+		in = inputField;
+		out = outputField;
+		tree = hufftree;
+	}
+	
+	public void actionPerformed(ActionEvent ae) {
+		s = in.getText();
+		if (s == "")
+			out.setText("You forgot to input a value!");
+		if (ae.getActionCommand().equals("Encode")) {
+			String result = tree.encode(s);
+			out.setText(result);
+		} else if (ae.getActionCommand().equals("Decode")) {
+			String result = tree.decode(s);
+			out.setText(result);
+		}
+	}
+	
 }
