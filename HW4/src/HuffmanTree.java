@@ -88,6 +88,7 @@ public class HuffmanTree extends JComponent {
 		String text = "";
 		String error = "This is not a valid binary encoding.";
 		try {
+			if (!binary.matches("[01]+")) return error;
 			int i = 0;
 			while (i < binary.length()) {
 				HuffmanNode t = root;
