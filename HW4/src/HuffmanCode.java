@@ -45,8 +45,7 @@ import javax.swing.*;
 
 public class HuffmanCode {
 
-	// Accept input file from user and return a linked list of every line in the
-	// file
+	// Accept input file from user and return a linked list of every line in the file
 	private static LinkedList<String> FileLineParser(String fileName)
 			throws FileNotFoundException {
 		File inFile = new File(fileName);
@@ -66,7 +65,6 @@ public class HuffmanCode {
 		}
 	}
 
-	// TODO: Catch ArrayIndexOutOfBoundsException
 	private static HuffmanNode[] buildTinyTrees(LinkedList<String> listOfLines) {
 		Iterator<String> lines = listOfLines.iterator();	
 		try {
@@ -105,7 +103,7 @@ public class HuffmanCode {
 			return null;
 		}
 	}
-
+	
 	public static HuffmanTree tree;
 
 	// Tester method that takes an input file from the command line
@@ -127,7 +125,6 @@ public class HuffmanCode {
 		// Creating the JFrame
 		JFrame frame = new JFrame();
 		frame.setTitle("Huffman Tree Encoding");
-		// HuffmanTreeComponent mc = new HuffmanTreeComponent();
 
 		// Constants
 		final int FIELD_WIDTH = 20;
@@ -140,9 +137,6 @@ public class HuffmanCode {
 		resultLabel.setText("Result: ");
 		JButton encodeButton = new JButton("Encode");
 		JButton decodeButton = new JButton("Decode");
-//		JButton leftButton = new JButton("Left");
-//		JButton rightButton = new JButton("Right");
-
 			
 		textField.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
