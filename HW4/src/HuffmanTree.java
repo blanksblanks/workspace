@@ -129,7 +129,7 @@ public class HuffmanTree extends JComponent {
 		// Use a cast to recover the Graphics2D object from the Graphics param
 		Graphics2D g2 = (Graphics2D) g;
 
-		g2.setFont(new Font("Arial", Font.PLAIN, 10)); 
+		g2.setFont(new Font("Impact", Font.PLAIN, 12)); 
 		displayTree(g2, root, (frameWidth - 1 ) / 2, RADIUS * 2, hGap);
 		
 		int x = 5;
@@ -163,12 +163,15 @@ public class HuffmanTree extends JComponent {
 		g2.fill(node);
 		g2.draw(node);
 		if (root.getCharacter() != null) {
-			g2.setColor(Color.black);
+			g2.setColor(Color.white);
 //			g2.drawString(root.toString(), x-RADIUS, y);
-			printSimpleString(g2, root.toString(), RADIUS*2, x, y);
+			printSimpleString(g2, " " + root.toString(), RADIUS*2, x-RADIUS, y+4);
 		}
-		if (root.isLeaf()) printSimpleString(g2, root.toString(), RADIUS*2, x, y+2*RADIUS);
+		if (root.isLeaf()) {
+			g2.setColor(Color.black);
+			printSimpleString(g2, " " + root.getBinaryCode(), RADIUS*2, x-RADIUS, y+2*RADIUS+3);
 //			g2.drawString(root.getBinaryCode(), x-RADIUS, y+2*RADIUS);
+		}
 		
 		if (root.left != null) {
 			g2.setColor(Color.black);
@@ -194,11 +197,10 @@ public class HuffmanTree extends JComponent {
 //	}
 
     private void printSimpleString(Graphics2D g2, String s, int width, int XPos, int YPos){  
-        int stringLen = (int)  
-            g2.getFontMetrics().getStringBounds(s, g2).getWidth();  
+        int stringLen = (int) g2.getFontMetrics().getStringBounds(s, g2).getWidth();  
         int start = width/2 - stringLen/2;  
-        g2.drawString(s, start + XPos, YPos);  
- } 
+        g2.drawString(s, start + XPos, YPos);
+        } 
 	
 	private Color mixRandomColorWith(Color mix) {
 		Random random = new Random();
