@@ -1,10 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-// import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
-
 import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
@@ -122,6 +120,7 @@ public class HuffmanCode {
 
 		// Creating the JFrame
 		JFrame frame = new JFrame();
+		frame.setTitle("Huffman Tree Encoding");
 		// HuffmanTreeComponent mc = new HuffmanTreeComponent();
 
 		// Constants
