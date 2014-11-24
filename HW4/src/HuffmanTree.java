@@ -179,9 +179,9 @@ public class HuffmanTree extends JComponent {
 
 		if (root.left != null && root.right != null) {
 			g2.setColor(Color.black);
-			g2.drawLine(x, y, x + gap, y + VGAP - RADIUS);
+			g2.drawLine(x, y + RADIUS, x + gap, y + VGAP);
 			displayTree(g2, root.left, x + gap, y + VGAP, gap / 2);
-			g2.drawLine(x, y, x - gap, y + VGAP - RADIUS);
+			g2.drawLine(x, y + RADIUS, x - gap, y + VGAP);
 			displayTree(g2, root.right, x - gap, y + VGAP, gap / 2);
 		}
 
