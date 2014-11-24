@@ -107,6 +107,7 @@ public class HuffmanTree extends JComponent {
 	}
 
 	public String encode(String s) {
+		if (s == "") return "You forgot to enter text.";
 		String binary = "";
 		for (int i = 0; i < s.length(); i++) {
 			String character = Character.toString(s.charAt(i));
@@ -133,29 +134,30 @@ public class HuffmanTree extends JComponent {
 		g2.setFont(new Font("Impact", Font.PLAIN, 12)); 
 		displayTree(g2, root, (frameWidth - 1 ) / 2, RADIUS * 2, hGap);
 		
-		int x = 5;
-		int y = 10;
-		int d = 20;
-
-		g2.setColor(Color.BLACK);
-		g2.drawLine(15, 20, 45, 20);
-
-		Ellipse2D.Double circle = new Ellipse2D.Double(x, y, d, d);
-		Color mint = new Color(162, 255, 204);
-		Color random = mixRandomColorWith(mint);
-		g2.setColor(random);
-		g2.fill(circle);
-		g2.draw(circle);
-
-		x += 30;
-
-		Ellipse2D.Double circle2 = new Ellipse2D.Double(x, y, d, d);
-		random = mixRandomColorWith(mint); // white is color to be mixed with
-		g2.setColor(random);
-		g2.fill(circle2);
-		g2.draw(circle2);
+//		int x = 5;
+//		int y = 10;
+//		int d = 20;
+//
+//		g2.setColor(Color.BLACK);
+//		g2.drawLine(15, 20, 45, 20);
+//
+//		Ellipse2D.Double circle = new Ellipse2D.Double(x, y, d, d);
+//		Color mint = new Color(162, 255, 204);
+//		Color random = mixRandomColorWith(mint);
+//		g2.setColor(random);
+//		g2.fill(circle);
+//		g2.draw(circle);
+//
+//		x += 30;
+//
+//		Ellipse2D.Double circle2 = new Ellipse2D.Double(x, y, d, d);
+//		random = mixRandomColorWith(mint); // white is color to be mixed with
+//		g2.setColor(random);
+//		g2.fill(circle2);
+//		g2.draw(circle2);
 	}
 
+	// TODO: Why doesn't space show up?
 	private void displayTree(Graphics2D g2, HuffmanNode root, int x, int y, int gap){
 		Color mint = new Color(162, 255, 204);
 		Color random = mixRandomColorWith(mint);
@@ -173,19 +175,27 @@ public class HuffmanTree extends JComponent {
 			printSimpleString(g2, " " + root.getBinaryCode(), RADIUS*2, x-RADIUS, y+2*RADIUS+3);
 //			g2.drawString(root.getBinaryCode(), x-RADIUS, y+2*RADIUS);
 		}
-		
-		if (root.left != null) {
+
+		if (root.left != null && root.right != null) {
 			g2.setColor(Color.black);
-			// Draw / line to left child
-			// Draw the left subtree recursively
 			displayTree(g2, root.right, x - gap, y + VGAP, gap / 2);
-		}
-		if (root.right != null) {
-			// Draw \ line to right child
-//			g2.setColor(Color.black);
-			// Draw the right subtree recursively
 			displayTree(g2, root.left, x + gap, y + VGAP, gap / 2);
 		}
+
+		
+//		if (root.left != null) {
+//			g2.setColor(Color.black);
+//			// Draw / line to left child
+//			// Draw the left subtree recursively
+//			displayTree(g2, root.right, x - gap, y + VGAP, gap / 2);
+//		}
+//		if (root.right != null) {
+//			// Draw \ line to right child
+////			g2.setColor(Color.black);
+//			// Draw the right subtree recursively
+//			displayTree(g2, root.left, x + gap, y + VGAP, gap / 2);
+//		}
+
 		
 	}
 	
@@ -219,30 +229,6 @@ public class HuffmanTree extends JComponent {
 		Color color = new Color(red, green, blue);
 		return color;
 	}
-
-	//
-	// public void dfs() {
-	// // DFS uses Stack data structure
-	// MyStack stack = new MyStack();
-	// stack.push(this.rootNode);
-	// rootNode.visited=true;
-	// printNode(rootNode);
-	// while(!stack.isEmpty()) {
-	// HuffmanNode node = (Node)s.peek();
-	// Node child = getUnvisitedChildNode(n);
-	// if(child != null) {
-	// child.visited = true;
-	// printNode(child);
-	// s.push(child);
-	// }
-	// else {
-	// s.pop();
-	// }
-	// }
-	// // Clear visited property of nodes
-	// clearNodes();
-	// }
-	// }
 
 	public void printTree() {
 		this.printTree(root);

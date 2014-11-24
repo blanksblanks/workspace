@@ -1,6 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-//import java.io.PrintWriter;
+// import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -46,78 +46,109 @@ import javax.swing.*;
  */
 
 public class HuffmanCode {
-	
-	// Accept input file from user and return a linked list of every line in the file
-	private static LinkedList<String> FileLineParser(String fileName) throws FileNotFoundException {
+
+	// Accept input file from user and return a linked list of every line in the
+	// file
+	private static LinkedList<String> FileLineParser(String fileName)
+			throws FileNotFoundException {
 		File inFile = new File(fileName);
 		if (inFile.exists()) {
 			LinkedList<String> ListOfLines = new LinkedList<>();
 			Scanner input = new Scanner(inFile);
 			while (input.hasNextLine()) {
-				String line = input.nextLine() + "\n"; //adds new line char
+				String line = input.nextLine() + "\n"; // adds new line char
 				ListOfLines.add(line);
 			}
 			input.close();
 			return ListOfLines;
 		} else {
-				System.out.print("This file does not appear to exist. Please try again!");
-				System.exit(1);
-				return null;
-			}
+			System.out
+					.print("This file does not appear to exist. Please try again!");
+			System.exit(1);
+			return null;
+		}
 	}
-	
-	private static HuffmanNode[] buildTinyTrees(LinkedList<String> listOfLines){ // of tiny Huffman trees!
+
+	private static HuffmanNode[] buildTinyTrees(LinkedList<String> listOfLines) { // of
+																					// tiny
+																					// Huffman
+																					// trees!
 		Iterator<String> lines = listOfLines.iterator();
-        HuffmanNode[] original = new HuffmanNode[128]; // initializes array with capacity for max number of ascii characters
+		HuffmanNode[] original = new HuffmanNode[128]; // initializes array with
+														// capacity for max
+														// number of ascii
+														// characters
 		int characters = 0;
 		while (lines.hasNext()) {
 			String line = lines.next();
-            for (int i = 0; i < line.length(); i++) {
-                int ascii = (int) line.charAt(i); // extracts ascii so characters are indexed in alphabetical order
-                if (original[ascii] == null) { // this is the first time seeing this char
-                    String character = Character.toString(line.charAt(i)); // casts the character as String
-                    original[ascii] = new HuffmanNode(character); // creates a tiny Huffman tree
-                    characters++;
-                } else // seen this char so increment its frequency
-                    original[ascii].increaseFrequency();
-            }	
+			for (int i = 0; i < line.length(); i++) {
+				int ascii = (int) line.charAt(i); // extracts ascii so
+													// characters are indexed in
+													// alphabetical order
+				if (original[ascii] == null) { // this is the first time seeing
+												// this char
+					String character = Character.toString(line.charAt(i)); // casts
+																			// the
+																			// character
+																			// as
+																			// String
+					original[ascii] = new HuffmanNode(character); // creates a
+																	// tiny
+																	// Huffman
+																	// tree
+					characters++;
+				} else
+					// seen this char so increment its frequency
+					original[ascii].increaseFrequency();
+			}
 		}
-        HuffmanNode[] tinyTrees = new HuffmanNode[characters]; // initialize tiny tree array with capacity for actual number of characters seen
-        int incrementer = 0;
-        for (int j = 0; j < original.length; j++) {
-            if (original[j] != null) { // copy character from original array into next incremental index of tiny tree array
-                tinyTrees[incrementer] = original[j];
-                incrementer++;
-            }
-        }
-        return tinyTrees;
+		HuffmanNode[] tinyTrees = new HuffmanNode[characters]; // initialize
+																// tiny tree
+																// array with
+																// capacity for
+																// actual number
+																// of characters
+																// seen
+		int incrementer = 0;
+		for (int j = 0; j < original.length; j++) {
+			if (original[j] != null) { // copy character from original array
+										// into next incremental index of tiny
+										// tree array
+				tinyTrees[incrementer] = original[j];
+				incrementer++;
+			}
+		}
+		return tinyTrees;
 	}
-	
+
 	public static HuffmanTree tree;
-	
-    // Tester method that takes an input file from the command line
+
+	// Tester method that takes an input file from the command line
 	public static void main(String[] args) throws FileNotFoundException {
-		
+
 		if (args.length == 1) {
 			LinkedList<String> input = FileLineParser(args[0]);
 			HuffmanNode[] forest = buildTinyTrees(input);
 			tree = new HuffmanTree(forest);
-	        for (int i = 0; i < forest.length; i++)
-	            System.out.println(forest[i].toString() + " " + forest[i].getBinaryCode());
-	        tree.printTree();
-//	        System.out.println("0110110010 = " + tree.decode("0110110010"));
-//	        System.out.println("01101100101 = " + tree.decode("01101100101"));
-//	        System.out.println("eats = " + tree.encode("east"));
-//	        System.out.println("good eats = " + tree.encode("good eats"));
+			for (int i = 0; i < forest.length; i++)
+				System.out.println(forest[i].toString() + " "
+						+ forest[i].getBinaryCode());
+			tree.printTree();
+			// System.out.println("0110110010 = " + tree.decode("0110110010"));
+			// System.out.println("01101100101 = " +
+			// tree.decode("01101100101"));
+			// System.out.println("eats = " + tree.encode("east"));
+			// System.out.println("good eats = " + tree.encode("good eats"));
 		} else {
-				System.out.println("One input file needs to be specified. Please try again!");
-				System.exit(1);
-			}
-		
+			System.out
+					.println("One input file needs to be specified. Please try again!");
+			System.exit(1);
+		}
+
 		// Creating the JFrame
 		JFrame frame = new JFrame();
-// 		HuffmanTreeComponent mc = new HuffmanTreeComponent();
-		
+		// HuffmanTreeComponent mc = new HuffmanTreeComponent();
+
 		// Constants
 		final int FIELD_WIDTH = 20;
 		final JTextField textField = new JTextField(FIELD_WIDTH);
@@ -128,71 +159,68 @@ public class HuffmanCode {
 		binaryLabel.setText("<- Enter some text here.");
 		binaryField.setText("");
 		textLabel.setText("<- Enter some 1's and 0's here.");
-		
+
 		JButton encodeButton = new JButton("Encode");
 		JButton decodeButton = new JButton("Decode");
-		
-//        textField.addMouseListener(new MouseAdapter(){
-//            public void mouseClicked(MouseEvent e){
-//                textField.setText("");
-//            }
-//        });
-//        
-//        binaryField.addMouseListener(new MouseAdapter(){
-//            public void mouseClicked(MouseEvent m){
-//                binaryField.setText("");
-//            }
-//        });
-		
-        encodeButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ae) {
-            	if (ae.getActionCommand().equals("Encode")) {
-//            		System.out.println("Encode got pressed");
-            		String in = textField.getText();
-            		if (in != null) {
-            			String out = tree.encode(in);
-//            			textField.setText(out);
-                	    binaryLabel.setText(out);
-            		} else {
-            			binaryLabel.setText("You forgot to input a value!");
-            		}
-            	}
-            }
-        });
-        
-        decodeButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ae) {
-            	if (ae.getActionCommand().equals("Decode")) {
-//            		System.out.println("Decode got pressed");
-            		String in = binaryField.getText();
-            		if (in != null) {
-            	    String out = tree.decode(in);
-//            		binaryField.setText(out);
-            	    textLabel.setText(out);
-            		} else {
-            			textLabel.setText("You forgot to input a value!");
-            		}
-                }
-            }
-        });
-	
+
+		// textField.addMouseListener(new MouseAdapter(){
+		// public void mouseClicked(MouseEvent e){
+		// textField.setText("");
+		// }
+		// });
+		//
+		// binaryField.addMouseListener(new MouseAdapter(){
+		// public void mouseClicked(MouseEvent m){
+		// binaryField.setText("");
+		// }
+		// });
+
+		encodeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				if (ae.getActionCommand().equals("Encode")) {
+					// System.out.println("Encode got pressed");
+					String in = textField.getText();
+					if (in == "") binaryLabel.setText("You forgot to input a value!");
+					else {
+						String out = tree.encode(in);
+						// textField.setText(out);
+						binaryLabel.setText(out);
+					}
+				}
+			}
+		});
+
+		decodeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				if (ae.getActionCommand().equals("Decode")) {
+					// System.out.println("Decode got pressed");
+					String in = binaryField.getText();
+					if (in == "") textLabel.setText("You forgot to input a value!");
+					else {
+						String out = tree.decode(in);
+						// binaryField.setText(out);
+						textLabel.setText(out);
+					}
+				}
+			}
+		});
+
 		// Add all the components
 		frame.setLayout(new FlowLayout());
 		frame.add(textField);
 		frame.add(binaryLabel);
 		frame.add(encodeButton);
-		
+
 		frame.add(binaryField);
 		frame.add(textLabel);
 		frame.add(decodeButton);
 
 		frame.add(tree);
-//		frame.add(mc);
+		// frame.add(mc);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
 	}
-
 
 }

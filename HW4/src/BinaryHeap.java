@@ -165,25 +165,25 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>>
     }
 
         // Test program (modified by nb2406)
-    public static void main( String [ ] args )
-    {
-        int numItems = 10;
-        BinaryHeap<Integer> h = new BinaryHeap<>( );
-        int i = 37;
-        int del;
-
-        for( i = 37; i != 0; i = ( i + 37 ) % numItems ) {
-            h.insert( i );
-        	System.out.println( "Inserted " + i); }
-        for( i = 1; i < numItems; i++ ) {
-        	del = h.deleteMin();
-        	if (del != i )
-        		System.out.println( "Oops! " + i + "=/=" + del);
-        	else
-        		System.out.println( "Deleted " + del);
-        }
-//        	System.out.println( "Deleted " + h.deleteMin() );
-//          if( h.deleteMin( ) != i )
-//                System.out.println( "Oops! " + i );
-    }
+//    public static void main( String [ ] args )
+//    {
+//        int numItems = 10;
+//        BinaryHeap<Integer> h = new BinaryHeap<>( );
+//        int i = 37;
+//        int del;
+//
+//        for( i = 37; i != 0; i = ( i + 37 ) % numItems ) {
+//            h.insert( i );
+//        	System.out.println( "Inserted " + i); }
+//        for( i = 1; i < numItems; i++ ) {
+//        	del = h.deleteMin();
+//        	if (del != i )
+//        		System.out.println( "Oops! " + i + "=/=" + del);
+//        	else
+//        		System.out.println( "Deleted " + del);
+//        }
+////        	System.out.println( "Deleted " + h.deleteMin() );
+////          if( h.deleteMin( ) != i )
+////                System.out.println( "Oops! " + i );
+//    }
 }
