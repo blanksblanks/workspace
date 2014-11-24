@@ -25,8 +25,6 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 	    public HuffmanNode(int tn, HuffmanNode rt, HuffmanNode lt) {
 	        character = "T" + tn;
 	        frequency = rt.frequency + lt.frequency;
-//	        increaseDepth(rt);
-//			increaseDepth(lt);
 	        right = rt;
 	        left = lt;
 	    }

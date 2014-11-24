@@ -1,5 +1,3 @@
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Hashtable;
 // import javax.swing.*;
 // import java.awt.*;
@@ -9,12 +7,9 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
-
-
 // import java.awt.geom.Line2D;
 // import javax.swing.JPanel;
 import javax.swing.JComponent;
-
 import java.util.Random;
 
 @SuppressWarnings("serial")
@@ -34,8 +29,8 @@ public class HuffmanTree extends JComponent {
 	public HuffmanTree(HuffmanNode[] array) throws UnderflowException {
 		BinaryHeap<HuffmanNode> heap = new BinaryHeap<HuffmanNode>(array);
 		buildHuffmanTree(heap);
-		String binaryCode = ""; // After tree is built, build binary codes for
-								// leaves
+		// After tree is built, build binary codes for the leaves
+		String binaryCode = "";
 		encodeLeaves(root, binaryCode);
 		levels = root.getHeight(root) + 1;
 		frameHeight = (10 * (levels) + 3) * RADIUS; // + 3 for padding
@@ -71,8 +66,7 @@ public class HuffmanTree extends JComponent {
 		}
 	}
 
-	// TODO: edge cases: what happens if t is null or only o ne letter in the
-	// tree?
+	// TODO: edge cases: what happens if t is null or only one letter in tree?
 	private String encodeLeaves(HuffmanNode t, String digits) {
 		if (t.isLeaf()) {
 			t.setBinaryCode(digits);
@@ -133,31 +127,8 @@ public class HuffmanTree extends JComponent {
 
 		g2.setFont(new Font("Impact", Font.PLAIN, 12)); 
 		displayTree(g2, root, (frameWidth - 1 ) / 2, RADIUS * 2, hGap);
-		
-//		int x = 5;
-//		int y = 10;
-//		int d = 20;
-//
-//		g2.setColor(Color.BLACK);
-//		g2.drawLine(15, 20, 45, 20);
-//
-//		Ellipse2D.Double circle = new Ellipse2D.Double(x, y, d, d);
-//		Color mint = new Color(162, 255, 204);
-//		Color random = mixRandomColorWith(mint);
-//		g2.setColor(random);
-//		g2.fill(circle);
-//		g2.draw(circle);
-//
-//		x += 30;
-//
-//		Ellipse2D.Double circle2 = new Ellipse2D.Double(x, y, d, d);
-//		random = mixRandomColorWith(mint); // white is color to be mixed with
-//		g2.setColor(random);
-//		g2.fill(circle2);
-//		g2.draw(circle2);
 	}
 
-	// TODO: Why doesn't space show up?
 	private void displayTree(Graphics2D g2, HuffmanNode root, int x, int y, int gap){
 		Color mint = new Color(162, 255, 204);
 		Color random = mixRandomColorWith(mint);
@@ -167,49 +138,25 @@ public class HuffmanTree extends JComponent {
 		g2.draw(node);
 		if (root.getCharacter() != null) {
 			g2.setColor(Color.white);
-//			g2.drawString(root.toString(), x-RADIUS, y);
 			printSimpleString(g2, " " + root.toString(), RADIUS*2, x-RADIUS, y+4);
 		}
 		if (root.isLeaf()) {
-			g2.setColor(Color.black);
-			
+			g2.setColor(Color.black);			
 			printSimpleString(g2, " " + root.getBinaryCode(), RADIUS*2, x-RADIUS, y+2*RADIUS+3);
-//			g2.drawString(root.getBinaryCode(), x-RADIUS, y+2*RADIUS);
 		}
 
 		if (root.left != null && root.right != null) {
 			g2.setColor(Color.black);
+			// Draw / line to left child
 			g2.drawLine(x, y + RADIUS, x + gap, y + VGAP);
+			// Draw the left subtree recursively
 			displayTree(g2, root.left, x + gap, y + VGAP, gap / 2);
+			// Draw \ line to right child
 			g2.drawLine(x, y + RADIUS, x - gap, y + VGAP);
+			// Draw the right subtree recursively
 			displayTree(g2, root.right, x - gap, y + VGAP, gap / 2);
 		}
-
-		
-//		if (root.left != null) {
-//			g2.setColor(Color.black);
-//			// Draw / line to left child
-//			// Draw the left subtree recursively
-//			displayTree(g2, root.right, x - gap, y + VGAP, gap / 2);
-//		}
-//		if (root.right != null) {
-//			// Draw \ line to right child
-////			g2.setColor(Color.black);
-//			// Draw the right subtree recursively
-//			displayTree(g2, root.left, x + gap, y + VGAP, gap / 2);
-//		}
-
-		
 	}
-	
-//	private void parent(Graphics2D g2, HuffmanNode root, int x, int y, int gap){
-//		
-//	}
-//
-//	private void drawLeft(Graphics2D g2, int x1, int y1, int x2, int y2) {
-//		g2.setColor(Color.BLACK);
-//		g2.drawLine(x1, y1, x2, y2);
-//	}
 
     private void printSimpleString(Graphics2D g2, String s, int width, int x, int y){  
         int stringLen = (int) g2.getFontMetrics().getStringBounds(s, g2).getWidth();  
@@ -219,90 +166,17 @@ public class HuffmanTree extends JComponent {
 	
 	private Color mixRandomColorWith(Color mix) {
 		Random random = new Random();
-		int red = random.nextInt(256);
-		int green = random.nextInt(256);
-		int blue = random.nextInt(256);
-
+		int r = random.nextInt(256);
+		int g = random.nextInt(256);
+		int b = random.nextInt(256);
 		// mix the color
 		if (mix != null) {
-			red = (red + mix.getRed()) / 2;
-			green = (green + mix.getGreen()) / 2;
-			blue = (blue + mix.getBlue()) / 2;
+			r = (r + mix.getRed()) / 2;
+			g = (g + mix.getGreen()) / 2;
+			b = (b + mix.getBlue()) / 2;
 		}
-
-		Color color = new Color(red, green, blue);
+		Color color = new Color(r, g, b);
 		return color;
 	}
 
-	public void printTree() {
-		this.printTree(root);
-	}
-
-	private void printTree(HuffmanNode t) {
-		double nodes = 0.0;
-		double level = 0.0;
-
-		Queue<HuffmanNode> q = new LinkedList<HuffmanNode>();
-		q.add(t);
-
-		// System.out.println("Added " + t.getCharacter() + " to queue");
-		while (!q.isEmpty()) {
-			HuffmanNode node = q.poll();
-			// System.out.println("Removed " + node.getCharacter() +
-			// " from queue");
-
-			if (node.left != null && node.right != null) {
-				// nodes += 2;
-				q.add(node.left);
-				q.add(node.right);
-				System.out.print("/\\");
-				// System.out.println("Added " + node.left.getCharacter() +
-				// " and " + node.right.getCharacter() + " to queue");
-			}
-			// else if (node.isLeaf())
-			// level--;
-
-			// else if (node.left != null && node.right == null) { // draw /
-			// // nodes++;
-			// q.add(node.left);
-			// // HuffmanNode blankr = new HuffmanNode("blankr");
-			// // q.add(blankr);
-			// System.out.print("/");
-			// // System.out.println("Added " + node.left.getCharacter() +
-			// " and blank to queue");
-			// } else if (node.left == null && node.right != null) { // draw \
-			// // nodes++;
-			// // HuffmanNode blankl = new HuffmanNode("blankl");
-			// // q.add(blankl);
-			// q.add(node.right);
-			// System.out.print("\\");
-			// // System.out.println("Added blank and " +
-			// node.right.getCharacter() + " to queue");
-			// } else { // (node.left == null && node.right == null)
-			// // nodes += (Math.pow(2.0, level) - nodes);
-			// //System.out.println("Reached leaf. do nothing");
-			// }
-
-			System.out.print(node.toString() + "\t");
-			nodes++; // node
-			// System.out.println(Math.pow(2.0, level) +
-			// " compared to number of nodes " + nodes);
-			if (Math.pow(2.0, level) == nodes) {
-				level += 1.0;
-				nodes = 0;
-				System.out.println("\n");
-				// System.out.println("increased level by 1");
-			}
-			// else {
-			// nodes += (Math.pow(2.0, level) - nodes);
-			// // System.out.println("increased nodes by 1");
-			// }
-
-			/*
-			 * 
-			 * /\ t5 /\/\ t4 t3 /\ t2 e a s /\ sp t1 t nl
-			 */
-
-		}
-	}
 }

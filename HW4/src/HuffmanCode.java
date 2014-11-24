@@ -69,51 +69,32 @@ public class HuffmanCode {
 		}
 	}
 
-	private static HuffmanNode[] buildTinyTrees(LinkedList<String> listOfLines) { // of
-																					// tiny
-																					// Huffman
-																					// trees!
+	private static HuffmanNode[] buildTinyTrees(LinkedList<String> listOfLines) { 
 		Iterator<String> lines = listOfLines.iterator();
-		HuffmanNode[] original = new HuffmanNode[128]; // initializes array with
-														// capacity for max
-														// number of ascii
-														// characters
+		// initializes original array with max capacity for ascii characters
+		HuffmanNode[] original = new HuffmanNode[128];
 		int characters = 0;
 		while (lines.hasNext()) {
 			String line = lines.next();
 			for (int i = 0; i < line.length(); i++) {
-				int ascii = (int) line.charAt(i); // extracts ascii so
-													// characters are indexed in
-													// alphabetical order
-				if (original[ascii] == null) { // this is the first time seeing
-												// this char
-					String character = Character.toString(line.charAt(i)); // casts
-																			// the
-																			// character
-																			// as
-																			// String
-					original[ascii] = new HuffmanNode(character); // creates a
-																	// tiny
-																	// Huffman
-																	// tree
+				// extract ascii so characters are index in alphabetical order
+				int ascii = (int) line.charAt(i);
+				if (original[ascii] == null) {
+					// if first seeing char, cast char to string and create tiny Huffman tree
+					String character = Character.toString(line.charAt(i));
+					original[ascii] = new HuffmanNode(character);
 					characters++;
 				} else
-					// seen this char so increment its frequency
+					// we've seen this char so increment its frequency
 					original[ascii].increaseFrequency();
 			}
 		}
-		HuffmanNode[] tinyTrees = new HuffmanNode[characters]; // initialize
-																// tiny tree
-																// array with
-																// capacity for
-																// actual number
-																// of characters
-																// seen
+		// initialize tiny tree node array with capacity for actual number of chars seen
+		HuffmanNode[] tinyTrees = new HuffmanNode[characters]; 
 		int incrementer = 0;
 		for (int j = 0; j < original.length; j++) {
-			if (original[j] != null) { // copy character from original array
-										// into next incremental index of tiny
-										// tree array
+			if (original[j] != null) {
+				// copy character from original array into next incremental index of tiny array
 				tinyTrees[incrementer] = original[j];
 				incrementer++;
 			}
@@ -133,12 +114,6 @@ public class HuffmanCode {
 			for (int i = 0; i < forest.length; i++)
 				System.out.println(forest[i].toString() + " "
 						+ forest[i].getBinaryCode());
-			tree.printTree();
-			// System.out.println("0110110010 = " + tree.decode("0110110010"));
-			// System.out.println("01101100101 = " +
-			// tree.decode("01101100101"));
-			// System.out.println("eats = " + tree.encode("east"));
-			// System.out.println("good eats = " + tree.encode("good eats"));
 		} else {
 			System.out
 					.println("One input file needs to be specified. Please try again!");
