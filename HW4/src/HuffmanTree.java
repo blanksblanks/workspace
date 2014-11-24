@@ -19,7 +19,7 @@ public class HuffmanTree extends JComponent {
 	private Hashtable<String, String> hash;
 	
 	final int RADIUS = 10;
-	final int HGAP = 10;
+	final int HGAP = 320;
 	final int VGAP = 60;
 	private int hGap;
 	private int levels;
@@ -33,16 +33,21 @@ public class HuffmanTree extends JComponent {
 		String binaryCode = "";
 		encodeLeaves(root, binaryCode);
 		levels = root.getHeight(root) + 1;
-		frameHeight = (10 * (levels) + 3) * RADIUS; // + 3 for padding
-		frameWidth = 1; // 2^(N+1) + 1
-		for (int power = 1; power <= levels; power++)
-			frameWidth *= 2;
-		frameWidth = (frameWidth + 30) * RADIUS; // + 30 for padding
-		hGap = RADIUS;
-		for (int i = 1; i < levels-1; i++)
-			hGap *= 2;
-		System.out.println("Window height " + frameHeight + " and "
-				+ frameWidth + " and horizontal gap " + hGap);
+
+//		frameHeight = (10 * (levels) + 3) * RADIUS; // + 3 for padding
+//		frameWidth = 1; // 2^(N+1) + 1
+//		for (int power = 1; power <= levels; power++)
+//			frameWidth *= 2;
+//		frameWidth = (frameWidth + 30) * RADIUS; // + 30 for padding
+//		hGap = RADIUS;
+//		for (int i = 1; i < levels-1; i++)
+//			hGap *= 2;
+//		System.out.println("Window height " + frameHeight + " and "
+//		+ frameWidth + " and horizontal gap " + hGap);
+
+		frameWidth = HGAP*4;
+		frameHeight = (VGAP + RADIUS) * (levels + 1);
+		hGap = HGAP;
 		setPreferredSize(new Dimension(frameWidth, frameHeight));
 	}
 
