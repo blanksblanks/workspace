@@ -7,9 +7,11 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
+
 // import java.awt.geom.Line2D;
 // import javax.swing.JPanel;
 import javax.swing.JComponent;
+
 import java.util.Random;
 
 @SuppressWarnings("serial")
@@ -180,11 +182,11 @@ public class HuffmanTree extends JComponent {
 
 	private void printVerticalString(Graphics2D g2, String s, int width, int x,
 			int y) {
-		String text = "";
+//		String text = "";
 		for (int i = 0; i < s.length(); i++)
-			text += s.charAt(i) + "\n";
-		for (String line : text.split("\n"))
-			printCenteredString(g2, line, width, x, y += g2.getFontMetrics()
+//			text += s.charAt(i) + "\n";
+//		for (String line : text.split("\n"))
+			printCenteredString(g2, Character.toString(s.charAt(i)), width, x, y += g2.getFontMetrics()
 					.getHeight());
 	}
 
