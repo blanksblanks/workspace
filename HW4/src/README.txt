@@ -74,7 +74,7 @@ CLASSES & METHODS
         encode: encodes an ASCII string into a binary code by traversing the tree, catches errors if character is not in the tree
         decode: decodes a binary code into an ASCII string by accessing a hash table, catches index out of bounds and nullpointer errors 
         paintComponent: recovers the Graphics2D object, sets font and calls displaytree method
-        displayTree: recursive method that draws labelled circles for nodes and lines leading to the children until it reaches a leaf and labels the leaf with its binary encoding
+        displayTree: recursive method that draws the tree in the GUI with labelled circles for nodes and lines leading to the children until it reaches a leaf and labels the leaf with its binary encoding
         printCenteredString: method written to center a string depending on the width of the string
         printVerticalString: method to add an enter space after every character in a string, used to print strings vertically
         mixRandomColorWith: method that generates a random color and blends it with the color parameter, in this instance, mint, so everything has a minty cast (for fun, wasn't necessary to the assignment)

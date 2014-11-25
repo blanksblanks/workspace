@@ -124,9 +124,8 @@ public class HuffmanTree extends JComponent {
 	}
 
 	/*
-	 * GUI METHODS (non-Javadoc)
+	 * GUI-RELATED METHODS
 	 * 
-	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
 	 */
 
 	public void paintComponent(Graphics g) {
@@ -136,43 +135,36 @@ public class HuffmanTree extends JComponent {
 		displayTree(g2, root, (frameWidth - 1) / 2, RADIUS * 2, hGap);
 	}
 
-	private void displayTree(Graphics2D g2, HuffmanNode root, int x, int y,
-			int gap) {
-		// Draw parent node with a random color
+	private void displayTree(Graphics2D g2, HuffmanNode root, int x, int y, int gap) {
+		// Generate random color, draw parent node and label
 		Color mint = new Color(162, 255, 204);
 		Color random = mixRandomColorWith(mint);
 		g2.setColor(random);
-		Ellipse2D.Double node = new Ellipse2D.Double(x - RADIUS, y - RADIUS,
-				2 * RADIUS, 2 * RADIUS);
+		Ellipse2D.Double node = new Ellipse2D.Double(x - RADIUS, y - RADIUS, 2 * RADIUS, 2 * RADIUS);
 		g2.fill(node);
 		g2.draw(node);
-
-		// Draw node label
 		g2.setColor(Color.white);
-		printCenteredString(g2, " " + root.toString(), RADIUS * 2, x - RADIUS,
-				y + 4);
+		drawCenteredString(g2, " " + root.toString(), RADIUS * 2, x - RADIUS, y + 4);
 
-		// If node is a leaf, include binary code below
+		// If node is a leaf, include binary code below the node
 		if (root.isLeaf()) {
 			g2.setColor(Color.black);
-			printVerticalString(g2, root.getBinaryCode(), RADIUS * 2, x
+			drawVerticalString(g2, root.getBinaryCode(), RADIUS * 2, x
 					- RADIUS, y + RADIUS);
-		}
-
-		if (root.left != null && root.right != null) {
+		} else { // if (root.left != null && root.right != null)
 			g2.setColor(Color.black);
 			// Draw / line to left child
 			g2.drawLine(x, y + RADIUS, x - gap, y + VGAP - RADIUS);
-			// Draw the left subtree recursively
+			// Draw left subtree recursively
 			displayTree(g2, root.left, x - gap, y + VGAP, gap / 2);
 			// Draw \ line to right child
 			g2.drawLine(x, y + RADIUS, x + gap, y + VGAP - RADIUS);
-			// Draw the right subtree recursively
+			// Draw right subtree recursively
 			displayTree(g2, root.right, x + gap, y + VGAP, gap / 2);
 		}
 	}
 
-	private void printCenteredString(Graphics2D g2, String s, int width, int x,
+	private void drawCenteredString(Graphics2D g2, String s, int width, int x,
 			int y) {
 		int stringLen = (int) g2.getFontMetrics().getStringBounds(s, g2)
 				.getWidth();
@@ -180,13 +172,12 @@ public class HuffmanTree extends JComponent {
 		g2.drawString(s, start + x, y);
 	}
 
-	private void printVerticalString(Graphics2D g2, String s, int width, int x,
-			int y) {
+	private void drawVerticalString(Graphics2D g2, String s, int width, int x, int y) {
 //		String text = "";
 		for (int i = 0; i < s.length(); i++)
 //			text += s.charAt(i) + "\n";
 //		for (String line : text.split("\n"))
-			printCenteredString(g2, Character.toString(s.charAt(i)), width, x, y += g2.getFontMetrics()
+			drawCenteredString(g2, Character.toString(s.charAt(i)), width, x, y += g2.getFontMetrics()
 					.getHeight());
 	}
 

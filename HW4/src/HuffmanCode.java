@@ -122,6 +122,11 @@ public class HuffmanCode {
 			System.exit(1);
 		}
 
+		/*
+		 * GUI-RELATED METHODS
+		 * 
+		 */
+		
 		// Creating the JFrame
 		JFrame frame = new JFrame();
 		frame.setTitle("Huffman Tree Encoding");
