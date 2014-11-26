@@ -21,8 +21,9 @@ HOW TO RUN
 NOTES
  - Uses Weiss' code for BinaryHeap and deleteMin methods as a jumping point to create Huffman subtrees out of Huffman Nodes
  - Program only supports text files that solely contain the first 128 original ASCII characters and returns an error if there are non-ASCII characters in the input
- - GUI is a little cramped looking after 6 levels, the text fields besides the results field automatically clear so it easy for user to enter new input to encode/decode
- - hope you like the random color algorithm!
+ - Tree GUI is wide after 6 levels and requires a scroll bar to traverse
+ - In the GUI, the text fields for user input automatically clear on click it is easy for user to enter new input to encode/decode (the result field text stays so user can easily copy and paste)
+ - hope you like the random color generator and that the changing colors while scrolling isn't too uncomfortable for the eyes!
 
 ***
 
