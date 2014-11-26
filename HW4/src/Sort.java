@@ -201,7 +201,7 @@ public final class Sort {
 	public static <AnyType extends Comparable<? super AnyType>> void quicksort(
 			AnyType[] a) {
 		// quicksort( a, 0, a.length - 1 );
-		threeWayPartition(a, 0, a.length - 1);
+		threeWayPart(a, 0, a.length - 1);
 	}
 
 	// actually going to be used in the base case, hard coded in
@@ -250,10 +250,65 @@ public final class Sort {
 		return a[right - 1];
 	}
 
-	/* nb2406 method */
+	/*
+	 * Three-way in-place partition of an N-element subarray using only N - 1
+	 * three-way comparisons
+	 * 
+	 * Partitions array into three sub-arrays for quicksort:
+	 *   SMALL (a[left]...a[j])
+	 *   EQUAL (a[j+1]...a[i-1]) 
+	 *   LARGE (a[i]...a[right])
+	 *   
+	 * Two recursive calls to the method complete the sort
+	 */
 
+	private static <AnyType extends Comparable<? super AnyType>> void threeWayPart(
+			AnyType[] a, int left, int right) {
+
+		if (right <= 1) return;
+		
+		if (left + CUTOFF <= right) {
+			int i = left - 1, j = right, p = left - 1, q = right;
+			AnyType pivot = a[right]; // choose rightmost value as pivot
+			// begin partitioning
+			for (;;) { // infinite loop
+				// increment i until gt pivot
+				while (a[++i].compareTo(pivot) < 0) ;
+				// decrement j until lt pivot; break if j is 1
+				while (a[--j].compareTo(pivot) > 0)
+					if (j == 1) break;
+				if (i >= j) break;
+				swapReferences(a, i, j); // if i < j
+				// if the pivot is one of the duplicates
+				if (a[i].compareTo(pivot) == 0) {
+					p++;
+					swapReferences(a, p, i);
+				}
+				if (pivot.compareTo(a[j]) == 0) {
+					q--;
+					swapReferences(a, q, j);
+				}
+			}
+			swapReferences(a, i, right);
+			// i stays between left and p, j stays between q and right
+			j = i - 1; i++;
+			for (int k = left; k <= p; k++, j--)
+				swapReferences(a, k, j);
+			for (int k = right - 1; k >= q; k--, i++)
+				swapReferences(a, k, i);
+			threeWayPart(a, left, j);
+			threeWayPart(a, i, right);
+		} else
+			insertionSort(a, left, right);
+	}
+
+	@SuppressWarnings("unused")
+	// Flawed implementation
 	private static <AnyType extends Comparable<? super AnyType>> void threeWayPartition(
 			AnyType[] a, int left, int right) {
+		
+		if (left + CUTOFF <= right) {
+
 		int i = left, j = right - 1;
 		int leftPivots = 0;
 		int rightPivots = 0;
@@ -264,43 +319,44 @@ public final class Sort {
 		// Begin partitioning
 		for (;;) { // infinite loop
 			while (a[++i].compareTo(pivot) < 0) {
-			} // increment i until it is greater than pivot
-			while (a[--j].compareTo(pivot) > 0) {
-			} // decrement j until it is less than pivot
-			// swap  pivots on small side to the left
-			if (a[j].compareTo(pivot) == 0) {
-				swapReferences(a, j, (left + 1) + leftPivots);
-				leftPivots++;
-				print(a);
-			} // swap pivots on large side to the right
-			if (a[i].compareTo(pivot) == 0) {
-				swapReferences(a, i, (right - 2) - rightPivots);
-				rightPivots++;
-				print(a);
+				} // increment i until it is greater than pivot
+				while (a[--j].compareTo(pivot) > 0) {
+				} // decrement j until it is less than pivot
+					// swap pivots in small subarray to left left
+				if (a[j].compareTo(pivot) == 0) {
+					swapReferences(a, j, (left + 1) + leftPivots);
+					leftPivots++;
+					print(a);
+				} // swap pivots in large subarray to the right
+				if (a[i].compareTo(pivot) == 0) {
+					swapReferences(a, i, (right - 2) - rightPivots);
+					rightPivots++;
+					print(a);
+				}
+				if (i < j) {
+					swapReferences(a, i, j);
+					print(a);
+				} else {
+					print(a);
+					break;
+				}
 			}
-			if (i < j) {
-				swapReferences(a, i, j);
-				print(a);
-			}
-			else {
-				print(a);
-				break;
-			}
-		}
 
-		// return right elements + pivot
-		for (int k = 0; k < rightPivots + 1; k++) {
-			swapReferences(a, i + k, right - (k + 1));
-			print(a);
-		}
+			// return right elements + pivot
+			for (int k = 0; k < rightPivots + 1; k++) {
+				swapReferences(a, i + k, right - (k + 1));
+				print(a);
+			}
 
-		// return left elements
-		for (int k = 0; k < leftPivots; k++) {
-			swapReferences(a, j - k, left + (k + 1));
-			print(a);
-		}
+			// return left elements
+			for (int k = 0; k < leftPivots; k++) {
+				swapReferences(a, j - k, left + (k + 1));
+				print(a);
+			}
+		} else
+			insertionSort(a, left, right);
 	}
-
+	
 	/**
 	 * Internal quicksort method that makes recursive calls. Uses
 	 * median-of-three partitioning and a cutoff of 10.

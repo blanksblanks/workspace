@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 
+
 // import java.awt.geom.Line2D;
 // import javax.swing.JPanel;
 import javax.swing.JComponent;
@@ -145,6 +146,8 @@ public class HuffmanTree extends JComponent {
 		}
 	}
 
+	
+	@SuppressWarnings("unused")
 	private void getHead(HuffmanNode t){
 		if (t!= null) {
 			// if node is a leaf, print frequency and corresponding character
