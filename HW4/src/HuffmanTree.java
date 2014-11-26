@@ -21,7 +21,7 @@ public class HuffmanTree extends JComponent {
 	private Hashtable<String, String> hash;
 
 	final int RADIUS = 10;
-	final int HGAP = 340;
+	final int HGAP = 350; // perfect width for my laptop
 	final int VGAP = 60;
 	private int hGap;
 	private int levels;
@@ -34,20 +34,21 @@ public class HuffmanTree extends JComponent {
 		// After tree is built, build binary codes for the leaves
 		String binaryCode = "";
 		encodeLeaves(root, binaryCode);
+		
+		// Set up dimensions of the component in the constructor method
 		levels = root.getHeight(root) + 1;
-		// frameHeight = (10 * (levels) + 3) * RADIUS; // + 3 for padding
+		hGap = RADIUS;
+		for (int i = 1; i < levels-1; i++) // double levels - 1 times
+			hGap *= 2;
+		frameWidth = hGap * 4;
+		frameHeight = (VGAP + RADIUS) * levels + 10; // + 10 for padding
+		// System.out.println("Window height " + frameHeight + " and "
+		// + frameWidth + " and horizontal gap " + hGap);
+		// frameHeight = (10 * (levels) + 3) * RADIUS;g
 		// frameWidth = 1; // 2^(N+1) + 1
 		// for (int power = 1; power <= levels; power++)
 		// frameWidth *= 2;
-		// frameWidth = (frameWidth + 30) * RADIUS; // + 30 for padding
-		// hGap = RADIUS;
-		// for (int i = 1; i < levels-1; i++)
-		// hGap *= 2;
-		// System.out.println("Window height " + frameHeight + " and "
-		// + frameWidth + " and horizontal gap " + hGap);
-		frameWidth = HGAP * 4;
-		frameHeight = (VGAP + RADIUS) * (levels + 1);
-		hGap = HGAP;
+		// frameWidth = (frameWidth + 30) * RADIUS;
 		setPreferredSize(new Dimension(frameWidth, frameHeight));
 	}
 
@@ -134,6 +135,14 @@ public class HuffmanTree extends JComponent {
 		g2.setFont(new Font("Impact", Font.PLAIN, 12));
 		displayTree(g2, root, (frameWidth - 1) / 2, RADIUS * 2, hGap);
 	}
+	
+//	public int getFrameWidth(){
+//		return frameWidth;
+//	}
+//	
+//	public int getMidX(){
+//		return (frameWidth - 1) / 2;
+//	}
 
 	private void displayTree(Graphics2D g2, HuffmanNode root, int x, int y, int gap) {
 		// Generate random color, draw parent node and label
@@ -164,10 +173,8 @@ public class HuffmanTree extends JComponent {
 		}
 	}
 
-	private void drawCenteredString(Graphics2D g2, String s, int width, int x,
-			int y) {
-		int stringLen = (int) g2.getFontMetrics().getStringBounds(s, g2)
-				.getWidth();
+	private void drawCenteredString(Graphics2D g2, String s, int width, int x, int y) {
+		int stringLen = (int) g2.getFontMetrics().getStringBounds(s, g2).getWidth();
 		int start = width / 2 - stringLen / 2;
 		g2.drawString(s, start + x, y);
 	}

@@ -135,7 +135,7 @@ public class HuffmanCode {
 		final int FIELD_WIDTH = 20;
 		final JTextField textField = new JTextField(FIELD_WIDTH);
 		final JTextField binaryField = new JTextField(FIELD_WIDTH);
-		final JTextField resultField = new JTextField(FIELD_WIDTH * 2);
+		final JTextField resultField = new JTextField(FIELD_WIDTH*2);
 		final JLabel resultLabel = new JLabel();
 		textField.setText("Enter some text here.");
 		binaryField.setText("Enter some 1's and 0's here.");
@@ -157,16 +157,29 @@ public class HuffmanCode {
 		
 		encodeButton.addActionListener(new ButtonListener(textField, resultField, tree));
 		decodeButton.addActionListener(new ButtonListener(binaryField, resultField, tree));
+//		int y = (int) decodeButton.getPreferredSize().getHeight();
 		
 		// Add all the components
-		frame.setLayout(new FlowLayout());
-		frame.add(textField);
-		frame.add(encodeButton);
-		frame.add(binaryField);
-		frame.add(decodeButton);
-		frame.add(resultLabel);
-		frame.add(resultField);
-		frame.add(tree);
+		frame.setLayout(new BorderLayout());
+		JScrollPane scrollPane = new JScrollPane(tree);
+		Panel p = new Panel();
+//		p.setPreferredSize(new Dimension(tree.getWidth(), 80));
+		p.setLayout(new FlowLayout());
+		p.add(textField);
+		p.add(encodeButton);
+		p.add(binaryField);
+		p.add(decodeButton);
+		p.add(resultLabel);
+		p.add(resultField);
+		frame.add(p, BorderLayout.NORTH);
+		frame.add(scrollPane, BorderLayout.CENTER);
+		
+//		scrollPane.getViewport().setViewPosition(new Point(tree.getMidX(),0));        
+//		Rectangle bounds = scrollPane.getViewport().getViewRect();
+//		JScrollBar horizontal = scrollPane.getHorizontalScrollBar();
+//        horizontal.setValue( (horizontal.getMaximum() - bounds.width) / 2 );
+//		System.out.println(tree.getMidX());
+
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
