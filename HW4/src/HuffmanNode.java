@@ -89,4 +89,7 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 	            else
 	                return this.character;
 	    }
+	    
+
+
 	}

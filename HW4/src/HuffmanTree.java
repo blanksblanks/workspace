@@ -123,12 +123,42 @@ public class HuffmanTree extends JComponent {
 			return error;
 		}
 	}
+	
+	/* Header Methods for Exercise 10.4 */
+	
+	// root of Huffman Tree is passed in as Huffman Node t
+	public void getHeader(){
+		getHeader(root);
+	}
 
-	/*
-	 * GUI-RELATED METHODS
-	 * 
-	 */
+	private void getHeader(HuffmanNode t) {
+		if (t != null) {
+			// if node is a leaf, print 1 and corresponding character
+			if (t.left == null && t.right == null)
+				System.out.print("1" + t.toString());
+			// else, print 0 to indicate cont'd traversal through tree
+			else { // and recursively call method on children of t
+				System.out.print("0");	
+				getHeader(t.left);
+				getHeader(t.right);
+			}
+		}
+	}
 
+	private void getHead(HuffmanNode t){
+		if (t!= null) {
+			// if node is a leaf, print frequency and corresponding character
+			if (t.left == null && t.right == null)
+				System.out.print(t.getFrequency() + t.toString());
+			else { // else, print nothing
+				getHead(t.left);
+				getHead(t.right);
+			}
+		}
+	}
+
+	/* GUI-Related Methods */
+	
 	public void paintComponent(Graphics g) {
 		// Use a cast to recover the Graphics2D object from the Graphics param
 		Graphics2D g2 = (Graphics2D) g;

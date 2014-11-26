@@ -117,6 +117,8 @@ public class HuffmanCode {
 			for (int i = 0; i < forest.length; i++)
 				System.out.println(forest[i].toString() + " "
 						+ forest[i].getBinaryCode());
+			System.out.println("\nHEADER:");
+			tree.getHeader();
 		} else {
 			System.err.println("A text input file needs to be specified. Please try again. Good bye!");
 			System.exit(1);

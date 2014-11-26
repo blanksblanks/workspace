@@ -168,15 +168,8 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>>
     }
 
 //         Test program (modified by nb2406)
-    public static void main( String [ ] args )
-    {
-    	
-//    	int[] num = {142, 543, 123, 65, 453, 879, 572, 434, 111, 242, 811, 102};
-//    	BinaryHeap<Integer> h = new BinaryHeap<Integer>();
-//    	for (int i = 0: i < 12; i++)
-//    		h.insert(num[i]);
-  
-    	
+//    public static void main( String [ ] args )
+//    {    	
 //        int numItems = 10;
 //        BinaryHeap<Integer> h = new BinaryHeap<>( );
 //        int i = 37;
@@ -195,5 +188,5 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>>
 //        	System.out.println( "Deleted " + h.deleteMin() );
 //          if( h.deleteMin( ) != i )
 //                System.out.println( "Oops! " + i );
-    }
+//    }
 }
