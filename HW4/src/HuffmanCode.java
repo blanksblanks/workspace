@@ -142,21 +142,23 @@ public class HuffmanCode {
 		// Creating the JFrame
 		JFrame frame = new JFrame();
 		frame.setTitle("Huffman Tree Encoding");
+		frame.setPreferredSize(new Dimension (1280, 720));
 
 		// Constants
-		final int FIELD_WIDTH = 20;
+		final int FIELD_WIDTH = 250;
 		final int FIELD_HEIGHT = 80;
 		final JTextArea textField = new JTextArea();
 		final JTextArea binaryField = new JTextArea();
-		final JTextField resultField = new JTextField(FIELD_WIDTH * 2);
+		final JTextArea resultField = new JTextArea();
 		final JLabel resultLabel = new JLabel();
 
 		// Set size
-		textField.setPreferredSize(new Dimension(100, FIELD_HEIGHT));
+		textField.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
 		textField.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-		binaryField.setPreferredSize(new Dimension(100, FIELD_HEIGHT));
+		binaryField.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
 		binaryField.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-		resultField.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
+		resultField.setPreferredSize(new Dimension(FIELD_WIDTH*2, FIELD_HEIGHT));
+		resultField.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
 
 		// Set height
 		textField.setText("Enter some text here.");
@@ -215,10 +217,10 @@ public class HuffmanCode {
 class ButtonListener implements ActionListener {
 	private String s;
 	private JTextArea in;
-	private JTextField out;
+	private JTextArea out;
 	private HuffmanTree tree;
 
-	public ButtonListener(JTextArea inputField, JTextField outputField,
+	public ButtonListener(JTextArea inputField, JTextArea outputField,
 			HuffmanTree hufftree) {
 		in = inputField;
 		out = outputField;
