@@ -118,6 +118,7 @@ public final class Sort {
 	 * @param a
 	 *            an array of Comparable items.
 	 */
+	@SuppressWarnings("unchecked")
 	public static <AnyType extends Comparable<? super AnyType>> void mergeSort(
 			AnyType[] a) {
 		AnyType[] tmpArray = (AnyType[]) new Comparable[a.length];
@@ -479,9 +480,12 @@ public final class Sort {
 			insertionSort(a, left, right);
 	}
 
+	@SuppressWarnings("unused")
 	private static final int NUM_ITEMS = 1000;
+	@SuppressWarnings("unused")
 	private static int theSeed = 1;
 
+	@SuppressWarnings("unused")
 	private static void checkSort(Integer[] a) {
 		for (int i = 0; i < a.length; i++)
 			if (a[i] != i)

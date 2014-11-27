@@ -93,6 +93,10 @@ public class HuffmanTree extends JComponent {
 		String binary = "";
 		for (int i = 0; i < s.length(); i++) {
 			String character = Character.toString(s.charAt(i));
+//			if (character == "\\") {
+//				i++;
+//				character += Character.toString(s.charAt(i));
+//			}
 			String code = hash.get(character);
 			if (code == null)
 				return ("That was not a valid string as " + character + " is not in the Huffman tree.");
