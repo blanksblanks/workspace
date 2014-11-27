@@ -5,7 +5,9 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.awt.event.*;
 import java.awt.*;
+
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
 
 /**
  * 
@@ -45,7 +47,8 @@ import javax.swing.*;
 
 public class HuffmanCode {
 
-	// Accept input file from user and return a linked list of every line in the file
+	// Accept input file from user and return a linked list of every line in the
+	// file
 	private static LinkedList<String> FileLineParser(String fileName)
 			throws FileNotFoundException {
 		File inFile = new File(fileName);
@@ -59,51 +62,57 @@ public class HuffmanCode {
 			input.close();
 			return ListOfLines;
 		} else {
-			System.out.print("This file does not appear to exist. Please try again!");
+			System.out
+					.print("This file does not appear to exist. Please try again!");
 			System.exit(1);
 			return null;
 		}
 	}
 
 	private static HuffmanNode[] buildTinyTrees(LinkedList<String> listOfLines) {
-		Iterator<String> lines = listOfLines.iterator();	
+		Iterator<String> lines = listOfLines.iterator();
 		try {
-		// initializes original array with max capacity for ascii characters
-		HuffmanNode[] original = new HuffmanNode[128];
-		int characters = 0;
-		while (lines.hasNext()) {
-			String line = lines.next();
-			for (int i = 0; i < line.length(); i++) {
-				// extract ascii so characters are index in alphabetical order
-				int ascii = (int) line.charAt(i);
-				if (original[ascii] == null) {
-					// if first seeing char, cast char to string and create tiny Huffman tree
-					String character = Character.toString(line.charAt(i));
-					original[ascii] = new HuffmanNode(character);
-					characters++;
-				} else
-					// we've seen this char so increment its frequency
-					original[ascii].increaseFrequency();
+			// initializes original array with max capacity for ascii characters
+			HuffmanNode[] original = new HuffmanNode[128];
+			int characters = 0;
+			while (lines.hasNext()) {
+				String line = lines.next();
+				for (int i = 0; i < line.length(); i++) {
+					// extract ascii so characters are index in alphabetical
+					// order
+					int ascii = (int) line.charAt(i);
+					if (original[ascii] == null) {
+						// if first seeing char, cast char to string and create
+						// tiny Huffman tree
+						String character = Character.toString(line.charAt(i));
+						original[ascii] = new HuffmanNode(character);
+						characters++;
+					} else
+						// we've seen this char so increment its frequency
+						original[ascii].increaseFrequency();
+				}
 			}
-		}
-		// initialize tiny tree node array with capacity for actual number of chars seen
-		HuffmanNode[] tinyTrees = new HuffmanNode[characters]; 
-		int incrementer = 0;
-		for (int j = 0; j < original.length; j++) {
-			if (original[j] != null) {
-				// copy character from original array into next incremental index of tiny array
-				tinyTrees[incrementer] = original[j];
-				incrementer++;
+			// initialize tiny tree node array with capacity for actual number
+			// of chars seen
+			HuffmanNode[] tinyTrees = new HuffmanNode[characters];
+			int incrementer = 0;
+			for (int j = 0; j < original.length; j++) {
+				if (original[j] != null) {
+					// copy character from original array into next incremental
+					// index of tiny array
+					tinyTrees[incrementer] = original[j];
+					incrementer++;
+				}
 			}
-		}
-		return tinyTrees;
-		} catch (ArrayIndexOutOfBoundsException e){
-			System.err.println("Your input file contains non-ASCII characters, which this program does not support. Please try again. Good bye!");
+			return tinyTrees;
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.err
+					.println("Your input file contains non-ASCII characters, which this program does not support. Please try again. Good bye!");
 			System.exit(1);
 			return null;
 		}
 	}
-	
+
 	public static HuffmanTree tree;
 
 	// Tester method that takes an input file from the command line
@@ -113,38 +122,41 @@ public class HuffmanCode {
 			LinkedList<String> input = FileLineParser(args[0]);
 			HuffmanNode[] forest = buildTinyTrees(input);
 			tree = new HuffmanTree(forest);
-			System.out.println("TABLE OF ASCII CHARACTERS AND CORRESPONDING HUFFMAN CODES:");
+			System.out
+					.println("TABLE OF ASCII CHARACTERS AND CORRESPONDING HUFFMAN CODES:");
 			for (int i = 0; i < forest.length; i++)
 				System.out.println(forest[i].toString() + " "
 						+ forest[i].getBinaryCode());
 			System.out.println("\nHEADER:");
 			tree.getHeader();
 		} else {
-			System.err.println("A text input file needs to be specified. Please try again. Good bye!");
+			System.err
+					.println("A text input file needs to be specified. Please try again. Good bye!");
 			System.exit(1);
 		}
 
 		/*
 		 * GUI-RELATED METHODS
-		 * 
 		 */
-		
+
 		// Creating the JFrame
 		JFrame frame = new JFrame();
 		frame.setTitle("Huffman Tree Encoding");
 
 		// Constants
-		final int FIELD_WIDTH = 300;
+		final int FIELD_WIDTH = 20;
 		final int FIELD_HEIGHT = 80;
 		final JTextArea textField = new JTextArea();
 		final JTextArea binaryField = new JTextArea();
-		final JTextArea resultField = new JTextArea();
+		final JTextField resultField = new JTextField(FIELD_WIDTH * 2);
 		final JLabel resultLabel = new JLabel();
 
 		// Set size
-		textField.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
-		binaryField.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
-		resultField.setPreferredSize(new Dimension(600, FIELD_HEIGHT));
+		textField.setPreferredSize(new Dimension(100, FIELD_HEIGHT));
+		textField.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		binaryField.setPreferredSize(new Dimension(100, FIELD_HEIGHT));
+		binaryField.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		resultField.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
 
 		// Set height
 		textField.setText("Enter some text here.");
@@ -152,7 +164,7 @@ public class HuffmanCode {
 		resultLabel.setText("Result: ");
 		JButton encodeButton = new JButton("Encode");
 		JButton decodeButton = new JButton("Decode");
-			
+
 		textField.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				textField.setText("");
@@ -164,16 +176,18 @@ public class HuffmanCode {
 				binaryField.setText("");
 			}
 		});
-		
-		encodeButton.addActionListener(new ButtonListener(textField, resultField, tree));
-		decodeButton.addActionListener(new ButtonListener(binaryField, resultField, tree));
-//		int y = (int) decodeButton.getPreferredSize().getHeight();
-		
+
+		encodeButton.addActionListener(new ButtonListener(textField,
+				resultField, tree));
+		decodeButton.addActionListener(new ButtonListener(binaryField,
+				resultField, tree));
+		// int y = (int) decodeButton.getPreferredSize().getHeight();
+
 		// Add all the components
 		frame.setLayout(new BorderLayout());
 		JScrollPane scrollPane = new JScrollPane(tree);
 		Panel p = new Panel();
-//		p.setPreferredSize(new Dimension(tree.getWidth(), 80));
+		// p.setPreferredSize(new Dimension(tree.getWidth(), 80));
 		p.setLayout(new FlowLayout());
 		p.add(textField);
 		p.add(encodeButton);
@@ -183,13 +197,13 @@ public class HuffmanCode {
 		p.add(resultField);
 		frame.add(p, BorderLayout.NORTH);
 		frame.add(scrollPane, BorderLayout.CENTER);
-		
-//		scrollPane.getViewport().setViewPosition(new Point(tree.getMidX(),0));        
-//		Rectangle bounds = scrollPane.getViewport().getViewRect();
-//		JScrollBar horizontal = scrollPane.getHorizontalScrollBar();
-//        horizontal.setValue( (horizontal.getMaximum() - bounds.width) / 2 );
-//		System.out.println(tree.getMidX());
 
+		// scrollPane.getViewport().setViewPosition(new
+		// Point(tree.getMidX(),0));
+		// Rectangle bounds = scrollPane.getViewport().getViewRect();
+		// JScrollBar horizontal = scrollPane.getHorizontalScrollBar();
+		// horizontal.setValue( (horizontal.getMaximum() - bounds.width) / 2 );
+		// System.out.println(tree.getMidX());
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
@@ -201,15 +215,16 @@ public class HuffmanCode {
 class ButtonListener implements ActionListener {
 	private String s;
 	private JTextArea in;
-	private JTextArea out;
+	private JTextField out;
 	private HuffmanTree tree;
-	
-	public ButtonListener(JTextArea inputField, JTextArea outputField, HuffmanTree hufftree){
+
+	public ButtonListener(JTextArea inputField, JTextField outputField,
+			HuffmanTree hufftree) {
 		in = inputField;
 		out = outputField;
 		tree = hufftree;
 	}
-	
+
 	public void actionPerformed(ActionEvent ae) {
 		s = in.getText();
 		if (s == "")
@@ -222,5 +237,5 @@ class ButtonListener implements ActionListener {
 			out.setText(result);
 		}
 	}
-	
+
 }
