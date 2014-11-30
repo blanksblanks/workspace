@@ -37,6 +37,11 @@ public class DijkstraAlgorithm {
 	
 	public static void main(String[] args) {
 		
+		@SuppressWarnings("unused")
+		final int FRAME_WIDTH = 700;
+		final int FRAME_HEIGHT = 350;
+		final int OFFSET = 20;
+		
 		try {
 		Scanner cityPairs = new Scanner(new File(args[0])); // citypairs.dat
 		Scanner cityXY = new Scanner(new File(args[1])); // cityxy.txt
@@ -44,7 +49,7 @@ public class DijkstraAlgorithm {
 		LinkedList<String> pairs = new LinkedList<String>();
 		LinkedList<Double> distances = new LinkedList<Double>();
 		LinkedList<String> names = new LinkedList<String>();
-		LinkedList<Double> xyCoordinates = new LinkedList<Double>();
+		LinkedList<Integer> xyCoordinates = new LinkedList<Integer>();
 
 		
 		while (cityPairs.hasNext()){
@@ -55,10 +60,12 @@ public class DijkstraAlgorithm {
 		
 		while(cityXY.hasNext()){
 			String city = cityXY.next();
+//			System.out.println(city);
 			if (pairs.contains(city)){
+//				System.out.println("Yup");
 				names.add(city); // add city name
-				xyCoordinates.add(cityXY.nextDouble()); // add x
-				xyCoordinates.add(cityXY.nextDouble()); // add y
+				xyCoordinates.add((int) (cityXY.nextInt()/4 + OFFSET)); // add x/4+20
+				xyCoordinates.add((int) (cityXY.nextInt()/4 + OFFSET + FRAME_HEIGHT)); // add height-y/4+20
 			}
 		}
 
@@ -71,7 +78,6 @@ public class DijkstraAlgorithm {
 		System.out.println("\nCity XY Coordinates:\n" + xyCoordinates.toString());
 	
 //		final Graph graph = new Graph(pairs, distances, names, xyCoordinates);
-		
 		
 		} catch (FileNotFoundException e) {
 			System.err.println("File not found. Please try again!");
