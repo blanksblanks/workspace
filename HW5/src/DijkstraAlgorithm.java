@@ -44,20 +44,21 @@ public class DijkstraAlgorithm {
 		LinkedList<String> pairs = new LinkedList<String>();
 		LinkedList<Double> distances = new LinkedList<Double>();
 		LinkedList<String> names = new LinkedList<String>();
-		LinkedList<Integer> xyCoordinates = new LinkedList<Integer>();
+		LinkedList<Double> xyCoordinates = new LinkedList<Double>();
 
 		
 		while (cityPairs.hasNext()){
-			pairs.add(cityPairs.next());
-			pairs.add(cityPairs.next());
-			distances.add(cityPairs.nextDouble());
+			pairs.add(cityPairs.next()); // add v1
+			pairs.add(cityPairs.next()); // add v2
+			distances.add(cityPairs.nextDouble()); // add edge
 		}
 		
 		while(cityXY.hasNext()){
 			String city = cityXY.next();
 			if (pairs.contains(city)){
-				names.add(city);
-				xyCoordinates.add(cityXY.nextInt());
+				names.add(city); // add city name
+				xyCoordinates.add(cityXY.nextDouble()); // add x
+				xyCoordinates.add(cityXY.nextDouble()); // add y
 			}
 		}
 
