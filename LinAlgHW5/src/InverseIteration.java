@@ -77,19 +77,24 @@ public class InverseIteration {
 		double[][] inverse = invert(matrix);
 		print("Final Inverse\n" + toString(inverse, 1));
 		for (;;){
-//			/*
+//			/* repeat
 //			 * y_i+1 = inverse(A - shiftI) * x_i
 //			 * x_i+1 = y_i+1/ ||y_i+1||2
 //			 * lambda_i+1 = transposed(x_i+1)A(x_i+1)
 //			 * i = i + 1 
+//			 * until convergence
 //			 */
-//			
+	
 //			// y = invert(matrix - I * sigma) * x
 //			print("Part of Y\n" + toString(invert(add(matrix, (multiply(findIdentity(n), -sigma)))), 0));
 //			print("Part of Y\n" + toString(multiply(invert(add(matrix, (multiply(findIdentity(n), -sigma)))), x), 0));
 //			y = multiply(invert(add(matrix, (multiply(findIdentity(n), -1*sigma))), n), x);
+			
+			// y = invert(matrix - I * sigma) * x
 			y = multiply(invert(add(matrix, (multiply(findIdentity(n), -sigma)))), x);
-			print("Y\n" + toString(y, 0));
+//			print("Y\n" + toString(y, 0));
+			
+			// ||y||
 			double norm = 0.0;
 			for (int k = 0; k < y.length; k++)
 				norm += y[k][0] * y[k][0];
@@ -316,11 +321,11 @@ public class InverseIteration {
         double smallestEigenval = inverseIterate(A, m, n);
         System.out.println(smallestEigenval);
        
-        double[][] B = {
-                {4,3},
-                {3,2}
-        };
-      
+//        double[][] B = {
+//                {4,3},
+//                {3,2}
+//        };
+//      
 //        print("Smallest eigenvalue: " + inverseIterate(B, 2, 2));
         
 //       print(toString(B, 1));
