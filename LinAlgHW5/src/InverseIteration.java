@@ -319,7 +319,16 @@ public class InverseIteration {
         int m, n;
         m = n = 10;
         double smallestEigenval = inverseIterate(A, m, n);
-        System.out.println(smallestEigenval);
+        System.out.println("Smallest eigenvalue: " + smallestEigenval);
+        
+        
+        System.out.println("Compared to eigenvalues of this matrix:");
+        double eigenVal = 0.0;
+        for (int j = 1; j < 11; j++) {
+        	eigenVal = 2 * (1- Math.cos(Math.PI*j/(n+1)));
+        	System.out.println(eigenVal);
+        }
+//        2[1 − cos(πj/(n + 1))]
        
 //        double[][] B = {
 //                {4,3},
