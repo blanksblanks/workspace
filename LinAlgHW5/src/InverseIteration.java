@@ -56,43 +56,70 @@ approximation to thie value of λ1 for n = 10 to verify that your program works 
  */
 public class InverseIteration {
 	
-//	public static double inverseIterate(double[][] matrix, int m, int n){
-//		double sigma = 0.0001;
-//		double[][] y = new double[m][1];
-//		double[][] x = new double[m][1];
-//		Random r = new Random();
-//		for (int i = 0; i < m; i++)
-//			x[i][0] = r.nextInt(100);
-//		
-//		double x_norm = 0.0;
-//		for (int i = 0; i < m; i++)
-//			x_norm += x[i][0] * x[i][0];
-//		x_norm = Math.sqrt(x_norm);
-//		
-//		for (int i = 0; i < m; i++)
-//			x[i][0] /= x_norm;
-//		
-//		double lambda = 0.0, last_lambda;
-//		double[][] inverse = findInverse(matrix, m);
-//		for (;;){
-//			
+	public static double inverseIterate(double[][] matrix, int m, int n){
+		double sigma = 0.0001;
+		double[][] y = new double[m][1];
+		double[][] x = new double[m][1];
+		Random r = new Random();
+		for (int i = 0; i < m; i++)
+			x[i][0] = r.nextInt(100);
+		
+		double x_norm = 0.0;
+		for (int i = 0; i < m; i++)
+			x_norm += x[i][0] * x[i][0];
+		x_norm = Math.sqrt(x_norm);
+		
+		for (int i = 0; i < m; i++)
+			x[i][0] /= x_norm;
+		print("X:\n" + toString(x, 0));
+		
+		double lambda = 0.0, last_lambda;
+		double[][] inverse = invert(matrix);
+		print("Final Inverse\n" + toString(inverse, 1));
+		for (;;){
 //			/*
 //			 * y_i+1 = inverse(A - shiftI) * x_i
 //			 * x_i+1 = y_i+1/ ||y_i+1||2
 //			 * lambda_i+1 = transposed(x_i+1)A(x_i+1)
 //			 * i = i + 1 
 //			 */
-//		}
-//		
-//		double smallestEigenval = 0.0;
-//		return smallestEigenval;
-//	}
-//	
+//			
+//			// y = invert(matrix - I * sigma) * x
+//			print("Part of Y\n" + toString(invert(add(matrix, (multiply(findIdentity(n), -sigma)))), 0));
+//			print("Part of Y\n" + toString(multiply(invert(add(matrix, (multiply(findIdentity(n), -sigma)))), x), 0));
+//			y = multiply(invert(add(matrix, (multiply(findIdentity(n), -1*sigma))), n), x);
+			y = multiply(invert(add(matrix, (multiply(findIdentity(n), -sigma)))), x);
+			print("Y\n" + toString(y, 0));
+			double norm = 0.0;
+			for (int k = 0; k < y.length; k++)
+				norm += y[k][0] * y[k][0];
+			norm = Math.sqrt(norm);
+			x = multiply(y, 1/norm);
+			last_lambda = lambda;
+			lambda = multiply(multiply(transpose(x), matrix), x)[0][0];
+			if (Math.abs(lambda - last_lambda) < 0.001) break;
+		}
+		
+		return lambda;
+	}
 	
-	public static double[][] findInverse(double[][] matrix, int n){
+	
+	public static double[][] transpose(double[][] matrix) {
+		int row = matrix.length;
+		int col = matrix[0].length;
+		double[][] transpose = new double[col][row];
+		for (int i = 0; i < row; i++)
+			for (int j = 0; j < col; j++)
+				transpose[j][i] = matrix[i][j];
+		return transpose;
+	}
+	
+	public static double[][] invert(double[][] matrix){
+		int n = matrix.length;
 		double[][] id = findIdentity(matrix);
-		print(toString(id, 1));
+//		print("Identity\n" + toString(id, 1));
 		double[][] aug = augment(matrix, id, n);
+		print("Augmented\n" + toString(aug,1));
 		double[][] U = forwardEliminate(aug, n);
 		print("Upper\n" + toString(U,1));
 		double[][] A_prime = new double[n][n];
@@ -104,8 +131,8 @@ public class InverseIteration {
 			}
 		}
 
-		print("rotate\n" + toString(rotate(A_prime), 1));
-		print("rotate\n" + toString(rotate(I_prime), 1));
+		print("Rotate\n" + toString(rotate(A_prime), 1));
+		print("Rotate\n" + toString(rotate(I_prime), 1));
 
 		U = forwardEliminate(augment(rotate(A_prime), rotate(I_prime), n), n);
 		print("Upper\n" + toString(U,1));
@@ -199,11 +226,28 @@ public class InverseIteration {
 		return A;
 	}
 	
-	public static double[][] multiply(double[][] first, double[][] second,
-			int m, int col, int row, int n) {
+	public static double[][] add(double[][] first, double[][] second){
+		int m = first.length;
+		int n = first[0].length;
+		if (m != second.length || n != second[0].length) {
+			System.err.println("Number of columns of first matrix doesn't equal number of rows of second matrix");
+			System.exit(0);
+		}
+		double[][] sum = new double[m][n];
+		for (int i = 0; i < m; i++)
+			for (int j = 0; j < n; j++)
+				sum[i][j] = first[i][j] + second[i][j];
+		return sum;
+		
+	}
+	
+	public static double[][] multiply(double[][] first, double[][] second) {
+		int m = first.length;
+		int col = first[0].length;
+		int row = second.length;
+		int n = second[0].length;
 		if (col != row) {
-			System.err
-					.println("Number of columns of first matrix doesn't equal number of rows of second matrix");
+			System.err.println("Number of columns of first matrix doesn't equal number of rows of second matrix");
 			System.exit(0);
 		}
 		double[][] product = new double[m][n];
@@ -269,16 +313,19 @@ public class InverseIteration {
               };
         int m, n;
         m = n = 10;
-//        double smallestEigenval = inverseIterate(A, m, n);
-//        System.out.println(smallestEigenval);
+        double smallestEigenval = inverseIterate(A, m, n);
+        System.out.println(smallestEigenval);
        
         double[][] B = {
                 {4,3},
                 {3,2}
         };
+      
+//        print("Smallest eigenvalue: " + inverseIterate(B, 2, 2));
         
-       print(toString(B, 1));
-       print(toString(findInverse(B, 2), 1));
+//       print(toString(B, 1));
+//       print(toString(invert(B, 2), 1));
+
 	}
 
 }
