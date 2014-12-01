@@ -26,6 +26,6 @@ public class Edge implements Comparable<Edge>{
 	}
 	
 	public String toString(){
-		return v1 + " " + v2;
+		return v1 + "-" + v2;
 	}
 }

@@ -29,7 +29,21 @@ public class Vertex implements Comparable<Vertex> {
 	}
 	
 	public String toString(){
-		return name;
+		if (name.equals("NewYork"))
+			return "New York";
+		else if (name.equals("SaltLake"))
+			return "Salt Lake";
+		else if (name.equals("St.Louis"))
+			return "St. Louis";
+		else if (name.equals("SanFrancisco"))
+			return "San Francisco";
+		else if (name.equals("LasVegas"))
+			return "Las Vegas";
+		else if (name.equals("LosAngeles"))
+			return "Los Angeles";
+		else if (name.equals("NewOrleans"))
+			return "New Orleans";
+		else return name;
 	}
 	
 }

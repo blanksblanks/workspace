@@ -28,6 +28,8 @@
  * 
  */
 
+// TODO: Ask TAs/Blaer what is going on with the Kruskal part of the assignment???
+
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.awt.BorderLayout;
@@ -174,13 +176,13 @@ class ButtonListener implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent ae) {
-		String origin = start.getText();
-		String destination = end.getText();
+		String origin = start.getText().replaceAll("\\s+","");
+		String destination = end.getText().replaceAll("\\s+","");
 		if (ae.getActionCommand().equals("Find Shortest Path!")) {
 			try {
 			String result = graph.dijkstra(origin, destination);
 			graph.repaint();
-			out.setText(result);
+			out.setText(result + "\t" + graph.route);
 			} catch (UnderflowException e) {
 				System.err.println("Underflow Exception. Try again");
 			}

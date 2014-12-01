@@ -19,6 +19,7 @@ public class Graph extends JPanel {
 	private LinkedList<String> names;
 	private Hashtable<String, Vertex> hash;
 	private LinkedList<Vertex> path;
+	public String route;
 	private double totalDistance;
 	private double shortestDistance;
 
@@ -53,12 +54,14 @@ public class Graph extends JPanel {
 		}
 	}
 
+	// Based on Weiss pseudocode
 	public String dijkstra(String origin, String destination)
 			throws UnderflowException {
 		
+		route = ""; // reset here so it doesn't print previous values for invalid input
+		
 		if (origin.equals("") || destination.equals(""))
 			return ("One of your fields is blank. Please try again.");
-
 
 		if (origin.equals(destination))
 			return ("No need to travel because your point of origin is your destination.");
@@ -104,45 +107,25 @@ public class Graph extends JPanel {
 		}
 
 		shortestDistance = end.distance;
-		setPath(end);
+		buildPath(end);
 
 		String shortestDist = "" + shortestDistance;
 		return shortestDist;
 	}
-
-	/*
-	 * 1642.7263997741743 Miami Miami Miami Miami Miami Miami Miami Miami Miami
-	 * Miami Miami Omaha Omaha Peoria Peoria St.Louis St.Louis Memphis Memphis
-	 * Atlanta Atlanta Miami Omaha Omaha Peoria Peoria St.Louis St.Louis Memphis
-	 * Memphis Atlanta Atlanta Miami Omaha Omaha Peoria Peoria St.Louis St.Louis
-	 * Memphis Memphis Atlanta Atlanta Miami Omaha Omaha Peoria Peoria St.Louis
-	 * St.Louis Memphis Memphis Atlanta Atlanta Miami Omaha Omaha Peoria Peoria
-	 * St.Louis St.Louis Memphis Memphis Atlanta Atlanta Miami Omaha Omaha
-	 * Peoria Peoria St.Louis St.Louis Memphis Memphis Atlanta Atlanta Miami
-	 * Omaha Omaha Peoria Peoria St.Louis St.Louis Memphis Memphis Atlanta
-	 * Atlanta Miami Omaha Omaha Peoria Peoria St.Louis St.Louis Memphis Memphis
-	 * Atlanta Atlanta Miami Omaha Omaha Peoria Peoria St.Louis St.Louis Memphis
-	 * Memphis Atlanta Atlanta Miami Omaha Omaha Peoria Peoria St.Louis St.Louis
-	 * Memphis Memphis Atlanta Atlanta Miami Omaha Omaha Peoria Peoria St.Louis
-	 * St.Louis Memphis Memphis Atlanta Atlanta Miami Omaha Omaha Peoria Peoria
-	 * St.Louis St.Louis Memphis Memphis Atlanta Atlanta Miami Omaha Omaha
-	 * Peoria Peoria St.Louis St.Louis Memphis Memphis Atlanta Atlanta Miami
-	 */
-
-	/*
-	 * 1642.7263997741743 Omaha Omaha Peoria Peoria St.Louis St.Louis Memphis
-	 * Memphis Atlanta Atlanta Miami
-	 */
 	
-	private void setPath(Vertex v) {
+	private void buildPath(Vertex v) {
 		if (v.previous != null) {
-			setPath(v.previous);
+			buildPath(v.previous);
 			path.add(v.previous);
+			route += " -> ";
 		}
 		path.add(v);
+		route += v.toString();
 	}
 
-	public String getPath() {
+	// Testing method
+	@SuppressWarnings("unused")
+	private String printPath() {
 		String s = "";
 		Iterator<Vertex> pathIterator = path.iterator();
 		while (pathIterator.hasNext()) {
@@ -151,10 +134,20 @@ public class Graph extends JPanel {
 		return s;
 	}
 
+    @SuppressWarnings("unused")
+	private double calculateEuclidDistance(Vertex v1, Vertex v2) {      
+        double base = Math.abs(v1.x - v2.x); // x1 - x2
+        double height = Math.abs(v1.y - v2.y); // y1 - y2
+        double hypotenuse = Math.sqrt((Math.pow(base, 2) + (Math.pow(height, 2))));
+        return hypotenuse;
+    }
+	
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
+		@SuppressWarnings("unused")
 		Color mint = new Color(162, 255, 204);
 		Color gray = new Color(224, 224, 224);
+		Color random;
 		g2.setFont(new Font("Century Gothic", Font.BOLD, 12));
 		g2.setStroke(new BasicStroke(5));
 		g2.setColor(gray);
@@ -178,24 +171,26 @@ public class Graph extends JPanel {
 		// Draw all the nodes and labels
 		while (namesIterator.hasNext()) {
 			Vertex vertex = hash.get(namesIterator.next());
-			String label = vertex.name;
+			String label = vertex.toString();
 			int x = vertex.x;
 			int y = vertex.y;
 
 			g2.setColor(Color.BLACK);
 			g2.drawString(label, x + 15, y + 5);
 
-			Color random = mixRandomColorWith(mint);
+			random = mixRandomColorWith(Color.ORANGE);
 			g2.setColor(random);
 			Ellipse2D.Double city = new Ellipse2D.Double(x - RADIUS,
 					y - RADIUS, RADIUS * 2, RADIUS * 2);
 			g2.fill(city);
 			g2.draw(city);
 		}
-
+		
 		// Redraw green route if Dijkstra was performed
 		if (path != null) {
-			g2.setColor(Color.GREEN);
+			random = mixRandomColorWith(Color.GREEN);
+			g2.setColor(random);
+			g2.setStroke(new BasicStroke(3));
 			Iterator<Vertex> pathIterator = path.iterator();
 			pathIterator.next(); // skip the first element
 			// for (int i = 0; i < (path.size()/2)-1; i++){
@@ -206,7 +201,7 @@ public class Graph extends JPanel {
 			}
 			path = null; // reset path
 		}
-
+		
 	}
 
 	private Color mixRandomColorWith(Color mix) {
