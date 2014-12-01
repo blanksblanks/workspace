@@ -33,6 +33,7 @@
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Panel;
@@ -104,6 +105,7 @@ public class Dijkstra {
 		frame.setTitle("Dijkstra's Algorithm");
 		frame.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT+180));
 		
+		final JLabel instructionLabel = new JLabel();
 		final JLabel startLabel = new JLabel();
 		final JTextField startField = new JTextField(FIELD_WIDTH);
 		final JLabel endLabel = new JLabel();
@@ -111,6 +113,8 @@ public class Dijkstra {
 		final JLabel resultLabel = new JLabel();
 		final JTextField resultField = new JTextField(FIELD_WIDTH*2 + 8);
 		
+		instructionLabel.setForeground(Color.BLUE);
+		instructionLabel.setText("NOTE ON FORMAT: Please enter city names with proper capitalization. Spacing does NOT matter. You may use spaces or leave them out.");
 		startLabel.setText("Start: ");
 		startField.setText("Enter a city of origin");
 		endLabel.setText("  End: ");
@@ -138,7 +142,7 @@ public class Dijkstra {
 		JScrollPane scrollPane = new JScrollPane(graph);
 		Panel p = new Panel();
 		p.setLayout(new FlowLayout());
-		p.setPreferredSize(new Dimension(PANEL_WIDTH, 75));
+		p.setPreferredSize(new Dimension(PANEL_WIDTH, 95));
 		p.add(startLabel);
 		p.add(startField);
 		p.add(endLabel);
@@ -146,6 +150,7 @@ public class Dijkstra {
 		p.add(findButton);
 		p.add(resultLabel);
 		p.add(resultField);
+		p.add(instructionLabel);
 		frame.add(p, BorderLayout.NORTH);
 		frame.add(scrollPane, BorderLayout.CENTER);
 		
