@@ -47,28 +47,27 @@ public class InverseIteration {
 		
 		double lambda = 0.0;
 		double prev_lambda = 0.0;
+//		int num_iterations = 0;
 //		double[][] inverse = invert(matrix);
 //		print("Inverse\n" + toString(inverse, 1));
 
-//			/* repeat
-//			 * y_i+1 = inverse(A - shiftI) * x_i
-//			 * x_i+1 = y_i+1/ ||y_i+1||2
-//			 * lambda_i+1 = transposed(x_i+1)A(x_i+1)
-//			 * i = i + 1 
-//			 * until convergence
-//			 */
+			/* repeat
+			 * y_i+1 = inverse(A - shiftI) * x_i
+			 * x_i+1 = y_i+1/ ||y_i+1||2
+			 * lambda_i+1 = transposed(x_i+1)A(x_i+1)
+			 * i = i + 1 
+			 * until convergence
+			 */
+		
 		for (;;){
 //			// y = invert(matrix - I * sigma) * x
 //			print("Part of Y\n" + toString(invert(add(matrix, (multiply(findIdentity(n), -sigma)))), 0));
 //			print("Part of Y\n" + toString(multiply(invert(add(matrix, (multiply(findIdentity(n), -sigma)))), x), 0));
 //			y = multiply(invert(add(matrix, (multiply(findIdentity(n), -1*sigma))), n), x);
-			
 			// y = invert(matrix - I * sigma) * x
 			y = multiply(invert(add(matrix, (multiply(findIdentity(n), -sigma)))), x);
 //			print("Inverse\n" + toString(invert(add(matrix, (multiply(findIdentity(n), -sigma)))), 1));
 //			print("y_i:\n" + toString(y, 0));
-			
-			// ||y||
 			double norm = 0.0;
 			for (int k = 0; k < y.length; k++)
 				norm += y[k][0] * y[k][0];
@@ -76,9 +75,12 @@ public class InverseIteration {
 			x = multiply(y, 1/norm);
 			prev_lambda = lambda;
 			lambda = multiply(multiply(transpose(x), matrix), x)[0][0];
-			if (Math.abs(lambda - prev_lambda) < 0.001) break;
+//			num_iterations++;
+			if (Math.abs(lambda - prev_lambda) < 0.0000000000001) break;
+			// to get closer to the exact eigen value, make check stricter and requisite difference smaller
 		}
 		
+//		System.out.println("Number of iterations: " + num_iterations);
 		return lambda;
 	}
 	
@@ -294,11 +296,12 @@ public class InverseIteration {
         m = n = 10;
         
         double smallestEigenval = inverseIterate(A, m, n);
-        
         System.out.println("SMALLEST EIGENVALUE: " + smallestEigenval);
-        print("\nFor Matrix A:\n" + toString(A, 1));
-        System.out.println("Compared to the eigenvalues of A*:");
         
+        print("\nFor Matrix A:\n" + toString(A, 1));
+
+        System.out.println("Compared to the eigenvalues of A*:");
+        // 2[1 − cos(πj/(n + 1))]
         double eigenVal = 0.0;
         for (int j = 1; j < 11; j++) {
         	eigenVal = 2 * (1- Math.cos(Math.PI*j/(n+1)));
@@ -307,18 +310,17 @@ public class InverseIteration {
         
         System.out.println("\n*given by λj = 2[1 − cos(πj/(n + 1))], j = 1, . . . , n\n");
 
-//        2[1 − cos(πj/(n + 1))]
        
-        double[][] B = {
-                {4,3},
-                {3,2}
-        };
-        
-//        Expected output: {-2, 3}, {3, -4}
-//      
-       print("Smallest Eigenvalue: " + inverseIterate(B, 2, 2));
-       print("\nFor Matrix B:\n" + toString(B, 1));
-       print("Inverse:\n" + toString(invert(B), 1));
+//        double[][] B = {
+//                {4,3},
+//                {3,2}
+//        };
+//        
+////        Expected output: {-2, 3}, {3, -4}
+////      
+//       print("Smallest Eigenvalue: " + inverseIterate(B, 2, 2));
+//       print("\nFor Matrix B:\n" + toString(B, 1));
+//       print("Inverse:\n" + toString(invert(B), 1));
        
 	}
 

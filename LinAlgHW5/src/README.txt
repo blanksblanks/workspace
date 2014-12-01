@@ -40,7 +40,7 @@ This program uses inverse iteration to compute the smallest eigenvalue of the ma
 
 TEST CASES:
 
-SMALLEST EIGENVALUE: 0.08101692808555203
+SMALLEST EIGENVALUE: 0.08101405277100983
 
 For Matrix A:
     2.00   -1.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
@@ -68,7 +68,7 @@ Compared to the eigenvalues of A*:
 
 *given by λj = 2[1 − cos(πj/(n + 1))], j = 1, . . . , n
 
-Smallest Eigenvalue: -0.1622776588504445
+Smallest Eigenvalue: -0.1622776601683793
 
 For Matrix B:
     4.00    3.00
@@ -77,3 +77,4 @@ For Matrix B:
 Inverse:
    -2.00    3.00
     3.00   -4.00
+
