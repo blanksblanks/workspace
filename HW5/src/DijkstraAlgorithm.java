@@ -30,17 +30,29 @@
 
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Panel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 public class DijkstraAlgorithm {
 	
 	public static void main(String[] args) {
 		
-		@SuppressWarnings("unused")
-		final int FRAME_WIDTH = 700;
-		final int FRAME_HEIGHT = 350;
+		final int PANEL_WIDTH = 950;
+		final int PANEL_HEIGHT = 500;
 		final int OFFSET = 20;
+		final int FIELD_WIDTH = 15;
 		
 		try {
 		Scanner cityPairs = new Scanner(new File(args[0])); // citypairs.dat
@@ -64,8 +76,8 @@ public class DijkstraAlgorithm {
 			if (pairs.contains(city)){
 //				System.out.println("Yup");
 				names.add(city); // add city name
-				xyCoordinates.add((int) (cityXY.nextInt()/4 + OFFSET)); // add x/4+20
-				xyCoordinates.add((int) (cityXY.nextInt()/4 + OFFSET + FRAME_HEIGHT)); // add height-y/4+20
+				xyCoordinates.add((int) (cityXY.nextInt()/3 + OFFSET)); // add x/4+20
+				xyCoordinates.add((int) (PANEL_HEIGHT - cityXY.nextInt()/3 + OFFSET)); // add height-y/4+20
 			}
 		}
 
@@ -77,12 +89,69 @@ public class DijkstraAlgorithm {
 		System.out.println("\nCity Names:\n" + names.toString());
 		System.out.println("\nCity XY Coordinates:\n" + xyCoordinates.toString());
 	
-//		final Graph graph = new Graph(pairs, distances, names, xyCoordinates);
+		final Graph graph = new Graph(pairs, distances, names, xyCoordinates);
+		
+		
+		/* GUI METHODS
+		 * 
+		 */
+		
+		JFrame frame = new JFrame();
+		frame.setTitle("Dijkstra's Algorithm");
+		frame.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT+180));
+		
+		final JLabel startLabel = new JLabel();
+		final JTextField startField = new JTextField(FIELD_WIDTH);
+		final JLabel endLabel = new JLabel();
+		final JTextField endField = new JTextField(FIELD_WIDTH);
+		final JLabel resultLabel = new JLabel();
+		final JTextField resultField = new JTextField(FIELD_WIDTH);
+		
+		startLabel.setText("Start: ");
+		startField.setText("Enter a city of origin");
+		endLabel.setText("End: ");
+		endField.setText("Enter a destination city");
+		resultLabel.setText("Total distance: ");
+		resultField.setText(" ");
+		
+		JButton findButton = new JButton("Find Shortest Path!");
+
+		startField.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				startField.setText("");
+			}
+		});
+		
+		endField.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				endField.setText("");
+			}
+		});
+		
+		// Add all the components
+		frame.setLayout(new BorderLayout());
+		JScrollPane scrollPane = new JScrollPane(graph);
+		Panel p = new Panel();
+		p.setLayout(new FlowLayout());
+		p.add(startLabel);
+		p.add(startField);
+		p.add(endLabel);
+		p.add(endField);
+		p.add(findButton);
+		p.add(resultLabel);
+		p.add(resultField);
+		frame.add(p, BorderLayout.NORTH);
+		frame.add(scrollPane, BorderLayout.CENTER);
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setVisible(true);
 		
 		} catch (FileNotFoundException e) {
 			System.err.println("File not found. Please try again!");
 		}
 		
+	
 		
 	}
 
