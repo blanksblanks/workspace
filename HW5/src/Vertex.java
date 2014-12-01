@@ -18,6 +18,10 @@ public class Vertex implements Comparable<Vertex> {
 		previous = null;
 	}
 	
+	public void addEdge(Edge e){
+		this.adjacencyList.add(e);
+	}
+	
 	public int compareTo(Vertex v){
 		if (this.distance < v.distance) return -1;
 		else if (this.distance > v.distance) return 1;
