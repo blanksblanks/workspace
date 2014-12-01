@@ -17,146 +17,108 @@ HOW TO RUN
     $ javac Graph.java
     $ javac BinaryHeap.java
     $ javac UnderflowException.java
-  2. Run "HuffmanCode" with a text file input (any file name is okay), e.g.
-    $ java Dijkstra 
+  2. Run "Dijkstra" with 2 text file inputs (IN THIS ORDER: 1st arg, citypairs, 2nd arg, cityxy)
+    $ java Dijkstra "citypairs.dat" and "cityxy.txt"
 
 NOTES
- - Uses Weiss' code for BinaryHeap and deleteMin methods as a jumping point to create Huffman subtrees out of Huffman Nodes
- - Program only supports text files that solely contain the first 128 original ASCII characters and returns an error if there are non-ASCII characters in the input
- - Tree GUI is wide after 6 levels and requires a scroll bar to traverse
- - In the GUI, the text fields for user input automatically clear on click it is easy for user to enter new input to encode/decode (the result field text stays so user can easily copy and paste)
- - hope you like the random color generator and that the changing colors while scrolling isn't too uncomfortable for the eyes!
-
+ - Uses Weiss' code for BinaryHeap and Dijkstra based on his pseudocode
+ - GUI accepts user input with spaces, but city names must be properly capitalized
+ - GUI text fields for user input automatically clear on click so it is easy for users to enter new input
+ - Set most instance variables in Edge and Vertex classes to public to avoid all the getters and setters from last assignment
 ***
 
 CLASSES & METHODS
  
-    HuffmanCode
-        FileLineParser: accepts input file from user and returns a linked list of every line in the file with appended new line to the end of each line
-        buildTinyTrees: iterates through linked list of lines, returning "a forest of tiny Huffman trees" i.e. an array of isolated Huffman nodes, one to store every character from the list and its frequency
-        main: initializes the above methods and the HuffmanTree constructor, as well as the GUI frame and Encode/Decode buttons, also prints all nodes and their encoding in alphabetical order
+    Dijkstra
+        main: parses data from inputs into Linked Lists and uses them in Graph constructor, initializes GUI
     class MouseListener
-        clears the textfield and binary textfield when clicked (but not the results field)
+        clears the start and end textfield when clicked (but not the results field)
     class ButtonListener        
         ButtonListener: constructor
-        actionPerformed: checks whether Encode/Decode button has been pressed and calls appropriate method, answer is output in the results field
-    
-    HuffmanNode
-        Instance variables:
-            character
-            left
-            right
-            frequency
-            height
-            code 
-        HuffmanNode: 3 constructors, one that takes in a String for characters/leaf nodes, another that takes in an int, and left, right nodes for the t-numbers        
-        compareTo: method used by binary heap to compare nodes to each other by frequency (the "promise" kept for implements Comparable)
-        isLeaf: checks if both children are null
-        getFrequency: gets private frequency variable
-        setHeight: sets private height variable
-        getHeight: gets private height variable
-        fixHeight: fixes all the heights of the children in a node's subtree
-        setBinaryCode: setter method for binary code
-        getBinaryCode: getter method for binary code       
-        getCharacter: getter method for character element
-        toString: similar to getCharacter, but return sp and nl for printing purposes
-        
-    HuffmanTree
-        Instance variables:
-          root
-          hash
-          radius
-          hgap
-          vgap
-          levels
-          frameHeight
-          frameWidth
-        HuffmanTree: constructor method that takes in an array of Huffman Nodes, throws them in a heap, build a tree out of them, encodes the leaves and sets the frame size based on the size of the tree
-        buildHuffmanTree: private method that takes in a binary heap of Huffman nodes, and creates new subtrees by deleting the minimums from the heap and throwing back in the subtree roots with the joined frequencies
-        encodeLeaves: traverses the tree, encoding 0's on the left and 1's on the right, and setting binary codes for the leaves as well as putting them in a hash table
-        encode: encodes an ASCII string into a binary code by traversing the tree, catches errors if character is not in the tree
-        decode: decodes a binary code into an ASCII string by accessing a hash table, catches index out of bounds and nullpointer errors 
-        paintComponent: recovers the Graphics2D object, sets font and calls displaytree method
-        displayTree: recursive method that draws the tree in the GUI with labelled circles for nodes and lines leading to the children until it reaches a leaf and labels the leaf with its binary encoding
-        printCenteredString: method written to center a string depending on the width of the string
-        printVerticalString: method to add an enter space after every character in a string, used to print strings vertically
-        mixRandomColorWith: method that generates a random color and blends it with the color parameter, in this instance, mint, so everything has a minty cast (for fun, wasn't necessary to the assignment)
-
+        actionPerformed: checks whether button has been pressed and calls appropriate method, answer is output in the results field
+    Vertex
+    Edge
+    Graph
     BinaryHeap
-        insert: insert x
-        deleteMin: return and remove smallest item
-        findMin: return smallest item
-        isEmpty: return true if empty
-        makeEmpty: remove all items
+    UnderflowException
+
 
 ***
 
-TEST CASE:
+EXAMPLE OUTPUT:
 
-➜  cat input2.txt
-sea seat eat see ease teat tease seas
+[Screenshot of GUI: XXXXXXXXXXXXXXXXXXXXXXXXXXXXX]
 
-➜  java HuffmanCode input2.txt
-TABLE OF ASCII CHARACTERS AND CORRESPONDING HUFFMAN CODES:
-nl 1100
-sp 111
-a 01
-e 10
-s 00
-t 1101
+***
 
-[Screenshot of GUI: http://cl.ly/YgJX]
+EXAMPLE INPUT: 1ST ARG: citypairs.dat
 
-➜  cat input.txt             
-hello there, this is just a tester file for characters and stuff.
-the quick brown fox jumps over the lazy dog.
-or does the lazy dog jump over the quick brown fox?
-needless to say, this file is (ABSOLUTELY!!!) pointless outside of testing purposes.
+Peoria Chicago 117.45637488020819
+St.Louis Peoria 148.2767682410161
+NewYork Boston 183.43936327844142
+Washington Pittsburgh 185.34832073693033
+Washington NewYork 197.0913493789111
+LosAngeles LasVegas 224.50835173774718
+Memphis St.Louis 245.7173172570464
+Tulsa St.Louis 269.04646438858845
+Memphis Tulsa 287.1671986839723
+Dallas Tulsa 301.7614952242913
+Pittsburgh NewYork 315.91296269700615
+Phoenix Albuquerque 316.7412192942371
+Atlanta Memphis 317.3168763239674
+Peoria Omaha 327.2002444986862
+LosAngeles SanFrancisco 331.1268639056638
+Phoenix LosAngeles 350.3826479721848
+Denver SaltLake 359.56779611083084
+LasVegas SaltLake 359.6804137008297
+Pittsburgh Chicago 384.7037821493311
+LasVegas SanFrancisco 392.23079940259663
+NewOrleans Atlanta 402.3443798538759
+Dallas Memphis 403.97648446413314
+Omaha Chicago 410.1219330881976
+NewOrleans Dallas 431.01972112653965
+Denver Omaha 452.49198887936126
+Albuquerque LasVegas 466.43863476345956
+Atlanta Washington 529.9226358630098
+Tulsa Denver 551.6420941153784
+Dallas Albuquerque 562.8578861488928
+SanFrancisco SaltLake 570.6356105256664
+LasVegas Denver 589.688901031722
+Miami Atlanta 604.2151934534583
+Albuquerque Tulsa 636.2554518430471
+Miami NewOrleans 648.2969998388085
+St.Louis Washington 676.009615316232
+Dallas Atlanta 685.5603547463928
+Chicago Boston 806.7961328613319
 
-➜  java HuffmanCode input.txt
-TABLE OF ASCII CHARACTERS AND CORRESPONDING HUFFMAN CODES:
-nl 011010
-sp 111
-! 010101
-( 01111000
-) 01101101
-, 0111010
-. 010010
-? 01111001
-A 01101100
-B 01110110
-E 01110111
-L 1000101
-O 01010010
-S 01010011
-T 0101000
-U 10001000
-Y 10001001
-a 01011
-b 0111000
-c 100011
-d 01000
-e 000
-f 10010
-g 001110
-h 10011
-i 11011
-j 001111
-k 1101000
-l 01100
-m 1101001
-n 00110
-o 1011
-p 110101
-q 0111101
-r 0010
-s 1100
-t 1010
-u 10000
-v 0111001
-w 0111111
-x 0111110
-y 010011
-z 0110111
+2ND ARG: cityxy.txt
 
-[Screenshot of GUI: http://cl.ly/YhDH]
+Boston 2542  1230
+Chicago 1756  1048
+Omaha  1350  990
+SaltLake  565  1025
+Peoria  1676  962
+NewYork 2435  1081
+Pittsburgh  2135  982
+Denver  905  908
+Washington 2312  927
+St.Louis  1645  817
+SanFrancisco  0  945
+Tulsa  1410  686
+LasVegas  338  746
+Albuquerque 780  597
+Memphis  1674  573
+LosAngeles  138  644
+Seattle 100 1400
+Atlanta  1985  510
+Phoenix  470  532
+Dallas  1308  402
+NewOrleans  1701  225
+Miami  2309  0
+Boise 400 1225
+Raleigh 2200 678
+Indianapois 1806 980
+Louisville 1837 798
+Cleveland 2050 1025
+Reno 120 990
+Minneapolis 1500 1200

@@ -18,7 +18,7 @@ public class Graph extends JPanel {
 
 	private LinkedList<String> names;
 	private Hashtable<String, Vertex> hash;
-	private LinkedList<Vertex> path;
+	public LinkedList<Vertex> path;
 	public String route;
 	private double totalDistance;
 	private double shortestDistance;
@@ -66,7 +66,6 @@ public class Graph extends JPanel {
 		if (origin.equals(destination))
 			return ("No need to travel because your point of origin is your destination.");
 
-		path = new LinkedList<Vertex>();
 		BinaryHeap<Vertex> heap = new BinaryHeap<Vertex>(names.size());
 		Vertex start = hash.get(origin);
 		Vertex end = hash.get(destination);
@@ -105,7 +104,8 @@ public class Graph extends JPanel {
 				}
 			}
 		}
-
+		
+		path = new LinkedList<Vertex>();
 		shortestDistance = end.distance;
 		buildPath(end);
 
@@ -178,7 +178,7 @@ public class Graph extends JPanel {
 			g2.setColor(Color.BLACK);
 			g2.drawString(label, x + 15, y + 5);
 
-			random = mixRandomColorWith(Color.ORANGE);
+			random = mixRandomColorWith(Color.CYAN);
 			g2.setColor(random);
 			Ellipse2D.Double city = new Ellipse2D.Double(x - RADIUS,
 					y - RADIUS, RADIUS * 2, RADIUS * 2);
@@ -188,8 +188,8 @@ public class Graph extends JPanel {
 		
 		// Redraw green route if Dijkstra was performed
 		if (path != null) {
-			random = mixRandomColorWith(Color.GREEN);
-			g2.setColor(random);
+//			random = mixRandomColorWith(Color.GREEN);
+			g2.setColor(Color.GREEN);
 			g2.setStroke(new BasicStroke(3));
 			Iterator<Vertex> pathIterator = path.iterator();
 			pathIterator.next(); // skip the first element

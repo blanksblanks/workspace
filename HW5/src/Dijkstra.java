@@ -181,7 +181,7 @@ class ButtonListener implements ActionListener {
 		if (ae.getActionCommand().equals("Find Shortest Path!")) {
 			try {
 			String result = graph.dijkstra(origin, destination);
-			graph.repaint();
+			graph.repaint(); // repaint even for invalid input to remove green route
 			out.setText(result + "\t" + graph.route);
 			} catch (UnderflowException e) {
 				System.err.println("Underflow Exception. Try again");
