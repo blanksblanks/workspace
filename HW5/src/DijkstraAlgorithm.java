@@ -54,7 +54,7 @@ public class DijkstraAlgorithm {
 		final int PANEL_WIDTH = 950;
 		final int PANEL_HEIGHT = 500;
 		final int OFFSET = 20;
-		final int FIELD_WIDTH = 15;
+		final int FIELD_WIDTH = 25;
 		
 		try {
 		Scanner cityPairs = new Scanner(new File(args[0])); // citypairs.dat
@@ -107,13 +107,13 @@ public class DijkstraAlgorithm {
 		final JLabel endLabel = new JLabel();
 		final JTextField endField = new JTextField(FIELD_WIDTH);
 		final JLabel resultLabel = new JLabel();
-		final JTextField resultField = new JTextField(FIELD_WIDTH);
+		final JTextField resultField = new JTextField(FIELD_WIDTH*2 + 8);
 		
 		startLabel.setText("Start: ");
 		startField.setText("Enter a city of origin");
-		endLabel.setText("End: ");
+		endLabel.setText("  End: ");
 		endField.setText("Enter a destination city");
-		resultLabel.setText("Total distance: ");
+		resultLabel.setText("Total Distance and Route: ");
 		resultField.setText(" ");
 		
 		JButton findButton = new JButton("Find Shortest Path!");
@@ -132,11 +132,11 @@ public class DijkstraAlgorithm {
 			}
 		});
 		
-		// Add all the components
 		frame.setLayout(new BorderLayout());
 		JScrollPane scrollPane = new JScrollPane(graph);
 		Panel p = new Panel();
 		p.setLayout(new FlowLayout());
+		p.setPreferredSize(new Dimension(PANEL_WIDTH, 75));
 		p.add(startLabel);
 		p.add(startField);
 		p.add(endLabel);
