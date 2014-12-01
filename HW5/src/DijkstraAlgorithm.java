@@ -34,6 +34,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Panel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -43,6 +45,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class DijkstraAlgorithm {
@@ -115,7 +118,9 @@ public class DijkstraAlgorithm {
 		resultField.setText(" ");
 		
 		JButton findButton = new JButton("Find Shortest Path!");
-
+		findButton.addActionListener(new ButtonListener(startField, endField,
+				resultField, graph));
+		
 		startField.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				startField.setText("");
@@ -151,8 +156,35 @@ public class DijkstraAlgorithm {
 			System.err.println("File not found. Please try again!");
 		}
 		
-	
-		
 	}
 
+}
+
+class ButtonListener implements ActionListener {
+	private JTextField start;
+	private JTextField end;
+	private JTextField out;
+	private Graph graph;
+
+	public ButtonListener(JTextField inputField, JTextField inputField2, JTextField outputField,
+			Graph cities) {
+		start = inputField;
+		end = inputField2;
+		out = outputField;
+		graph = cities;
+	}
+
+	public void actionPerformed(ActionEvent ae) {
+		String origin = start.getText();
+		String destination = end.getText();
+		if (ae.getActionCommand().equals("Find Shortest Path!")) {
+			try {
+			String result = graph.dijkstra(origin, destination);
+			graph.repaint();
+			out.setText(result);
+			} catch (UnderflowException e) {
+				System.err.println("Underflow Exception. Try again");
+			}
+		} 
+	}
 }

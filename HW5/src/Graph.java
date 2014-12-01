@@ -17,14 +17,16 @@ public class Graph extends JPanel{
 	final int RADIUS = 10;
 
     private LinkedList<String> names;
-    private Hashtable<String, Vertex> cities;
-//    private double totalDistance;
+    private Hashtable<String, Vertex> hash;
+    private LinkedList<Vertex> path;
+    private double totalDistance;
+    private double shortestDistance;
 	
 	public Graph(LinkedList<String> pairs, LinkedList<Double> distances,
 			LinkedList<String> cityNames, LinkedList<Integer> xy){
 		
 		names = cityNames;
-		cities = new Hashtable<String, Vertex>();
+		hash = new Hashtable<String, Vertex>();
 		
 		Iterator<String> namesIterator = names.iterator();
 		Iterator<Integer> xyIterator = xy.iterator();
@@ -32,22 +34,91 @@ public class Graph extends JPanel{
 		while (namesIterator.hasNext()){
 			String cityName = namesIterator.next();
 			Vertex city = new Vertex(cityName, xyIterator.next(), xyIterator.next());
-			cities.put(cityName, city);
+			hash.put(cityName, city);
 		}
 		
+		// pull cities out in pairs
 		Iterator<String> pairsIterator = pairs.iterator();
 		Iterator<Double> distancesIterator = distances.iterator();
 		while (pairsIterator.hasNext()){
-			Vertex v1 = cities.get(pairsIterator.next());
-			Vertex v2 = cities.get(pairsIterator.next());
+			Vertex v1 = hash.get(pairsIterator.next());
+			Vertex v2 = hash.get(pairsIterator.next());
 			Double distance = distancesIterator.next();
 			Edge e1 = new Edge(v1, v2, distance);
 			Edge e2 = new Edge(v2, v1, distance);
 			v1.addEdge(e1);
 			v2.addEdge(e2);
-//			totalDistance += distance;
+			totalDistance += distance;
 		}
 	}
+	
+	
+	public String dijkstra(String origin, String destination) throws UnderflowException {
+
+		if (origin.equals(destination))
+			return ("No need to travel because your point of origin is your destination.");
+
+		path = new LinkedList<Vertex>();
+		BinaryHeap<Vertex> heap = new BinaryHeap<Vertex>(names.size());
+		Vertex start = hash.get(origin);
+		Vertex end = hash.get(destination);
+		
+		if (start == null || end == null)
+			return ("One of these cities is not in the map. Please try again.");
+		
+		// for each vertex v, reset
+		Iterator<String> namesIterator = names.iterator();
+		while (namesIterator.hasNext()){
+			Vertex v = hash.get(namesIterator.next());
+			v.distance = totalDistance; // INFINITY
+			v.known = false;
+			v.previous = null;
+		}
+		
+		start.distance = 0;
+		start.known = true;
+		heap.insert(start);
+		
+		// while there is an unknown distance vertex
+		while (!heap.isEmpty()){
+			Vertex v = heap.deleteMin();
+			Iterator<Edge> adjIterator = v.adjacencyList.iterator(); // Can I access this directly like this?
+			while (adjIterator.hasNext()){
+				Edge e = adjIterator.next();
+				Vertex w = e.v2;
+				if (!w.known){ // 
+					double cvw = e.weight; // cost of edge from v to w
+					if ((v.distance + cvw) < w.distance) { // update w
+						w.distance = v.distance + cvw;
+						w.previous = v;
+						heap.insert(w);
+					}
+				}
+			}
+			shortestDistance = end.distance;
+			setPath(end);
+		}
+		
+		String shortestDist = "" + shortestDistance;
+		return shortestDist;
+	}
+	
+    private void setPath(Vertex v) {
+        if (v.previous != null) {
+            setPath(v.previous);
+            path.add(v.previous);
+        }
+        path.add(v);
+    }
+
+    public String getPath() {
+       String s = "";
+       Iterator<Vertex> pathIterator = path.iterator();
+       while (pathIterator.hasNext()){
+    	   s += " " + pathIterator.next();    		   
+       }
+       return s;
+    }
 	
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
@@ -59,8 +130,9 @@ public class Graph extends JPanel{
         
 		Iterator<String> namesIterator = names.iterator();
 
+		// Draw all the lines first
 		while (namesIterator.hasNext()){
-			Vertex vertex = cities.get(namesIterator.next());
+			Vertex vertex = hash.get(namesIterator.next());
 			LinkedList<Edge> adjacentCities = vertex.adjacencyList;
 			Iterator<Edge> adjIterator = adjacentCities.iterator();            
 			while (adjIterator.hasNext()) {
@@ -72,8 +144,10 @@ public class Graph extends JPanel{
 		// Reinitialize iterator
 		namesIterator = names.iterator();
 		
+		
+		// Draw all the nodes and labels
 		while (namesIterator.hasNext()){
-			Vertex vertex = cities.get(namesIterator.next());
+			Vertex vertex = hash.get(namesIterator.next());
 			String label = vertex.name;
 			int x = vertex.x;
 			int y = vertex.y;
@@ -87,6 +161,19 @@ public class Graph extends JPanel{
 			g2.fill(city);
 			g2.draw(city);
 		}
+		
+		// Redraw green route if Dijkstra was performed
+		if (path != null) {
+            g2.setColor(Color.GREEN);
+            Iterator<Vertex> pathIterator = path.iterator();
+            for (int i = 0; i < (path.size()/2)-1; i++){
+            	Vertex v1 = pathIterator.next();
+            	Vertex v2 = pathIterator.next();
+            	g2.drawLine(v1.x, v1.y, v2.x, v2.y);
+            }
+            path = null; // reset path
+        }
+
 	}
 	
 	private Color mixRandomColorWith(Color mix) {
