@@ -178,12 +178,12 @@ public class Graph extends JPanel {
 		mst = new LinkedList<Edge>();
 		BinaryHeap<Edge> heap = new BinaryHeap<Edge>(edges.toArray());
 		System.out.println(heap.getCurrentSize());
-		while (mst.size() != edges.size() - 1 && !heap.isEmpty()) {
+		while (mst.size() != names.size() - 1 && !heap.isEmpty()) {
 			Edge e = heap.deleteMin();
 //			System.out.println(e.v1);
 			int uset = ds.find(myhash(e.v1.name));
 			int vset = ds.find(myhash(e.v2.name));
-			System.out.println("Uset and vset inputs: " + myhash(e.v1.name) + " " + myhash(e.v2.name));
+			System.out.println(e.v1.name + " and " + e.v2.name + " inputs: " + myhash(e.v1.name) + " " + myhash(e.v2.name) + " " + uset + " " + vset);
 			if (uset != vset){
 				mst.add(e);
 				ds.union(uset, vset);
@@ -210,24 +210,49 @@ public class Graph extends JPanel {
 		Color random;
 		g2.setFont(new Font("Century Gothic", Font.BOLD, 12));
 		g2.setStroke(new BasicStroke(5));
-		g2.setColor(gray);
 
 		Iterator<String> namesIterator = names.iterator();
 
 		// Draw all the lines first
-		while (namesIterator.hasNext()) {
-			Vertex vertex = hash.get(namesIterator.next());
-			LinkedList<Edge> adjacentCities = vertex.adjacencyList;
-			Iterator<Edge> adjIterator = adjacentCities.iterator();
-			while (adjIterator.hasNext()) {
-				Edge e = adjIterator.next();
-				g2.drawLine(e.x1, e.y1, e.x2, e.y2);
+		if (edgesProvided) {
+			while (namesIterator.hasNext()) {
+				g2.setColor(gray);
+				Vertex vertex = hash.get(namesIterator.next());
+				LinkedList<Edge> adjacentCities = vertex.adjacencyList;
+				Iterator<Edge> adjIterator = adjacentCities.iterator();
+				while (adjIterator.hasNext()) {
+					Edge e = adjIterator.next();
+					g2.drawLine(e.x1, e.y1, e.x2, e.y2);
+				}
+			}
+		}
+		
+		// Redraw green route if Dijkstra was performed
+		if (path != null){
+			g2.setColor(Color.GREEN);
+			g2.setStroke(new BasicStroke(3));
+			Iterator<Vertex> pathIterator = path.iterator();
+			pathIterator.next(); // skip the first element
+			// for (int i = 0; i < (path.size()/2)-1; i++){
+			while (pathIterator.hasNext()) {
+				Vertex v1 = pathIterator.next();
+				Vertex v2 = pathIterator.next();
+				g2.drawLine(v1.x, v1.y, v2.x, v2.y);
+			}
+			path = null; // reset path
+		}
+		
+		if (mst != null){
+			g2.setColor(gray);
+			Iterator<Edge> mstIterator = mst.iterator();
+			while (mstIterator.hasNext()){
+				Edge e = mstIterator.next();
+				g2.drawLine(e.x1 , e.y1, e.x2, e.y2);
 			}
 		}
 
 		// Reinitialize iterator
 		namesIterator = names.iterator();
-
 		// Draw all the nodes and labels
 		while (namesIterator.hasNext()) {
 			Vertex vertex = hash.get(namesIterator.next());
@@ -244,31 +269,6 @@ public class Graph extends JPanel {
 					y - RADIUS, RADIUS * 2, RADIUS * 2);
 			g2.fill(city);
 			g2.draw(city);
-		}
-		
-		// Redraw green route if Dijkstra was performed
-		if (path != null){
-//			random = mixRandomColorWith(Color.GREEN);
-			g2.setColor(Color.GREEN);
-			g2.setStroke(new BasicStroke(3));
-			Iterator<Vertex> pathIterator = path.iterator();
-			pathIterator.next(); // skip the first element
-			// for (int i = 0; i < (path.size()/2)-1; i++){
-			while (pathIterator.hasNext()) {
-				Vertex v1 = pathIterator.next();
-				Vertex v2 = pathIterator.next();
-				g2.drawLine(v1.x, v1.y, v2.x, v2.y);
-			}
-			path = null; // reset path
-		}
-		
-		if (mst != null){
-			g2.setColor(Color.RED);
-			Iterator<Edge> mstIterator = mst.iterator();
-			while (mstIterator.hasNext()){
-				Edge e = mstIterator.next();
-				g2.drawLine(e.x1 , e.y1, e.x2, e.y2);
-			}
 		}
 		
 	}
