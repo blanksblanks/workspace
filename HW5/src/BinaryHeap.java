@@ -40,16 +40,18 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>>
     
     /**
      * Construct the binary heap given an array of items.
+     * MODIFIED from AnyType to Object
+     * TODO: ask why I had to do that?
      */
     @SuppressWarnings("unchecked")
-	public BinaryHeap( AnyType [ ] items )
+	public BinaryHeap( Object [ ] items )
     {
             currentSize = items.length;
             array = (AnyType[]) new Comparable[ ( currentSize + 2 ) * 11 / 10 ];
 
             int i = 1;
-            for( AnyType item : items )
-                array[ i++ ] = item;
+            for( Object item : items )
+                array[ i++ ] = (AnyType) item;
             buildHeap( );
     }
 

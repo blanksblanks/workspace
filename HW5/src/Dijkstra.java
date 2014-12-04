@@ -13,16 +13,6 @@
  * list of (X,Y) coordinates for each of the cities can be found in the file
  * cityxy.txt. Display in the window the path length of the shortest path.
  * 
- * Read in the cities from the cityxy.txt city/coordinate file that you used in the
- * previous problem. Assume that the cities in the graph are fully connected -
- * an edge exists between every city pair. Use the 2-D Euclidean distance
- * between two cities as the edge cost. Using these edge costs (the path
- * lengths), implement Kruskal's algorithm for finding the minimum spanning tree
- * of the city graph. Output the edge pairs that make up the minimum spanning
- * tree to the console. Create a GUI window and draw a map of the cities,
- * include the edges that are part of the MST that you calculated by Kruskal's
- * algorithm.
- * 
  * 
  * @author nb2406
  * 
@@ -58,6 +48,11 @@ public class Dijkstra {
 		final int PANEL_HEIGHT = 500;
 		final int OFFSET = 20;
 		final int FIELD_WIDTH = 25;
+		
+		if (args.length != 2) {
+			System.err.println("You need two arguments: a city pairs and a city xy file, in that order. Please try again.");
+			System.exit(1);
+		}
 		
 		try {
 		Scanner cityPairs = new Scanner(new File(args[0])); // citypairs.dat
