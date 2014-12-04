@@ -13,16 +13,15 @@
  * Elements in the set are numbered starting at 0.
  * @author Mark Allen Weiss
  */
-public class DisjSets<AnyType extends Comparable<? super AnyType>>
+public class DisjSets
 {
     /**
      * Construct the disjoint sets object.
      * @param numElements the initial number of disjoint sets.
      */
-    @SuppressWarnings("unchecked")
-	public DisjSets( int numElements )
+    public DisjSets( int numElements )
     {
-        s = (AnyType []) new Comparable[ numElements ];
+        s = new int [ numElements ];
         for( int i = 0; i < s.length; i++ )
             s[ i ] = -1;
     }
@@ -34,18 +33,17 @@ public class DisjSets<AnyType extends Comparable<? super AnyType>>
      * @param root1 the root of set 1.
      * @param root2 the root of set 2.
      */
-    public void union( Object root1, Object root2 )
+    public void union( int root1, int root2 )
     {
-        if( ((Comparable<? super AnyType>) s[ root2 ]).compareTo((AnyType) s[ (int) root1 ]) < 0 )  // root2 is deeper
-            s[ (int) root1 ] = root2;        // Make root2 new root
+        if( s[ root2 ] < s[ root1 ] )  // root2 is deeper
+            s[ root1 ] = root2;        // Make root2 new root
         else
         {
-            if( ((Comparable<? super AnyType>) s[ (int) root1 ]).compareTo(s[ root2 ]) == 1 )
+            if( s[ root1 ] == s[ root2 ] )
                 s[ root1 ]--;          // Update height if same
             s[ root2 ] = root1;        // Make root1 new root
         }
     }
-    
 
     /**
      * Perform a find with path compression.
@@ -53,15 +51,15 @@ public class DisjSets<AnyType extends Comparable<? super AnyType>>
      * @param x the element being searched for.
      * @return the set containing x.
      */
-    public int find( Object x )
+    public int find( int x )
     {
-        if( s[ x ].compareTo(0) < 0 ) // if less than 0
+        if( s[ x ] < 0 )
             return x;
         else
             return s[ x ] = find( s[ x ] );
     }
 
-    private Object [ ] s;
+    private int [ ] s;
 
 
 //    // Test main; all finds on same output line should be identical

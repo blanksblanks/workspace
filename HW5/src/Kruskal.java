@@ -60,8 +60,8 @@ public class Kruskal {
 		System.out.println("\nCity XY Coordinates:\n" + xyCoordinates.toString());
 	
 		final Graph graph = new Graph(pairs, distances, names, xyCoordinates);
-//		graph.kruskal();
-//		graph.repaint();
+		graph.kruskal();
+		graph.repaint();
 		
 		/* GUI METHODS
 		 * 

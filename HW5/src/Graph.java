@@ -24,6 +24,7 @@ public class Graph extends JPanel {
 	private double totalDistance;
 	private double shortestDistance;
     private LinkedList<Edge> mst;
+    private boolean edgesProvided;
 
 	public Graph(LinkedList<String> pairs, LinkedList<Double> distances,
 			LinkedList<String> cityNames, LinkedList<Integer> xy) {
@@ -44,9 +45,13 @@ public class Graph extends JPanel {
 			namesArray[i] = cityName; i++; // copy into array
 		}
 
-		if (pairs != null)
+		if (pairs != null) {
 			buildSparseGraph(pairs, distances);
-		else buildCompleteGraph(namesArray);
+			edgesProvided = true;
+		} else {
+			buildCompleteGraph(namesArray);
+			edgesProvided = false;
+		}
 		
 	}
 
@@ -167,35 +172,18 @@ public class Graph extends JPanel {
         return hypotenuse;
     }
 	
-	/*
-	 * ArrayList<Edge> kruskal( List<Edge> edges, int numVertices )
-{
-    DisjSets ds = new DisjSets( numVertices );
-    PriorityQueue<Edge> pq = new PriorityQueue<>( edges );
-    List<Edge> mst = new ArrayList<>( );
-    while( mst.size( ) != numVertices - 1 )
-    {
-        Edge e = pq.deleteMin( );       // Edge e = (u, v)
-        SetType uset = ds.find( e.getu( ) );
-        SetType vset = ds.find( e.getv( ) );
-        if( uset != vset )
-        {
-            // Accept the edge
-            mst.add( e );
-            ds.union( uset, vset );
-} }
-return mst; }
-	 */
+	// Based on Weiss pseudocode
 	public void kruskal() {
 		DisjSets ds = new DisjSets(edges.size());
 		mst = new LinkedList<Edge>();
 		BinaryHeap<Edge> heap = new BinaryHeap<Edge>(edges.toArray());
 		System.out.println(heap.getCurrentSize());
-		while (mst.size() != edges.size() -  1) {
+		while (mst.size() != edges.size() - 1 && !heap.isEmpty()) {
 			Edge e = heap.deleteMin();
 //			System.out.println(e.v1);
-			int uset = ds.find(e.v1);
-			int vset = ds.find(e.v2);
+			int uset = ds.find(myhash(e.v1.name));
+			int vset = ds.find(myhash(e.v2.name));
+			System.out.println("Uset and vset inputs: " + myhash(e.v1.name) + " " + myhash(e.v2.name));
 			if (uset != vset){
 				mst.add(e);
 				ds.union(uset, vset);
@@ -203,37 +191,16 @@ return mst; }
 		}
 	}
 	
-	/*
-	 * 
-		Vertex v1 = e.v1;
-		Vertex v2 = e.v2;
-		int v1h = 0;
-		int v2h = 0;
-		while (mst.size() < names.size() - 1){ // because of starting point
-			if (v1.previous == null && v2.previous == null){ // init
-				v2.previous = v1;
-				mst.add(e);
-			} else {
-				while (v1.previous != null){ // find root and compare
-					v1 = v1.previous;
-					v1h++;
-				}
-				while (v2.previous != null){
-					v2 = v2.previous;
-					v2h++;
-				}
-				if (v1 != v2){ // union
-					if (v1h < v2h)
-						v1.previous = v2;
-					else
-						v2.previous = (v1);
-				}
-				mst.add(e);
-			}
-		}
-		System.out.println(mst.toString());
-	 */
-		
+	// Hashes the city name to create unique number keys
+	private int myhash(String key) {
+		int hashVal = 0;
+		for (int i = 0; i < key.length(); i += 2)
+			hashVal = 37 * hashVal + key.charAt(i);
+		hashVal %= edges.size();
+		if (hashVal < 0)
+			hashVal += edges.size(); 
+		return hashVal;
+	}	
 	
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
