@@ -183,9 +183,10 @@ public class Graph extends JPanel {
 //			System.out.println(e.v1);
 			int uset = ds.find(myhash(e.v1.name));
 			int vset = ds.find(myhash(e.v2.name));
-			System.out.println(e.v1.name + " and " + e.v2.name + " inputs: " + myhash(e.v1.name) + " " + myhash(e.v2.name) + " " + uset + " " + vset);
+//			System.out.println(e.v1.name + " and " + e.v2.name + " inputs: " + myhash(e.v1.name) + " " + myhash(e.v2.name) + " " + uset + " " + vset);
 			if (uset != vset){
 				mst.add(e);
+				System.out.println("Added edge between " + e.v1.name + " and " + e.v2.name);
 				ds.union(uset, vset);
 			}	
 		}
@@ -196,11 +197,28 @@ public class Graph extends JPanel {
 		int hashVal = 0;
 		for (int i = 0; i < key.length(); i += 2)
 			hashVal = 37 * hashVal + key.charAt(i);
-		hashVal %= edges.size();
+		hashVal %= nextPrime(edges.size());
 		if (hashVal < 0)
-			hashVal += edges.size(); 
+			hashVal += nextPrime(edges.size()); 
 		return hashVal;
-	}	
+	}
+	
+	private static int nextPrime(int n) {
+		if (n % 2 == 0)
+			n++;
+		for (; !isPrime(n); n += 2)
+			;
+		return n;
+	}
+
+	private static boolean isPrime(int n) {
+		if (n == 2 || n == 3) return true;
+		if (n == 1 || n % 2 == 0) return false;
+		for (int i = 3; i * i <= n; i += 2)
+			if (n % i == 0)
+				return false;
+		return true;
+	}
 	
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
@@ -242,6 +260,7 @@ public class Graph extends JPanel {
 			path = null; // reset path
 		}
 		
+		// Draw mst
 		if (mst != null){
 			g2.setColor(gray);
 			Iterator<Edge> mstIterator = mst.iterator();
