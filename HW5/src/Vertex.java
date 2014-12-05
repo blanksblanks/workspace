@@ -5,15 +5,17 @@ public class Vertex implements Comparable<Vertex> {
 	public String name;
 	public int x;
 	public int y;
+	public int id;
 	public boolean known;
 	public double distance;
 	public Vertex previous;
 	public LinkedList<Edge> adjacencyList;
 	
-	public Vertex(String name, int x, int y){
+	public Vertex(String name, int x, int y, int identifier){
 		this.name = name;
 		this.x = x;
 		this.y = y;
+		this.id = identifier;
 		adjacencyList = new LinkedList<Edge>();
 		previous = null;
 	}

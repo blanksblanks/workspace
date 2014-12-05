@@ -36,7 +36,6 @@ public class Kruskal {
 			System.exit(1);
 		}
 
-		
 		try {
 		Scanner cityXY = new Scanner(new File(args[0])); // cityxy.txt
 		

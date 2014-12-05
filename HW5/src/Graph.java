@@ -40,7 +40,7 @@ public class Graph extends JPanel {
 		while (namesIterator.hasNext()) {
 			String cityName = namesIterator.next();
 			Vertex city = new Vertex(cityName, xyIterator.next(),
-					xyIterator.next());
+					xyIterator.next(), i);
 			hash.put(cityName, city); // put string and vertex into hash table
 			namesArray[i] = cityName; i++; // copy into array
 		}
@@ -181,35 +181,43 @@ public class Graph extends JPanel {
 		while (mst.size() != names.size() - 1 && !heap.isEmpty()) {
 			Edge e = heap.deleteMin();
 //			System.out.println(e.v1);
-			int uset = ds.find(myhash(e.v1.name));
-			int vset = ds.find(myhash(e.v2.name));
-//			System.out.println(e.v1.name + " and " + e.v2.name + " inputs: " + myhash(e.v1.name) + " " + myhash(e.v2.name) + " " + uset + " " + vset);
+			int uset = ds.find(e.v1.id);
+			int vset = ds.find(e.v2.id);
+			System.out.println(e.v1.name + " and " + e.v2.name + " inputs: " + e.v1.id + " " + e.v2.id + " " + uset + " " + vset);
 			if (uset != vset){
 				mst.add(e);
-				System.out.println("Added edge between " + e.v1.name + " and " + e.v2.name);
 				ds.union(uset, vset);
 			}	
 		}
 	}
 	
-	// Hashes the city name to create unique number keys
-	private int myhash(String key) {
-		int hashVal = 0;
-		for (int i = 0; i < key.length(); i += 2)
-			hashVal = 37 * hashVal + key.charAt(i);
-		hashVal %= nextPrime(edges.size());
-		if (hashVal < 0)
-			hashVal += nextPrime(edges.size()); 
-		return hashVal;
-	}
-	
-	private static int nextPrime(int n) {
-		if (n % 2 == 0)
-			n++;
-		for (; !isPrime(n); n += 2)
-			;
-		return n;
-	}
+//	private int intConvert(String key){
+//		String integer = "";
+//		for (int i = 0; i < key.length(); i++)
+//			integer += (int) key.charAt(i);
+//		int s = Integer.parseInt(integer);
+//		return s;
+//	}
+//	
+//	// Hashes the city name to create unique number keys
+//	private int myhash(String key) {
+//		int hashVal = 0;
+//		int prime = nextPrime(edges.size());
+//		for (int i = 0; i < key.length(); i += 2)
+//			hashVal = 37 * hashVal + key.charAt(i);
+//		hashVal %= prime;
+//		if (hashVal < 0)
+//			hashVal += prime;
+//		return hashVal;
+//	}	
+//	
+//	private static int nextPrime(int n) {
+//		if (n % 2 == 0)
+//			n++;
+//		for (; !isPrime(n); n += 2)
+//			;
+//		return n;
+//	}
 
 	private static boolean isPrime(int n) {
 		if (n == 2 || n == 3) return true;
@@ -260,7 +268,6 @@ public class Graph extends JPanel {
 			path = null; // reset path
 		}
 		
-		// Draw mst
 		if (mst != null){
 			g2.setColor(gray);
 			Iterator<Edge> mstIterator = mst.iterator();
