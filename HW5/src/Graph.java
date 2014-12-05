@@ -23,8 +23,8 @@ public class Graph extends JPanel {
 	public String route;
 	private double totalDistance;
 	private double shortestDistance;
-    private LinkedList<Edge> mst;
-    private boolean edgesProvided;
+	private LinkedList<Edge> mst;
+	private boolean edgesProvided;
 
 	public Graph(LinkedList<String> pairs, LinkedList<Double> distances,
 			LinkedList<String> cityNames, LinkedList<Integer> xy) {
@@ -42,7 +42,8 @@ public class Graph extends JPanel {
 			Vertex city = new Vertex(cityName, xyIterator.next(),
 					xyIterator.next(), i);
 			hash.put(cityName, city); // put string and vertex into hash table
-			namesArray[i] = cityName; i++; // copy into array
+			namesArray[i] = cityName;
+			i++; // copy into array
 		}
 
 		if (pairs != null) {
@@ -52,10 +53,11 @@ public class Graph extends JPanel {
 			buildCompleteGraph(namesArray);
 			edgesProvided = false;
 		}
-		
+
 	}
 
-	private void buildSparseGraph(LinkedList<String> pairs, LinkedList<Double> distances){
+	private void buildSparseGraph(LinkedList<String> pairs,
+			LinkedList<Double> distances) {
 		// pull cities out in pairs
 		Iterator<String> pairsIterator = pairs.iterator();
 		Iterator<Double> distancesIterator = distances.iterator();
@@ -70,13 +72,13 @@ public class Graph extends JPanel {
 			totalDistance += distance;
 		}
 	}
-	
+
 	private void buildCompleteGraph(String[] arr) {
 		edges = new LinkedList<Edge>();
-		
-		for (int i = 0; i < arr.length; i++){
+
+		for (int i = 0; i < arr.length; i++) {
 			Vertex v1 = hash.get(arr[i]);
-			for (int j = i+1; j < arr.length; j++){
+			for (int j = i + 1; j < arr.length; j++) {
 				Vertex v2 = hash.get(arr[j]);
 				Edge e = new Edge(v1, v2, calculateEuclidDistance(v1, v2));
 				v1.addEdge(e);
@@ -88,9 +90,10 @@ public class Graph extends JPanel {
 	// Based on Weiss pseudocode
 	public String dijkstra(String origin, String destination)
 			throws UnderflowException {
-		
-		route = ""; // reset here so it doesn't print previous values for invalid input
-		
+
+		route = ""; // reset here so it doesn't print previous values for
+					// invalid input
+
 		if (origin.equals("") || destination.equals(""))
 			return ("One of your fields is blank. Please try again.");
 
@@ -135,7 +138,7 @@ public class Graph extends JPanel {
 				}
 			}
 		}
-		
+
 		path = new LinkedList<Vertex>();
 		shortestDistance = end.distance;
 		buildPath(end);
@@ -143,7 +146,7 @@ public class Graph extends JPanel {
 		String shortestDist = "" + shortestDistance;
 		return shortestDist;
 	}
-	
+
 	private void buildPath(Vertex v) {
 		if (v.previous != null) {
 			buildPath(v.previous);
@@ -165,32 +168,31 @@ public class Graph extends JPanel {
 		return s;
 	}
 
-	private double calculateEuclidDistance(Vertex v1, Vertex v2) {      
-        double base = Math.abs(v1.x - v2.x); // x1 - x2
-        double height = Math.abs(v1.y - v2.y); // y1 - y2
-        double hypotenuse = Math.sqrt((Math.pow(base, 2) + (Math.pow(height, 2))));
-        return hypotenuse;
-    }
-	
+	private double calculateEuclidDistance(Vertex v1, Vertex v2) {
+		double base = Math.abs(v1.x - v2.x); // x1 - x2
+		double height = Math.abs(v1.y - v2.y); // y1 - y2
+		double hypotenuse = Math
+				.sqrt((Math.pow(base, 2) + (Math.pow(height, 2))));
+		return hypotenuse;
+	}
+
 	// Based on Weiss pseudocode
 	public void kruskal() {
 		DisjSets ds = new DisjSets(edges.size());
 		mst = new LinkedList<Edge>();
 		BinaryHeap<Edge> heap = new BinaryHeap<Edge>(edges.toArray());
-//		System.out.println(heap.getCurrentSize());
 		while (mst.size() != names.size() - 1 && !heap.isEmpty()) {
 			Edge e = heap.deleteMin();
-//			System.out.println(e.v1);
 			int uset = ds.find(e.v1.id);
 			int vset = ds.find(e.v2.id);
-//			System.out.println(e.v1.name + " and " + e.v2.name + " inputs: " + e.v1.id + " " + e.v2.id + " " + uset + " " + vset);
-			if (uset != vset){
+			if (uset != vset) {
 				mst.add(e);
 				ds.union(uset, vset);
-			}	
+			}
 		}
 	}
-	
+
+	// Draws the graph
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		@SuppressWarnings("unused")
@@ -202,7 +204,7 @@ public class Graph extends JPanel {
 
 		Iterator<String> namesIterator = names.iterator();
 
-		// Draw all the lines first
+		// Draw all the edges first
 		if (edgesProvided) {
 			while (namesIterator.hasNext()) {
 				g2.setColor(gray);
@@ -215,9 +217,9 @@ public class Graph extends JPanel {
 				}
 			}
 		}
-		
-		// Redraw green route if Dijkstra was performed
-		if (path != null){
+
+		// Draw shortest path if Dijkstra was performed
+		if (path != null) {
 			g2.setColor(Color.GREEN);
 			g2.setStroke(new BasicStroke(3));
 			Iterator<Vertex> pathIterator = path.iterator();
@@ -230,38 +232,40 @@ public class Graph extends JPanel {
 			}
 			path = null; // reset path
 		}
-		
-		if (mst != null){
+
+		// Draw minimum spanning tree if Kruskal was performed
+		if (mst != null) {
 			g2.setColor(gray);
 			System.out.println("List of Edges in the Minimum Spanning Tree:");
 			Iterator<Edge> mstIterator = mst.iterator();
-			while (mstIterator.hasNext()){
+			while (mstIterator.hasNext()) {
 				Edge e = mstIterator.next();
-				g2.drawLine(e.x1 , e.y1, e.x2, e.y2);
+				g2.drawLine(e.x1, e.y1, e.x2, e.y2);
 				System.out.println(e.v1.toString() + " - " + e.v2.toString());
 			}
 		}
 
-
-		// Draw all the nodes and labels
-		namesIterator = names.iterator(); // re-init iterator
+		// Draw city nodes
+		namesIterator = names.iterator(); // reinitialize iterator
 		while (namesIterator.hasNext()) {
 			Vertex vertex = hash.get(namesIterator.next());
-			String label = vertex.toString();
-			int x = vertex.x;
-			int y = vertex.y;
-
-			g2.setColor(Color.BLACK);
-			g2.drawString(label, x + 15, y + 5);
-
 			random = mixRandomColorWith(Color.CYAN);
 			g2.setColor(random);
-			Ellipse2D.Double city = new Ellipse2D.Double(x - RADIUS,
-					y - RADIUS, RADIUS * 2, RADIUS * 2);
+			Ellipse2D.Double city = new Ellipse2D.Double(vertex.x - RADIUS,
+					vertex.y - RADIUS, RADIUS * 2, RADIUS * 2);
 			g2.fill(city);
 			g2.draw(city);
 		}
-		
+
+		// Draw labels last
+		namesIterator = names.iterator(); // reinitialize iterator
+		while (namesIterator.hasNext()) {
+			Vertex vertex = hash.get(namesIterator.next());
+			String label = vertex.toString();
+			g2.setColor(Color.BLACK);
+			g2.drawString(label, vertex.x + 15, vertex.y + 5);
+		}
+
 	}
 
 	private Color mixRandomColorWith(Color mix) {
