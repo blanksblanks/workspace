@@ -177,55 +177,18 @@ public class Graph extends JPanel {
 		DisjSets ds = new DisjSets(edges.size());
 		mst = new LinkedList<Edge>();
 		BinaryHeap<Edge> heap = new BinaryHeap<Edge>(edges.toArray());
-		System.out.println(heap.getCurrentSize());
+//		System.out.println(heap.getCurrentSize());
 		while (mst.size() != names.size() - 1 && !heap.isEmpty()) {
 			Edge e = heap.deleteMin();
 //			System.out.println(e.v1);
 			int uset = ds.find(e.v1.id);
 			int vset = ds.find(e.v2.id);
-			System.out.println(e.v1.name + " and " + e.v2.name + " inputs: " + e.v1.id + " " + e.v2.id + " " + uset + " " + vset);
+//			System.out.println(e.v1.name + " and " + e.v2.name + " inputs: " + e.v1.id + " " + e.v2.id + " " + uset + " " + vset);
 			if (uset != vset){
 				mst.add(e);
 				ds.union(uset, vset);
 			}	
 		}
-	}
-	
-//	private int intConvert(String key){
-//		String integer = "";
-//		for (int i = 0; i < key.length(); i++)
-//			integer += (int) key.charAt(i);
-//		int s = Integer.parseInt(integer);
-//		return s;
-//	}
-//	
-//	// Hashes the city name to create unique number keys
-//	private int myhash(String key) {
-//		int hashVal = 0;
-//		int prime = nextPrime(edges.size());
-//		for (int i = 0; i < key.length(); i += 2)
-//			hashVal = 37 * hashVal + key.charAt(i);
-//		hashVal %= prime;
-//		if (hashVal < 0)
-//			hashVal += prime;
-//		return hashVal;
-//	}	
-//	
-//	private static int nextPrime(int n) {
-//		if (n % 2 == 0)
-//			n++;
-//		for (; !isPrime(n); n += 2)
-//			;
-//		return n;
-//	}
-
-	private static boolean isPrime(int n) {
-		if (n == 2 || n == 3) return true;
-		if (n == 1 || n % 2 == 0) return false;
-		for (int i = 3; i * i <= n; i += 2)
-			if (n % i == 0)
-				return false;
-		return true;
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -270,16 +233,18 @@ public class Graph extends JPanel {
 		
 		if (mst != null){
 			g2.setColor(gray);
+			System.out.println("List of Edges in the Minimum Spanning Tree:");
 			Iterator<Edge> mstIterator = mst.iterator();
 			while (mstIterator.hasNext()){
 				Edge e = mstIterator.next();
 				g2.drawLine(e.x1 , e.y1, e.x2, e.y2);
+				System.out.println(e.v1.toString() + " - " + e.v2.toString());
 			}
 		}
 
-		// Reinitialize iterator
-		namesIterator = names.iterator();
+
 		// Draw all the nodes and labels
+		namesIterator = names.iterator(); // re-init iterator
 		while (namesIterator.hasNext()) {
 			Vertex vertex = hash.get(namesIterator.next());
 			String label = vertex.toString();

@@ -55,8 +55,8 @@ public class Kruskal {
 		}
 
 		cityXY.close();
-		System.out.println("\nCity Names:\n" + names.toString());
-		System.out.println("\nCity XY Coordinates:\n" + xyCoordinates.toString());
+//		System.out.println("\nCity Names:\n" + names.toString());
+//		System.out.println("\nCity XY Coordinates:\n" + xyCoordinates.toString());
 	
 		final Graph graph = new Graph(pairs, distances, names, xyCoordinates);
 		graph.kruskal();
@@ -68,55 +68,9 @@ public class Kruskal {
 		
 		JFrame frame = new JFrame();
 		frame.setTitle("Kruskal's Algorithm");
-		frame.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT + 100));
-//		
-//		final JLabel instructionLabel = new JLabel();
-//		final JLabel startLabel = new JLabel();
-//		final JTextField startField = new JTextField(FIELD_WIDTH);
-//		final JLabel endLabel = new JLabel();
-//		final JTextField endField = new JTextField(FIELD_WIDTH);
-//		final JLabel resultLabel = new JLabel();
-//		final JTextField resultField = new JTextField(FIELD_WIDTH*2 + 8);
-//		
-//		instructionLabel.setForeground(Color.BLUE);
-//		instructionLabel.setText("NOTE ON FORMAT: Please enter city names with proper capitalization. Spacing does NOT matter. You may use spaces or leave them out.");
-//		startLabel.setText("Start: ");
-//		startField.setText("Enter a city of origin");
-//		endLabel.setText("  End: ");
-//		endField.setText("Enter a destination city");
-//		resultLabel.setText("Total Distance and Route: ");
-//		resultField.setText(" ");
-//		
-//		JButton findButton = new JButton("Find Shortest Path!");
-//		findButton.addActionListener(new ButtonListener(startField, endField,
-//				resultField, graph));
-//		
-//		startField.addMouseListener(new MouseAdapter() {
-//			public void mouseClicked(MouseEvent e) {
-//				startField.setText("");
-//			}
-//		});
-//		
-//		endField.addMouseListener(new MouseAdapter() {
-//			public void mouseClicked(MouseEvent e) {
-//				endField.setText("");
-//			}
-//		});
-		
+		frame.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT + 100));		
 		frame.setLayout(new BorderLayout());
 		JScrollPane scrollPane = new JScrollPane(graph);
-//		Panel p = new Panel();
-//		p.setLayout(new FlowLayout());
-//		p.setPreferredSize(new Dimension(PANEL_WIDTH, 95));
-//		p.add(startLabel);
-//		p.add(startField);
-//		p.add(endLabel);
-//		p.add(endField);
-//		p.add(findButton);
-//		p.add(resultLabel);
-//		p.add(resultField);
-//		p.add(instructionLabel);
-//		frame.add(p, BorderLayout.NORTH);
 		frame.add(scrollPane, BorderLayout.CENTER);
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -130,32 +84,3 @@ public class Kruskal {
 	}
 
 }
-//
-//class ButtonListener implements ActionListener {
-//	private JTextField start;
-//	private JTextField end;
-//	private JTextField out;
-//	private Graph graph;
-//
-//	public ButtonListener(JTextField inputField, JTextField inputField2, JTextField outputField,
-//			Graph cities) {
-//		start = inputField;
-//		end = inputField2;
-//		out = outputField;
-//		graph = cities;
-//	}
-//
-//	public void actionPerformed(ActionEvent ae) {
-//		String origin = start.getText().replaceAll("\\s+","");
-//		String destination = end.getText().replaceAll("\\s+","");
-//		if (ae.getActionCommand().equals("Find Shortest Path!")) {
-//			try {
-//			String result = graph.dijkstra(origin, destination);
-//			graph.repaint(); // repaint even for invalid input to remove green route
-//			out.setText(result + "\t" + graph.route);
-//			} catch (UnderflowException e) {
-//				System.err.println("Underflow Exception. Try again");
-//			}
-//		} 
-//	}
-//}
