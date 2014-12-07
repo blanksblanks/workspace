@@ -16,33 +16,33 @@ public class Graph extends JPanel {
 
 	final int RADIUS = 10;
 
-	private LinkedList<String> names;
+	private LinkedList<String> cities;
 	private Hashtable<String, Vertex> hash;
 	private LinkedList<Edge> edges;
+	private LinkedList<Edge> mst;
 	public LinkedList<Vertex> path;
 	public String route;
 	private double totalDistance;
 	private double shortestDistance;
-	private LinkedList<Edge> mst;
 	private boolean edgesProvided;
 
 	public Graph(LinkedList<String> pairs, LinkedList<Double> distances,
-			LinkedList<String> cityNames, LinkedList<Integer> xy) {
+			LinkedList<String> names, LinkedList<Integer> xy) {
 
-		names = cityNames;
+		cities = names;
 		hash = new Hashtable<String, Vertex>();
 
 		int i = 0;
-		String[] namesArray = new String[names.size()];
-		Iterator<String> namesIterator = names.iterator();
+		String[] citiesArray = new String[cities.size()];
+		Iterator<String> citiesIterator = cities.iterator();
 		Iterator<Integer> xyIterator = xy.iterator();
 
-		while (namesIterator.hasNext()) {
-			String cityName = namesIterator.next();
+		while (citiesIterator.hasNext()) {
+			String cityName = citiesIterator.next();
 			Vertex city = new Vertex(cityName, xyIterator.next(),
 					xyIterator.next(), i);
 			hash.put(cityName, city); // put string and vertex into hash table
-			namesArray[i] = cityName;
+			citiesArray[i] = cityName;
 			i++; // copy into array
 		}
 
@@ -50,7 +50,7 @@ public class Graph extends JPanel {
 			buildSparseGraph(pairs, distances);
 			edgesProvided = true;
 		} else {
-			buildCompleteGraph(namesArray);
+			buildCompleteGraph(citiesArray);
 			edgesProvided = false;
 		}
 
@@ -100,7 +100,7 @@ public class Graph extends JPanel {
 		if (origin.equals(destination))
 			return ("No need to travel because your point of origin is your destination.");
 
-		BinaryHeap<Vertex> heap = new BinaryHeap<Vertex>(names.size());
+		BinaryHeap<Vertex> heap = new BinaryHeap<Vertex>(cities.size());
 		Vertex start = hash.get(origin);
 		Vertex end = hash.get(destination);
 
@@ -108,9 +108,9 @@ public class Graph extends JPanel {
 			return ("One of these cities is not in the map. Please try again.");
 
 		// for each vertex v, reset
-		Iterator<String> namesIterator = names.iterator();
-		while (namesIterator.hasNext()) {
-			Vertex v = hash.get(namesIterator.next());
+		Iterator<String> citiesIterator = cities.iterator();
+		while (citiesIterator.hasNext()) {
+			Vertex v = hash.get(citiesIterator.next());
 			v.distance = totalDistance; // INFINITY
 			v.known = false;
 			v.previous = null;
@@ -181,7 +181,7 @@ public class Graph extends JPanel {
 		DisjSets ds = new DisjSets(edges.size());
 		mst = new LinkedList<Edge>();
 		BinaryHeap<Edge> heap = new BinaryHeap<Edge>(edges.toArray());
-		while (mst.size() != names.size() - 1 && !heap.isEmpty()) {
+		while (mst.size() != cities.size() - 1 && !heap.isEmpty()) {
 			Edge e = heap.deleteMin();
 			int uset = ds.find(e.v1.id);
 			int vset = ds.find(e.v2.id);
@@ -202,13 +202,13 @@ public class Graph extends JPanel {
 		g2.setFont(new Font("Century Gothic", Font.BOLD, 12));
 		g2.setStroke(new BasicStroke(5));
 
-		Iterator<String> namesIterator = names.iterator();
+		Iterator<String> citiesIterator = cities.iterator();
 
 		// Draw all the edges first
 		if (edgesProvided) {
-			while (namesIterator.hasNext()) {
+			while (citiesIterator.hasNext()) {
 				g2.setColor(gray);
-				Vertex vertex = hash.get(namesIterator.next());
+				Vertex vertex = hash.get(citiesIterator.next());
 				LinkedList<Edge> adjacentCities = vertex.adjacencyList;
 				Iterator<Edge> adjIterator = adjacentCities.iterator();
 				while (adjIterator.hasNext()) {
@@ -246,9 +246,9 @@ public class Graph extends JPanel {
 		}
 
 		// Draw city nodes
-		namesIterator = names.iterator(); // reinitialize iterator
-		while (namesIterator.hasNext()) {
-			Vertex vertex = hash.get(namesIterator.next());
+		citiesIterator = cities.iterator(); // reinitialize iterator
+		while (citiesIterator.hasNext()) {
+			Vertex vertex = hash.get(citiesIterator.next());
 			random = mixRandomColorWith(Color.CYAN);
 			g2.setColor(random);
 			Ellipse2D.Double city = new Ellipse2D.Double(vertex.x - RADIUS,
@@ -258,9 +258,9 @@ public class Graph extends JPanel {
 		}
 
 		// Draw labels last
-		namesIterator = names.iterator(); // reinitialize iterator
-		while (namesIterator.hasNext()) {
-			Vertex vertex = hash.get(namesIterator.next());
+		citiesIterator = cities.iterator(); // reinitialize iterator
+		while (citiesIterator.hasNext()) {
+			Vertex vertex = hash.get(citiesIterator.next());
 			String label = vertex.toString();
 			g2.setColor(Color.BLACK);
 			g2.drawString(label, vertex.x + 15, vertex.y + 5);

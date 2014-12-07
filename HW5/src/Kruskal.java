@@ -67,7 +67,7 @@ public class Kruskal {
 		 */
 		
 		JFrame frame = new JFrame();
-		frame.setTitle("Kruskal's Algorithm");
+		frame.setTitle("Kruskal's Algorithm: Find Minimum Spanning Tree");
 		frame.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT + 100));		
 		frame.setLayout(new BorderLayout());
 		JScrollPane scrollPane = new JScrollPane(graph);

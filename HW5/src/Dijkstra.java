@@ -97,7 +97,7 @@ public class Dijkstra {
 		 */
 		
 		JFrame frame = new JFrame();
-		frame.setTitle("Dijkstra's Algorithm");
+		frame.setTitle("Dijkstra's Algorithm: Find the Shortest Path");
 		frame.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT+180));
 		
 		final JLabel instructionLabel = new JLabel();
