@@ -7,7 +7,7 @@ NOTE: All java files tested in vagrant environment without compilation issues
 
 ***
 
-HUFFMAN CODE:
+DIJSTRA AND KRUSKAL (TWO DIFFERENT EXECUTABLE MAIN’S):
 
 HOW TO RUN
   1. Compile the files using the following commands in Terminal (or just use javac *.java)
@@ -17,14 +17,42 @@ HOW TO RUN
     $ javac Graph.java
     $ javac BinaryHeap.java
     $ javac UnderflowException.java
+    $ javac Kruskal.java
+    $ javac DisjSets.java
   2. Run "Dijkstra" with 2 text file inputs (IN THIS ORDER: 1st arg, citypairs, 2nd arg, cityxy)
     $ java Dijkstra "citypairs.dat" and "cityxy.txt"
+  3. Run “Kruskal” with 1 text file input (containing list of cities and xy coordinates)
+    $ java Kruskal “cityxy.txt”
 
 NOTES
- - Uses Weiss' code for BinaryHeap and Dijkstra based on his pseudocode
- - GUI accepts user input with spaces, but city names must be properly capitalized
- - GUI text fields for user input automatically clear on click so it is easy for users to enter new input
- - Set most instance variables in Edge and Vertex classes to public to avoid all the getters and setters from last assignment
+ - Graph, Edge, BinaryHeap and UnderflowException class were written to be modular and generally applicable, shared by the two different mains in Dijkstra and Kruskal classes
+ - Set most instance variables in Edge and Vertex classes to public to avoid all the getters and setters from the last assignment
+ - Used Linked Lists to save space wasted by Array Lists, though constantly having to initialize new iterators seemed a little inefficient
+ - Uses Weiss' code for BinaryHeap and DisjointSets
+ - Dijkstra and Kruskal methods both based on Weiss pseudocode
+ - Dijkstra GUI accepts user input with spaces, but city names must be properly capitalized
+ - Dijkstra GUI text fields for user input automatically clear on click so it is easy for users to enter new input
+ - Biggest challenge was using the find method of the DisjSets for kruskal method:
+    a. First unintentionally entered x1 (the coordinate) as parameter for find method instead of v1 (the first of the city pair that make an edge) and got array out of bound errors
+    b. Next realized that find method only takes int values, so find(v1) where v1 was a Vertex object raised compiler errors
+    c. Attempted to alter find method itself in DisjSets to accept AnyType and Objects, results were inconsistent
+    d. Then tried to implement a hash function to transform the String name of the city into a unique integer; hash function consisted of hashing only the odd characters in the String into a polynomial function of 37 by Horner’s rule and finding the mod of that value by the next largest prime after the number of total edges in the list of edges, something like this:
+		String key = edge.v1.name;
+		for (int i = 0; i < key.length(); i += 2)
+			hashVal = 37 * hashVal + key.charAt(i);
+		hashVal %= nextPrime(edges.size);
+Three new methods and probably around a hundred lines of code later, I had a minimum spanning tree + the disconnected city node of Los Angeles. The hash function could not even guarantee zero collisions for only 29 cities! The more I tweaked with the hash function, the more unstable results I got, sometimes only 1 edge would be missing, sometimes as much as 10 would fail to appear.
+    e. Finally, realized that I could just add a unique id property to every node and that could be an incrementing integer every time I initialized a new node based on the city list input, like so:
+		while (citiesIterator.hasNext()) {
+			String cityName = citiesIterator.next();
+			Vertex city = new Vertex(cityName, xyIterator.next(),
+					xyIterator.next(), i);
+			i++; // where the Vertex class’ id field is set to the counter i
+		}
+Apologies for the lengthiness, I just found it noteworthy that brunt of my challenge was precisely due to two such seemingly innocuous lines of code:
+			int uset = ds.find(e.v1.id);
+			int vset = ds.find(e.v2.id);
+
 ***
 
 CLASSES & METHODS
@@ -35,19 +63,14 @@ CLASSES & METHODS
         clears the start and end textfield when clicked (but not the results field)
     class ButtonListener        
         ButtonListener: constructor
-        actionPerformed: checks whether button has been pressed and calls appropriate method, answer is output in the results field
+        actionPerformed: calls dijkstra method using text input as parameters if button is pressed
     Vertex
     Edge
     Graph
     BinaryHeap
     UnderflowException
-
-
-***
-
-EXAMPLE OUTPUT:
-
-[Screenshot of GUI: XXXXXXXXXXXXXXXXXXXXXXXXXXXXX]
+    Kruskal
+        main: parses data from inputs into Linked Lists and uses them in Graph constructor, calls kruskal method to find minimum spanning tree, initializes GUI, and prints out the edges that make the minimum spanning tree to the console
 
 ***
 

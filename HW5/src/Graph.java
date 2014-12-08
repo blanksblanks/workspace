@@ -146,7 +146,7 @@ public class Graph extends JPanel {
 		String shortestDist = "" + shortestDistance;
 		return shortestDist;
 	}
-
+	
 	private void buildPath(Vertex v) {
 		if (v.previous != null) {
 			buildPath(v.previous);
