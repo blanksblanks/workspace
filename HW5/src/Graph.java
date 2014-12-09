@@ -85,9 +85,7 @@ public class Graph extends JPanel {
 				edges.add(e);
 			}
 		}
-		
-//		kruskal();
-		
+				
 	}
 
 	// Based on Weiss pseudocode
@@ -240,12 +238,10 @@ public class Graph extends JPanel {
 		// Draw minimum spanning tree if Kruskal was performed
 		if (mst != null) {
 			g2.setColor(gray);
-//			System.out.println("List of Edges in the Minimum Spanning Tree:");
 			Iterator<Edge> mstIterator = mst.iterator();
 			while (mstIterator.hasNext()) {
 				Edge e = mstIterator.next();
 				g2.drawLine(e.x1, e.y1, e.x2, e.y2);
-//				System.out.println(e.v1.toString() + " - " + e.v2.toString());
 			}
 		}
 
