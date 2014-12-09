@@ -80,11 +80,14 @@ public class Graph extends JPanel {
 			Vertex v1 = hash.get(arr[i]);
 			for (int j = i + 1; j < arr.length; j++) {
 				Vertex v2 = hash.get(arr[j]);
-				Edge e = new Edge(v1, v2, calculateEuclidDistance(v1, v2));
+				Edge e = new Edge(v1, v2, getEuclideanDistance(v1, v2));
 				v1.addEdge(e);
 				edges.add(e);
 			}
 		}
+		
+//		kruskal();
+		
 	}
 
 	// Based on Weiss pseudocode
@@ -168,7 +171,7 @@ public class Graph extends JPanel {
 		return s;
 	}
 
-	private double calculateEuclidDistance(Vertex v1, Vertex v2) {
+	private double getEuclideanDistance(Vertex v1, Vertex v2) {
 		double base = Math.abs(v1.x - v2.x); // x1 - x2
 		double height = Math.abs(v1.y - v2.y); // y1 - y2
 		double hypotenuse = Math
@@ -177,7 +180,7 @@ public class Graph extends JPanel {
 	}
 
 	// Based on Weiss pseudocode
-	public void kruskal() {
+	public LinkedList<Edge> kruskal() {
 		DisjSets ds = new DisjSets(edges.size());
 		mst = new LinkedList<Edge>();
 		BinaryHeap<Edge> heap = new BinaryHeap<Edge>(edges.toArray());
@@ -190,6 +193,7 @@ public class Graph extends JPanel {
 				ds.union(uset, vset);
 			}
 		}
+		return mst;
 	}
 
 	// Draws the graph
@@ -236,12 +240,12 @@ public class Graph extends JPanel {
 		// Draw minimum spanning tree if Kruskal was performed
 		if (mst != null) {
 			g2.setColor(gray);
-			System.out.println("List of Edges in the Minimum Spanning Tree:");
+//			System.out.println("List of Edges in the Minimum Spanning Tree:");
 			Iterator<Edge> mstIterator = mst.iterator();
 			while (mstIterator.hasNext()) {
 				Edge e = mstIterator.next();
 				g2.drawLine(e.x1, e.y1, e.x2, e.y2);
-				System.out.println(e.v1.toString() + " - " + e.v2.toString());
+//				System.out.println(e.v1.toString() + " - " + e.v2.toString());
 			}
 		}
 

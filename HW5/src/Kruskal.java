@@ -14,12 +14,14 @@
  * 
  */
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FileNotFoundException;
+
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
@@ -59,8 +61,16 @@ public class Kruskal {
 //		System.out.println("\nCity XY Coordinates:\n" + xyCoordinates.toString());
 	
 		final Graph graph = new Graph(pairs, distances, names, xyCoordinates);
-		graph.kruskal();
+		LinkedList<Edge> mst = graph.kruskal();
 		graph.repaint();
+		
+		System.out.println("List of Edges in the Minimum Spanning Tree:");
+		Iterator<Edge> mstIterator = mst.iterator();
+		while (mstIterator.hasNext()) {
+			Edge e = mstIterator.next();
+			System.out.println(e.v1.toString() + " - " + e.v2.toString());
+		}
+
 		
 		/* GUI METHODS
 		 * 
