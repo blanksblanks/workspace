@@ -4,10 +4,10 @@ Uni: nb2406
 Homework 5 Readme
 
 NOTE: All java files tested in vagrant environment without compilation issues
-
+ 
 ***
 
-DIJSTRA AND KRUSKAL (TWO DIFFERENT EXECUTABLE MAIN’S):
+DIJKSTRA AND KRUSKAL (containing two different executable main methods):
 
 HOW TO RUN
   1. Compile the files using the following commands in Terminal (or just use javac *.java)
@@ -25,6 +25,7 @@ HOW TO RUN
     $ java Kruskal “cityxy.txt”
 
 NOTES
+ - The list of files also includes “Stick.java” which can be run without arguments and has a test case hard-coded in the main; this was not required for the written question 9.38 but I did code it to test that my reasoning was solid and have included it here
  - Graph, Edge, BinaryHeap and UnderflowException class were written to be modular and generally applicable, shared by the two different mains in Dijkstra and Kruskal classes
  - Set most instance variables in Edge and Vertex classes to public to avoid all the getters and setters from the last assignment
  - Used Linked Lists to save space wasted by Array Lists, though constantly having to initialize new iterators seemed a little inefficient
@@ -32,6 +33,7 @@ NOTES
  - Dijkstra and Kruskal methods both based on Weiss pseudocode
  - Dijkstra GUI accepts user input with spaces, but city names must be properly capitalized
  - Dijkstra GUI text fields for user input automatically clear on click so it is easy for users to enter new input
+ - Bizarre bug only in Linux environment would print list of MST edges twice (but not in Mac OS); my guess was that paintComponent and the loop to draw the mst were being called twice (or more) because as soon as I extracted the print methods from paintComponent and put them in my main (by changing the kruskal method in my Graph class to return the mst instead of void), double printing stopped; it is possible that Linux automatically resizes the GUI frame, which seems to call repaint() automatically (this you can verify by resizing my window and seeing the nodes get painted with new random colors)
  - Biggest challenge was using the find method of the DisjSets for kruskal method:
     a. First unintentionally entered x1 (the coordinate) as parameter for find method instead of v1 (the first of the city pair that make an edge) and got array out of bound errors
     b. Next realized that find method only takes int values, so find(v1) where v1 was a Vertex object raised compiler errors
