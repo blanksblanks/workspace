@@ -29,9 +29,11 @@ import java.util.Random;
 public class InverseIteration {
 	
 	public static double inverseIterate(double[][] matrix, int m, int n){
-		double sigma = 0.0001;
+		
+		double sigma = 0.0001; // choose suitably small value
 		double[][] y = new double[m][1];
 		double[][] x = new double[m][1];
+		
 		Random r = new Random();
 		for (int i = 0; i < m; i++)
 			x[i][0] = r.nextInt(100);
@@ -43,31 +45,22 @@ public class InverseIteration {
 		
 		for (int i = 0; i < m; i++)
 			x[i][0] /= x_norm;
-//		print("X:\n" + toString(x, 0));
 		
 		double lambda = 0.0;
 		double prev_lambda = 0.0;
-//		int num_iterations = 0;
-//		double[][] inverse = invert(matrix);
-//		print("Inverse\n" + toString(inverse, 1));
+		int counter = 0;
 
-			/* repeat
-			 * y_i+1 = inverse(A - shiftI) * x_i
-			 * x_i+1 = y_i+1/ ||y_i+1||2
-			 * lambda_i+1 = transposed(x_i+1)A(x_i+1)
-			 * i = i + 1 
-			 * until convergence
-			 */
-		
+		/* Pseudocode:
+		 *  repeat
+		 * y_i+1 = inverse(A - shiftI) * x_i
+		 * x_i+1 = y_i+1/ ||y_i+1||2
+		 * lambda_i+1 = transposed(x_i+1)A(x_i+1)
+		 * i = i + 1 
+		 * until convergence
+		 */
 		for (;;){
-//			// y = invert(matrix - I * sigma) * x
-//			print("Part of Y\n" + toString(invert(add(matrix, (multiply(findIdentity(n), -sigma)))), 0));
-//			print("Part of Y\n" + toString(multiply(invert(add(matrix, (multiply(findIdentity(n), -sigma)))), x), 0));
-//			y = multiply(invert(add(matrix, (multiply(findIdentity(n), -1*sigma))), n), x);
 			// y = invert(matrix - I * sigma) * x
 			y = multiply(invert(add(matrix, (multiply(findIdentity(n), -sigma)))), x);
-//			print("Inverse\n" + toString(invert(add(matrix, (multiply(findIdentity(n), -sigma)))), 1));
-//			print("y_i:\n" + toString(y, 0));
 			double norm = 0.0;
 			for (int k = 0; k < y.length; k++)
 				norm += y[k][0] * y[k][0];
@@ -75,12 +68,11 @@ public class InverseIteration {
 			x = multiply(y, 1/norm);
 			prev_lambda = lambda;
 			lambda = multiply(multiply(transpose(x), matrix), x)[0][0];
-//			num_iterations++;
+			counter++;
 			if (Math.abs(lambda - prev_lambda) < 0.0000000000001) break;
 			// to get closer to the exact eigen value, make check stricter and requisite difference smaller
-		}
-		
-//		System.out.println("Number of iterations: " + num_iterations);
+		}		
+		System.out.println("Number of iterations : " + counter);
 		return lambda;
 	}
 	
@@ -96,27 +88,23 @@ public class InverseIteration {
 	}
 	
 	public static double[][] invert(double[][] matrix){
+		
 		int n = matrix.length;
 		double[][] id = findIdentity(matrix);
-//		print("Identity\n" + toString(id, 1));
 		double[][] aug = augment(matrix, id, n);
-//		print("Augmented\n" + toString(aug,1));
 		double[][] U = forwardEliminate(aug, n);
-//		print("Upper\n" + toString(U,1));
 		double[][] A_prime = new double[n][n];
 		double[][] I_prime = new double[n][n];
+		
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
 				A_prime[i][j] = U[i][j];
 				I_prime[i][j] = U[i][j+n];
 			}
 		}
-
-//		print("Rotate\n" + toString(rotate(A_prime), 1));
-//		print("Rotate\n" + toString(rotate(I_prime), 1));
-
+		
 		U = forwardEliminate(augment(rotate(A_prime), rotate(I_prime), n), n);
-//		print("Upper\n" + toString(U,1));
+		
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
 				A_prime[i][j] = U[i][j];
@@ -125,7 +113,6 @@ public class InverseIteration {
 		}
 		
 		double[][] inverse_aug = (augment(rotate(A_prime), rotate(I_prime), n));
-//		System.out.println("Inverse\n" + toString(inverse_aug, 1));
 		
 		for (int i = 0; i < n; i++) {
 			Double pivot = inverse_aug[i][i];
@@ -138,8 +125,6 @@ public class InverseIteration {
 			for (int j = 0; j < n ; j++)
 				inverse[i][j] = inverse_aug[i][n+j];
 		
-//		System.out.println("Inverse\n" + toString(inverse_aug, 1));
-
 		return inverse;
 	}
 	

@@ -1,6 +1,6 @@
 public class Rectangle {
 
-   private int length, width;
+   public int length, width;
    //   area, perim;
 
    // constructor

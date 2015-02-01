@@ -19,7 +19,6 @@
 	<section name="NewWizardAction">
 		<item value="org.eclipse.jdt.ui.wizards.NewClassCreationWizard" key="NewWizardSelectionPage.STORE_SELECTED_ID"/>
 		<list key="NewWizardSelectionPage.STORE_EXPANDED_CATEGORIES_ID">
-			<item value="org.eclipse.jdt.ui.java"/>
 		</list>
 	</section>
 	<section name="ShowViewDialog">
@@ -44,6 +43,9 @@
 		<item value="false" key="WizardFileSystemResourceImportPage1.STORE_CREATE_CONTAINER_STRUCTURE_ID"/>
 		<item value="false" key="WizardFileSystemResourceImportPage1.STORE_OVERWRITE_EXISTING_RESOURCES_ID"/>
 		<list key="WizardFileSystemResourceImportPage1.STORE_SOURCE_NAMES_ID">
+			<item value="/Users/blanks/Dropbox/Fall 2014/Linalg"/>
+			<item value="/Users/blanks/GitHub/workspace/LinAlgHW2/src"/>
+			<item value="/Users/blanks/GitHub/workspace/LinAlgHW1/src"/>
 			<item value="/Users/blanks/GitHub/Java-Baklava/Bigram-Frequency"/>
 		</list>
 	</section>

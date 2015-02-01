@@ -28,6 +28,12 @@ public class Problem1 {
 			list[i] = new Rectangle(l, w);
 		}
 		
+		Rectangle square = new Rectangle(2, 2);
+		System.out.println("This is a square with length " + square.length + " and width" + square.width + "\n");
+		square.length = 3;
+		System.out.println("This is a square with length " + square.length + " and width" + square.width + "\n");
+
+		
 		// Find rectangle(s) with greatest area and perimeter
 		Rectangle greatestArea = findMax(list,
 				new Compare().new CompareByArea());

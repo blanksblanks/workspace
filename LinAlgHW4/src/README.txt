@@ -17,7 +17,7 @@ HOW TO RUN
     
   2. Run the file with one command-line arg
   
-    $ java Least Squares input.txt
+    $ java LeastSquares input.txt
     
     Note: Input file can be called whatever you like. It should contain on each line:
     m

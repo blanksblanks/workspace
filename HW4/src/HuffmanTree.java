@@ -39,9 +39,11 @@ public class HuffmanTree extends JComponent {
 		// Set up dimensions of the component in the constructor method
 		levels = root.getHeight(root) + 1;
 		hGap = RADIUS;
-		for (int i = 1; i < levels-1; i++) // double levels - 1 times
+		for (int i = 1; i < levels-1; i++)// double levels - 1 times
 			hGap *= 2;
-		frameWidth = hGap * 4;
+		frameWidth = RADIUS;
+		for (int i = 0; i < levels; i++)
+			frameWidth *= 2;
 		frameHeight = (VGAP + RADIUS) * levels + 10; // + 10 for padding
 		// System.out.println("Window height " + frameHeight + " and "
 		// + frameWidth + " and horizontal gap " + hGap);
@@ -93,10 +95,6 @@ public class HuffmanTree extends JComponent {
 		String binary = "";
 		for (int i = 0; i < s.length(); i++) {
 			String character = Character.toString(s.charAt(i));
-//			if (character == "\\") {
-//				i++;
-//				character += Character.toString(s.charAt(i));
-//			}
 			String code = hash.get(character);
 			if (code == null)
 				return ("That was not a valid string as " + character + " is not in the Huffman tree.");
