@@ -8,10 +8,10 @@ public class Percolation {
 	public Percolation(int N) {
 		this.N = N;
 		grid = new boolean[N][N];
-		for (int i = 1; i <= N; i++ ) {
+		for (int i = 1; i < N; i++ ) {
 			for (int j = 0; j < N; j++) {
 				grid[i][j] = false;
-				System.out.println("Grid " + i + j + "is" + grid[i][j]);
+				System.out.println("Index " + i + "," + j + " is " + grid[i][j]);
 			}
 		}
 		uf = new WeightedQuickUnionUF(N * N + 2);
@@ -19,22 +19,26 @@ public class Percolation {
 	
 	// open site (row i, column j) if it is not open already
 	public void open(int i, int j) {
-		isIndexValid(i,j);
+		isIndexValid(i, j);
 		if (!isOpen(i, j))
-			grid[i][j] = true;		   
+			grid[i-1][j-1] = true;
+//		if (i == 1) {
+//			uf.union(0, setID(i, j));
+//		}
+		
+		
 	}
 	
 	// is site (row i, column j) open?
 	public boolean isOpen(int i, int j) {
-		int row = i - 1;
-		int col = j - 1;
-		return true;   
+		return grid[i-1][j-1];   
 	}
 	
 	// is site (row i, column j) full?
+	// A full site is an open site that can be connected to an open site
+	// in the top row via a chain of neighboring (left, right, up, down)
+	// open sites 
 	public boolean isFull(int i, int j) {
-		int row = i - 1;
-		int col = j - 1;
 		return true;   
 	}
 	   
@@ -45,6 +49,7 @@ public class Percolation {
 	}
 	
 	public void isIndexValid(int i, int j) {
+		i--; j--;
         if (i < 0 || i > N-1 || j < 0 || j > N-1) {
         	System.err.println("Out of bounds. Exiting.");
         	System.exit(0);
@@ -52,9 +57,21 @@ public class Percolation {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println("Hello World");
-		Percolation perc = new Percolation(10);
-		System.out.println(perc);
+		Percolation p = new Percolation(2);
+		
+		// Test if percolation works
+		System.out.println( "is 1,1 open? " + p.isOpen(1,1) );
+		p.open(1,1);
+		System.out.println( "after calling open(1,1)? " + p.isOpen(1,1) );	
+		
+		p.open(2,2);
+		p.open(1,2);
+		
+		// Test if out of bounds works
+		p.isIndexValid(3,3);
+		
+		System.out.println(p.percolates());
+		
 	}
 
 }
