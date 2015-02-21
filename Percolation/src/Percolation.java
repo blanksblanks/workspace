@@ -31,22 +31,19 @@ public class Percolation {
 		if (i == N)
 			uf.union(N*N+1, id);
 		
-		// check if all neighbors open
-		if (i > 1) {
-            if (isOpen(i - 1, j))
-                uf.union(setID(i - 1, j), id);
-        }
-
+		// check all neighbors: up, down, left, right
         if (i < N) {
             if (isOpen(i + 1, j))
                 uf.union(setID(i + 1, j), id);
         }
-
+		if (i > 1) {
+            if (isOpen(i - 1, j))
+                uf.union(setID(i - 1, j), id);
+        }
         if (j > 1) {
             if (isOpen(i, j - 1))
                 uf.union(setID(i, j - 1), id);
         }
-
         if (j < N) {
             if (isOpen(i, j + 1))
                 uf.union(setID(i, j + 1), id);
@@ -55,23 +52,25 @@ public class Percolation {
 	
 	// is site (row i, column j) open?
 	public boolean isOpen(int i, int j) {
-		return grid[i-1][j-1];   
+		isIndexValid(i,j);
+		boolean isOpen = grid[i-1][j-1];
+		System.out.println("Is site (" + i + "," + j + ") open? " + isOpen);
+		return isOpen;
 	}
 	
 	// is site (row i, column j) full?
-	// A full site is an open site that can be connected to an open site
-	// in the top row via a chain of neighboring (left, right, up, down)
-	// open sites 
+	// 'full' definition: connects to open site in top row
 	public boolean isFull(int i, int j) {
+		isIndexValid(i,j);
 		boolean isFull = uf.connected(0, setID(i,j));
-		System.out.println(isFull);
+		System.out.println("Is site (" + i + "," + j + ") full? " + isFull);
 		return isFull;
 	}
 	   
 	// does the system percolate?
 	public boolean percolates() {
 		boolean percolates = uf.connected(0,N*N+1);
-		System.out.println(percolates);
+		System.out.println("Does the system percolate? " + percolates);
 		return percolates;
 	}
 	
@@ -86,10 +85,9 @@ public class Percolation {
 	// set unique identifier for (i,j) index
 	// for example: [0][0], [0][1], [1][0], [1][1]
 	// N = 2, called by (1,1), (1,2), (2,1), (2,2)
-	// becomes 1, 2, 3, 4
+	// becomes 1, 2, 3, 4 :)
 	public int setID(int i, int j) {
 		int id = (i - 1) * N + j;
-		System.out.println(id);
 		return id;
 	}
 	
@@ -97,25 +95,14 @@ public class Percolation {
 		Percolation p = new Percolation(2);
 		
 		// Test if percolation works
-		System.out.println( "is 1,1 open? " + p.isOpen(1,1) );
-		p.open(1,1);
-		System.out.println( "after calling open(1,1)? " + p.isOpen(1,1) );	
-		
+		p.open(1,1);		
 		p.open(2,2);
 		p.open(1,2);
 		p.isFull(2, 2);
 		p.percolates();
 		
-		p.setID(1,1);
-		p.setID(1,2);
-		p.setID(2,1);
-		p.setID(2,2);
-		
 		// Test if out of bounds works
 		// p.isIndexValid(3,3);
-		
-		System.out.println(p.percolates());
-		
 	}
 
 }
