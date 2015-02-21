@@ -6,12 +6,13 @@ public class Percolation {
 	
 	// create N-by-N grid, with all sites blocked
 	public Percolation(int N) {
+		if (N <= 0) throw new java.lang.IndexOutOfBoundsException();
 		this.N = N;
 		grid = new boolean[N][N];
 		for (int i = 1; i < N; i++ ) {
 			for (int j = 0; j < N; j++) {
 				grid[i][j] = false;
-				System.out.println("Index " + i + "," + j + " is " + grid[i][j]);
+//				System.out.println("Index " + i + "," + j + " is " + grid[i][j]);
 			}
 		}
 		uf = new WeightedQuickUnionUF(N * N + 2);
@@ -54,7 +55,7 @@ public class Percolation {
 	public boolean isOpen(int i, int j) {
 		isIndexValid(i,j);
 		boolean isOpen = grid[i-1][j-1];
-		System.out.println("Is site (" + i + "," + j + ") open? " + isOpen);
+//		System.out.println("Is site (" + i + "," + j + ") open? " + isOpen);
 		return isOpen;
 	}
 	
@@ -63,7 +64,7 @@ public class Percolation {
 	public boolean isFull(int i, int j) {
 		isIndexValid(i,j);
 		boolean isFull = uf.connected(0, setID(i,j));
-		System.out.println("Is site (" + i + "," + j + ") full? " + isFull);
+//		System.out.println("Is site (" + i + "," + j + ") full? " + isFull);
 		return isFull;
 	}
 	   
@@ -76,10 +77,8 @@ public class Percolation {
 	
 	public void isIndexValid(int i, int j) {
 		i--; j--;
-        if (i < 0 || i > N-1 || j < 0 || j > N-1) {
-        	System.err.println("Out of bounds. Exiting.");
-        	System.exit(0);
-        }
+        if (i < 0 || i > N-1 || j < 0 || j > N-1)
+        	throw new java.lang.IndexOutOfBoundsException();
 	}
 	
 	// set unique identifier for (i,j) index
