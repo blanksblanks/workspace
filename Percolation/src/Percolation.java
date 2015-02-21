@@ -19,14 +19,38 @@ public class Percolation {
 	
 	// open site (row i, column j) if it is not open already
 	public void open(int i, int j) {
-		isIndexValid(i, j);
-		if (!isOpen(i, j))
+		isIndexValid(i,j);
+		if (!isOpen(i,j))
 			grid[i-1][j-1] = true;
-//		if (i == 1) {
-//			uf.union(0, setID(i, j));
-//		}
 		
+		int id = setID(i,j);
 		
+		// if index is in top/bottom row, union with source/destination
+		if (i == 1)
+			uf.union(0, id);
+		if (i == N)
+			uf.union(N*N+1, id);
+		
+		// check if all neighbors open
+		if (i > 1) {
+            if (isOpen(i - 1, j))
+                uf.union(setID(i - 1, j), id);
+        }
+
+        if (i < N) {
+            if (isOpen(i + 1, j))
+                uf.union(setID(i + 1, j), id);
+        }
+
+        if (j > 1) {
+            if (isOpen(i, j - 1))
+                uf.union(setID(i, j - 1), id);
+        }
+
+        if (j < N) {
+            if (isOpen(i, j + 1))
+                uf.union(setID(i, j + 1), id);
+        }
 	}
 	
 	// is site (row i, column j) open?
@@ -39,13 +63,16 @@ public class Percolation {
 	// in the top row via a chain of neighboring (left, right, up, down)
 	// open sites 
 	public boolean isFull(int i, int j) {
-		return true;   
+		boolean isFull = uf.connected(0, setID(i,j));
+		System.out.println(isFull);
+		return isFull;
 	}
 	   
 	// does the system percolate?
 	public boolean percolates() {
-		
-		   return true;
+		boolean percolates = uf.connected(0,N*N+1);
+		System.out.println(percolates);
+		return percolates;
 	}
 	
 	public void isIndexValid(int i, int j) {
@@ -76,6 +103,8 @@ public class Percolation {
 		
 		p.open(2,2);
 		p.open(1,2);
+		p.isFull(2, 2);
+		p.percolates();
 		
 		p.setID(1,1);
 		p.setID(1,2);
@@ -83,7 +112,7 @@ public class Percolation {
 		p.setID(2,2);
 		
 		// Test if out of bounds works
-		p.isIndexValid(3,3);
+		// p.isIndexValid(3,3);
 		
 		System.out.println(p.percolates());
 		
