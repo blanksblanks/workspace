@@ -56,6 +56,16 @@ public class Percolation {
         }
 	}
 	
+	// set unique identifier for (i,j) index
+	// for example: [0][0], [0][1], [1][0], [1][1]
+	// N = 2, called by (1,1), (1,2), (2,1), (2,2)
+	// becomes 1, 2, 3, 4
+	public int setID(int i, int j) {
+		int id = (i - 1) * N + j;
+		System.out.println(id);
+		return id;
+	}
+	
 	public static void main(String[] args) {
 		Percolation p = new Percolation(2);
 		
@@ -66,6 +76,11 @@ public class Percolation {
 		
 		p.open(2,2);
 		p.open(1,2);
+		
+		p.setID(1,1);
+		p.setID(1,2);
+		p.setID(2,1);
+		p.setID(2,2);
 		
 		// Test if out of bounds works
 		p.isIndexValid(3,3);
